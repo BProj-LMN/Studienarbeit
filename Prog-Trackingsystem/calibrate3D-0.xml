@@ -1,0 +1,28 @@
+<?xml version="1.0"?>
+<opencv_storage>
+<timestamp>1449747646</timestamp>
+<datetime>"12/10/15 12:40:46"</datetime>
+<Punktematrix type_id="opencv-matrix">
+  <rows>1</rows>
+  <cols>1</cols>
+  <dt>i</dt>
+  <data>
+    20</data></Punktematrix>
+<PunktematrixXYZ type_id="opencv-matrix">
+  <rows>20</rows>
+  <cols>3</cols>
+  <dt>i</dt>
+  <data>
+    0 370 2480 0 1510 2320 0 2870 2260 0 630 1550 0 1700 1710 0 2540
+    1490 0 270 780 0 1530 370 0 3080 460 680 0 1930 1770 0 1210 3710 0
+    800 1000 0 280 2090 0 2500 3440 0 2120 6050 2330 1750 4650 1120 1680
+    3640 1120 810 2250 2330 1150 1340 1120 1310</data></PunktematrixXYZ>
+<Pixelmatrix type_id="opencv-matrix">
+  <rows>20</rows>
+  <cols>2</cols>
+  <dt>i</dt>
+  <data>
+    366 390 258 379 116 375 336 302 237 318 150 295 367 231 247 187 94
+    194 420 330 461 236 573 119 422 160 487 375 568 308 391 107 505 194
+    423 113 210 209 329 253</data></Pixelmatrix>
+</opencv_storage>
