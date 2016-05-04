@@ -29,8 +29,6 @@ using namespace std;
 #include <opencv2/imgcodecs.hpp>
 using namespace cv;
 
-//#include <tisgrabber.h>
-
 #include "Camera.h"
 #include "calibrate3D.h"
 #include "calibrateCamera.h"
@@ -183,7 +181,7 @@ int main(int argc, const char** argv) {
     /*
      * set reference frame for tracking
      */
-    cout << "waiting for reference frame..." << endl;
+    cout << "waiting for reference frame...\n" << std::flush;
     namedWindow("reference frame 1", WINDOW_AUTOSIZE);
     namedWindow("reference frame 2", WINDOW_AUTOSIZE);
     for (int i = 0; i < 60; i++) {
@@ -198,7 +196,7 @@ int main(int argc, const char** argv) {
     }
     detect1.setReferenceFrame(frame1);
     detect2.setReferenceFrame(frame2);
-    cout << "reference frame set\n" << endl;
+    cout << "reference frame set\n\n" << std::flush;
     destroyWindow("reference frame 1");
     destroyWindow("reference frame 2");
 
@@ -297,9 +295,9 @@ int main(int argc, const char** argv) {
       cout << "\t\t" << "Abstand Triangulation: " << (int)triangulationMinDistance;
       cout << "\t\t" << "Fehlercode: ";
       printf("0x%2x", positionDataErrorCode);
-      cout << endl;
+      cout << "\n" << std::flush;
 
-      if (waitKey(30) >= 0) {
+      if (waitKey(1) >= 0) {
         break;
       }
 
@@ -310,15 +308,15 @@ int main(int argc, const char** argv) {
      */
     destroyWindow("tracking 1");
     destroyWindow("tracking 2");
-    cout << endl;
-    cout << "--> shut down program" << endl;
-    cout << "windows destroyed" << endl;
-    cout << "program successful terminated" << endl;
+    cout << "\n";
+    cout << "--> shut down program\n";
+    cout << "windows destroyed\n";
+    cout << "program successful terminated\n" << std::flush;
 
     return (0);
 
   } catch (cv::Exception & e) {
-    cout << e.msg << endl;
+    cout << e.msg << "\n" << std::flush;
   }
 
 }
