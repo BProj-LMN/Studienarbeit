@@ -13,7 +13,7 @@
 #define ERR_BIG_DISTANCE  0x02
 #define DIST_ERR_CAT1  100
 
-#define DEBUG // show tracking image
+//#define DEBUG // show tracking image
 //#define CAMERA_CALIB_CIRCLES // show circles for calibration crosses on the wall
 
 #include <iostream>
