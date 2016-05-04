@@ -13,7 +13,7 @@
 #define ERR_BIG_DISTANCE  0x02
 #define DIST_ERR_CAT1  100
 
-//#define DEBUG // show tracking image
+#define DEBUG // show tracking image
 //#define CAMERA_CALIB_CIRCLES // show circles for calibration crosses on the wall
 
 #include <iostream>
@@ -232,8 +232,8 @@ int main(int argc, const char** argv) {
       /*
        * get frame and track object
        */
-//      cam1.get_newFrame(frame1);
-//      cam2.get_newFrame(frame2);
+      cam1.get_newFrame(frame1);
+      cam2.get_newFrame(frame2);
 //
 //      statusTracking1 = detect1.detectObject(frame1, pixelPos1);
 //      statusTracking2 = detect2.detectObject(frame2, pixelPos2);
