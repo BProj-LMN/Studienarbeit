@@ -232,11 +232,11 @@ int main(int argc, const char** argv) {
       /*
        * get frame and track object
        */
-      cam1.get_newFrame(frame1);
-      cam2.get_newFrame(frame2);
-
-      statusTracking1 = detect1.detectObject(frame1, pixelPos1);
-      statusTracking2 = detect2.detectObject(frame2, pixelPos2);
+//      cam1.get_newFrame(frame1);
+//      cam2.get_newFrame(frame2);
+//
+//      statusTracking1 = detect1.detectObject(frame1, pixelPos1);
+//      statusTracking2 = detect2.detectObject(frame2, pixelPos2);
 
 #ifdef DEBUG
       if (statusTracking1 != ERR) {
@@ -256,20 +256,17 @@ int main(int argc, const char** argv) {
        * undistort pixel position
        */
       // TODO undistort
-      undistPos1 = pixelPos1; // stub
-      undistPos2 = pixelPos2; // stub
+//      undistPos1 = pixelPos1; // stub
+//      undistPos2 = pixelPos2; // stub
 
       /*
        * calculate 3D position - triangulate
        */
-      cam1.calcNewObjectRayVector(pixelPos1);
-      cam2.calcNewObjectRayVector(pixelPos2);
-
-      triangulate(cam1.positionVector, cam1.objectVector, cam2.positionVector, cam2.objectVector, objectPos3D,
-                  triangulationMinDistance);
-
-
-      Sleep(100);
+//      cam1.calcNewObjectRayVector(pixelPos1);
+//      cam2.calcNewObjectRayVector(pixelPos2);
+//
+//      triangulate(cam1.positionVector, cam1.objectVector, cam2.positionVector, cam2.objectVector, objectPos3D,
+//                  triangulationMinDistance);
 
       /*
        * send position via UDP socket
