@@ -213,6 +213,12 @@ int main(int argc, const char** argv) {
     imshow("zum Beenden: press ESC", destroyimg);
 #endif
 
+    pixelPos1.x = 150;
+    pixelPos1.y = 220;
+    pixelPos2.x = 500;
+    pixelPos2.y = 500;
+
+
     while (1) {
       positionDataErrorCode = ERR_RESET;
 
@@ -235,8 +241,8 @@ int main(int argc, const char** argv) {
 //      cam1.get_newFrame(frame1);
 //      cam2.get_newFrame(frame2);
 //
-      statusTracking1 = detect1.detectObject(frame1, pixelPos1);
-      statusTracking2 = detect2.detectObject(frame2, pixelPos2);
+//      statusTracking1 = detect1.detectObject(frame1, pixelPos1);
+//      statusTracking2 = detect2.detectObject(frame2, pixelPos2);
 
 #ifdef DEBUG
       if (statusTracking1 != ERR) {
@@ -262,11 +268,11 @@ int main(int argc, const char** argv) {
       /*
        * calculate 3D position - triangulate
        */
-//      cam1.calcNewObjectRayVector(pixelPos1);
-//      cam2.calcNewObjectRayVector(pixelPos2);
-//
-//      triangulate(cam1.positionVector, cam1.objectVector, cam2.positionVector, cam2.objectVector, objectPos3D,
-//                  triangulationMinDistance);
+      cam1.calcNewObjectRayVector(pixelPos1);
+      cam2.calcNewObjectRayVector(pixelPos2);
+
+      triangulate(cam1.positionVector, cam1.objectVector, cam2.positionVector, cam2.objectVector, objectPos3D,
+                  triangulationMinDistance);
 
       /*
        * send position via UDP socket
