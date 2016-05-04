@@ -268,6 +268,9 @@ int main(int argc, const char** argv) {
       triangulate(cam1.positionVector, cam1.objectVector, cam2.positionVector, cam2.objectVector, objectPos3D,
                   triangulationMinDistance);
 
+
+      Sleep(100);
+
       /*
        * send position via UDP socket
        */
