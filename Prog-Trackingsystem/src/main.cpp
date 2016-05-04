@@ -213,9 +213,6 @@ int main(int argc, const char** argv) {
     imshow("zum Beenden: press ESC", destroyimg);
 #endif
 
-    VideoCapture cap1 = cam1.get_capture();
-    VideoCapture cap2 = cam2.get_capture();
-
     while (1) {
       positionDataErrorCode = ERR_RESET;
 
@@ -236,12 +233,10 @@ int main(int argc, const char** argv) {
        * get frame and track object
        */
 //      cam1.get_newFrame(frame1);
-      cap1 >> frame1;
 //      cam2.get_newFrame(frame2);
-      cap2 >> frame2;
 //
-//      statusTracking1 = detect1.detectObject(frame1, pixelPos1);
-//      statusTracking2 = detect2.detectObject(frame2, pixelPos2);
+      statusTracking1 = detect1.detectObject(frame1, pixelPos1);
+      statusTracking2 = detect2.detectObject(frame2, pixelPos2);
 
 #ifdef DEBUG
       if (statusTracking1 != ERR) {
