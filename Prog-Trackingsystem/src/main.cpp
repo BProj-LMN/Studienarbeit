@@ -16,7 +16,6 @@
 #define DIST_ERR_CAT1  100
 
 #define DEBUG // show tracking image
-//#define CAMERA_CALIB_CIRCLES // show circles for calibration crosses on the wall
 
 #include <iostream>
 #include <iomanip>
@@ -31,16 +30,12 @@
 using namespace cv;
 
 #include "Camera.h"
-#include "calibrate3D.h"
-#include "calibrateCamera.h"
 #include "ObjectDetection.h"
 #include "myGlobalConstants.h"
-#include "calibrateFrameMask.h"
 #include "triangulate.h"
 
 void printHelp() {
-  std::cout << "\n" << "zugelassene Optionen: loadConfig, calibrateCamera, setFrameMask1, setFrameMask2, save, "
-       << "tracking, loadAndTrack, save&exit, exit" << std::endl;
+  std::cout << "\n" << "zugelassene Optionen: loadConfig, tracking, loadAndTrack, exit" << std::endl;
 }
 
 int main(int argc, const char** argv) {
@@ -89,31 +84,8 @@ int main(int argc, const char** argv) {
         cam1.readSettings(CAM1_FILENAME);
         cam2.readSettings(CAM2_FILENAME);
 
-      } else if (0 == options.compare("calibrateCamera")) {
-        std::cout << "--> do calibrateCamera subroutine" << std::endl;
-        calibrateCameras(&cam1, &cam2);
-
-      } else if (0 == options.compare("setFrameMask1")) {
-        std::cout << "--> do calibrateFrameMask subroutine" << std::endl;
-        calibrateFrameMask(&cam1);
-
-      } else if (0 == options.compare("setFrameMask2")) {
-        std::cout << "--> do calibrateFrameMask subroutine" << std::endl;
-        calibrateFrameMask(&cam2);
-
-      } else if (0 == options.compare("save")) {
-        std::cout << "--> save camera object parameters" << std::endl;
-        cam1.saveSettings(CAM1_FILENAME);
-        cam2.saveSettings(CAM2_FILENAME);
-
       } else if (0 == options.compare("exit")) {
         std::cout << "--> terminating ... Auf Wiedersehen" << std::endl;
-        return (0);
-
-      } else if (0 == options.compare("save&exit")) {
-        std::cout << "--> saving and terminating ... Auf Wiedersehen" << std::endl;
-        cam1.saveSettings(CAM1_FILENAME);
-        cam2.saveSettings(CAM2_FILENAME);
         return (0);
 
       } else if (0 == options.compare("tracking")) {
@@ -133,47 +105,6 @@ int main(int argc, const char** argv) {
       printHelp();
       std::cin >> options;
     }
-
-#ifdef CAMERA_CALIB_CIRCLES
-    std::cout << "Overlay zur Kamerakalibrierung wird angezeigt...\nBeenden mit ESC\n" << std::endl;
-
-    while (1) {
-      namedWindow("Kamera 1 mit Overlay", WINDOW_AUTOSIZE);
-      namedWindow("Kamera 2 mit Overlay", WINDOW_AUTOSIZE);
-
-      cam1.get_rawFrame(frame1);
-      cam2.get_rawFrame(frame2);
-
-      circle(frame1, Point(frame1.cols / 2, frame1.rows / 2), 10, Scalar(0, 255, 0), 1);
-      circle(frame2, Point(frame2.cols / 2, frame2.rows / 2), 10, Scalar(0, 255, 0), 1);
-      circle(frame1, Point(frame1.cols / 2, frame1.rows), 10, Scalar(0, 255, 0), 1);
-      circle(frame2, Point(frame2.cols / 2, frame2.rows), 10, Scalar(0, 255, 0), 1);
-      circle(frame1, Point(frame1.cols, frame1.rows / 2), 10, Scalar(0, 255, 0), 1);
-      circle(frame2, Point(frame2.cols, frame2.rows / 2), 10, Scalar(0, 255, 0), 1);
-      circle(frame1, Point(frame1.cols, frame1.rows), 10, Scalar(0, 255, 0), 1);
-      circle(frame2, Point(frame2.cols, frame2.rows), 10, Scalar(0, 255, 0), 1);
-      circle(frame1, Point(0, frame1.rows), 10, Scalar(0, 255, 0), 1);
-      circle(frame2, Point(0, frame2.rows), 10, Scalar(0, 255, 0), 1);
-      circle(frame1, Point(frame1.cols, 0), 10, Scalar(0, 255, 0), 1);
-      circle(frame2, Point(frame2.cols, 0), 10, Scalar(0, 255, 0), 1);
-      circle(frame1, Point(0, frame1.rows / 2), 10, Scalar(0, 255, 0), 1);
-      circle(frame2, Point(0, frame2.rows / 2), 10, Scalar(0, 255, 0), 1);
-      circle(frame1, Point(frame1.cols / 2, 0), 10, Scalar(0, 255, 0), 1);
-      circle(frame2, Point(frame2.cols / 2, 0), 10, Scalar(0, 255, 0), 1);
-      circle(frame1, Point(0, 0), 10, Scalar(0, 255, 0), 1);
-      circle(frame2, Point(0, 0), 10, Scalar(0, 255, 0), 1);
-
-      imshow("Kamera 1 mit Pattern", frame1);
-      imshow("Kamera 2 mit Pattern", frame2);
-
-      if (waitKey(30) >= 0) {
-        break;
-      }
-    }
-
-    destroyWindow("Kamera 1 mit Pattern");
-    destroyWindow("Kamera 2 mit Pattern");
-#endif
 
     /*
      * set reference frame for tracking
@@ -262,8 +193,7 @@ int main(int argc, const char** argv) {
       cam1.calcNewObjectRayVector(pixelPos1);
       cam2.calcNewObjectRayVector(pixelPos2);
 
-      triangulate(cam1.positionVector, cam1.objectVector, cam2.positionVector, cam2.objectVector, objectPos3D,
-                  triangulationMinDistance);
+      triangulate(cam1.positionVector, cam1.objectVector, cam2.positionVector, cam2.objectVector, objectPos3D, triangulationMinDistance);
 
       /*
        * send position via UDP socket
@@ -289,7 +219,7 @@ int main(int argc, const char** argv) {
        * Ausgabe und Abbruch
        */
       std::cout << "x " << (int) objectPos3D.x << "\ty " << (int) objectPos3D.y << "\tz " << (int) objectPos3D.z;
-      std::cout << "\t\t" << "Abstand Triangulation: " << (int)triangulationMinDistance;
+      std::cout << "\t\t" << "Abstand Triangulation: " << (int) triangulationMinDistance;
       std::cout << "\t\t" << "Fehlercode: ";
       printf("0x%2x", positionDataErrorCode);
       std::cout << "\n" << std::flush;
