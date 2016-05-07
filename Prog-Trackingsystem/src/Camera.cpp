@@ -28,12 +28,12 @@ Camera::Camera(int cameraIndex) {
   }
 
   // use default filename
-  stringstream string;
+  std::stringstream string;
   string << DEFAULT_FILENAME << cameraID;
   settingsFilename = string.str();
 }
 
-Camera::Camera(int cameraIndex, string settingsFile) {
+Camera::Camera(int cameraIndex, std::string settingsFile) {
   this->cameraID = cameraIndex;
   intrinsicParamsLoaded = 0;
   frameMaskSet = 0;
@@ -48,7 +48,7 @@ Camera::Camera(int cameraIndex, string settingsFile) {
 
 Camera::~Camera() {
   capture.release();
-  cout << "[INFO]Camera::~Camera - released capture" << endl;
+  std::cout << "[INFO]Camera::~Camera - released capture" << std::endl;
 }
 
 VideoCapture Camera::get_capture() {
@@ -70,7 +70,7 @@ int Camera::readSettings() {
   return readSettings(settingsFilename);
 }
 
-int Camera::readSettings(string settingsFile) {
+int Camera::readSettings(std::string settingsFile) {
   FileStorage fs(settingsFile, FileStorage::READ); // Read the settings
   if (!fs.isOpened()) {
     fprintf(stderr, "ERROR: Camera::readSettings - opening file \n");
@@ -103,7 +103,7 @@ int Camera::saveSettings() {
   return saveSettings(settingsFilename);
 }
 
-int Camera::saveSettings(string settingsFile) {
+int Camera::saveSettings(std::string settingsFile) {
   FileStorage fs(settingsFile, FileStorage::WRITE); // Read the settings
   if (!fs.isOpened()) {
     fprintf(stderr, "ERROR: Camera::saveSettings - opening file \n");
@@ -142,7 +142,7 @@ int Camera::set_frameMask(Rect frameMask) {
 
     frameMaskSet = 1;
   } else {
-    cout << "[ERROR] Camera::set_frameMask - no valid frameMask given in" << endl;
+    std::cout << "[ERROR] Camera::set_frameMask - no valid frameMask given in" << std::endl;
   }
 
   return OK;
@@ -212,11 +212,11 @@ int Camera::setupRotationMatrix() {
   float w3 = -acos(plane_reference.dot(plane_camera) / (norm(plane_reference) * norm(plane_camera)));
   euler3(w3, Euler3);
 
-  cout << "Camera::setupRotationMatrix of camera " << cameraID << endl;
-  cout << "w1 " << fixed << setprecision(5) << setw(8) << w1 << endl;
-  cout << "w2 " << fixed << setprecision(5) << setw(8) << w2 << endl;
-  cout << "w3 " << fixed << setprecision(5) << setw(8) << w3 << endl;
-  cout << endl;
+  std::cout << "Camera::setupRotationMatrix of camera " << cameraID << "\n";
+  std::cout << "w1 " << std::fixed << std::setprecision(5) << std::setw(8) << w1 << "\n";
+  std::cout << "w2 " << std::fixed << std::setprecision(5) << std::setw(8) << w2 << "\n";
+  std::cout << "w3 " << std::fixed << std::setprecision(5) << std::setw(8) << w3 << "\n";
+  std::cout << "\n" << std::flush;
 
   // calculate euler rotation matrix
   this->rotationMatrix = Euler3 * Euler2 * Euler1;
@@ -282,7 +282,7 @@ void Camera::euler1(float angle, Mat& matrix) {
    [-sin(alpha)  cos(alpha)  0];
    [ 0           0           1] ];
    */
-  float m[3][3] = { { cos(angle), sin(angle), 0 }, { -sin(angle), cos(angle), 0 }, { 0, 0, 1 } };
+  double m[3][3] = { { cos(angle), sin(angle), 0 }, { -sin(angle), cos(angle), 0 }, { 0, 0, 1 } };
   Mat result = Mat(3, 3, CV_32F, m);
   result.copyTo(matrix);
 }
@@ -292,7 +292,7 @@ void Camera::euler2(float angle, Mat& matrix) {
    [ 0           1           0];
    [ sin(alpha)  0           cos(alpha)] ];
    */
-  float m[3][3] = { { cos(angle), 0, -sin(angle) }, { 0, 1, 0 }, { sin(angle), 0, cos(angle) } };
+  double m[3][3] = { { cos(angle), 0, -sin(angle) }, { 0, 1, 0 }, { sin(angle), 0, cos(angle) } };
   Mat result = Mat(3, 3, CV_32F, m);
   result.copyTo(matrix);
 }
@@ -302,7 +302,7 @@ void Camera::euler3(float angle, Mat& matrix) {
    [ 0           cos(alpha)  sin(alpha)];
    [ 0          -sin(alpha)  cos(alpha)] ];
    */
-  float m[3][3] = { { 1, 0, 0 }, { 0, cos(angle), sin(angle) }, { 0, -sin(angle), cos(angle) } };
+  double m[3][3] = { { 1, 0, 0 }, { 0, cos(angle), sin(angle) }, { 0, -sin(angle), cos(angle) } };
   Mat result = Mat(3, 3, CV_32F, m);
   result.copyTo(matrix);
 }

@@ -67,8 +67,8 @@ int ObjectDetection::detectObject(Mat frame, Point2i& pixelPosition) {
 
 int ObjectDetection::getObjectPosition(Mat thresImg, Point2i& objectPos, Rect* boundingRectange) {
 
-  vector<vector<Point> > contours;
-  vector<Vec4i> hierarchy;
+  std::vector<std::vector<Point> > contours;
+  std::vector<Vec4i> hierarchy;
 
   findContours(thresImg, contours, hierarchy, CV_RETR_EXTERNAL, CV_CHAIN_APPROX_SIMPLE); // retrieves external contours
 
@@ -80,7 +80,7 @@ int ObjectDetection::getObjectPosition(Mat thresImg, Point2i& objectPos, Rect* b
   } else {
     // the largest contour is found at the end of the contours vector
     // we will simply assume that the biggest contour is the object we are looking for.
-    vector<vector<Point> > largestContourVec;
+    std::vector<std::vector<Point> > largestContourVec;
     largestContourVec.push_back(contours.at(contours.size() - 1));
 
     // make a bounding rectangle around the largest contour then find its centroid

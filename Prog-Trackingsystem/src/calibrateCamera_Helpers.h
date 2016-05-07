@@ -14,7 +14,6 @@
 #include <sstream>
 #include <time.h>
 #include <stdio.h>
-using namespace std;
 
 #include <opencv2/core/core.hpp>
 #include <opencv2/imgproc/imgproc.hpp>
@@ -34,11 +33,11 @@ static void read(const FileNode& node, DistCalibSettings& x, const DistCalibSett
   }
 }
 
-static double computeReprojectionErrors(const vector<vector<Point3f> >& objectPoints,
-                                        const vector<vector<Point2f> >& imagePoints, const vector<Mat>& rvecs,
-                                        const vector<Mat>& tvecs, const Mat& cameraMatrix, const Mat& distCoeffs,
-                                        vector<float>& perViewErrors) {
-  vector<Point2f> imagePoints2;
+static double computeReprojectionErrors(const std::vector<std::vector<Point3f> >& objectPoints,
+                                        const std::vector<std::vector<Point2f> >& imagePoints, const std::vector<Mat>& rvecs,
+                                        const std::vector<Mat>& tvecs, const Mat& cameraMatrix, const Mat& distCoeffs,
+                                        std::vector<float>& perViewErrors) {
+  std::vector<Point2f> imagePoints2;
   int i, totalPoints = 0;
   double totalErr = 0, err;
   perViewErrors.resize(objectPoints.size());
@@ -56,7 +55,7 @@ static double computeReprojectionErrors(const vector<vector<Point3f> >& objectPo
   return std::sqrt(totalErr / totalPoints);
 }
 
-static void calcBoardCornerPositions(Size boardSize, float squareSize, vector<Point3f>& corners,
+static void calcBoardCornerPositions(Size boardSize, float squareSize, std::vector<Point3f>& corners,
                                      DistCalibSettings::Pattern patternType /*= Settings::CHESSBOARD*/) {
   corners.clear();
 
@@ -83,9 +82,9 @@ static void calcBoardCornerPositions(Size boardSize, float squareSize, vector<Po
 }
 
 bool runCalibration(DistCalibSettings& s, Size imageSize, Mat& cameraMatrix, Mat& distCoeffs,
-                    vector<vector<Point2f> > imagePoints) {
-  vector<Mat> rvecs, tvecs;
-  vector<float> reprojErrs;
+                    std::vector<std::vector<Point2f> > imagePoints) {
+  std::vector<Mat> rvecs, tvecs;
+  std::vector<float> reprojErrs;
   double totalAvgErr = 0;
 
   // --> compute
@@ -96,7 +95,7 @@ bool runCalibration(DistCalibSettings& s, Size imageSize, Mat& cameraMatrix, Mat
 
   distCoeffs = Mat::zeros(8, 1, CV_64F);
 
-  vector<vector<Point3f> > objectPoints(1);
+  std::vector<std::vector<Point3f> > objectPoints(1);
   calcBoardCornerPositions(s.boardSize, s.squareSize, objectPoints[0], s.calibrationPattern);
 
   objectPoints.resize(imagePoints.size(), objectPoints[0]);
@@ -105,7 +104,7 @@ bool runCalibration(DistCalibSettings& s, Size imageSize, Mat& cameraMatrix, Mat
   double rms = calibrateCamera(objectPoints, imagePoints, imageSize, cameraMatrix, distCoeffs, rvecs, tvecs,
                                s.flag | CV_CALIB_FIX_K4 | CV_CALIB_FIX_K5);
 
-  cout << "Re-projection error reported by calibrateCamera: " << rms << endl;
+  std::cout << "Re-projection error reported by calibrateCamera: " << rms << std::endl;
 
   bool ok = checkRange(cameraMatrix) && checkRange(distCoeffs);
 
@@ -113,8 +112,8 @@ bool runCalibration(DistCalibSettings& s, Size imageSize, Mat& cameraMatrix, Mat
                                           reprojErrs);
   // <-- end compute
 
-  cout << (ok ? "Calibration succeeded" : "Calibration failed") << ". avg re projection error = " << totalAvgErr
-       << endl;
+  std::cout << (ok ? "Calibration succeeded" : "Calibration failed") << ". avg re projection error = " << totalAvgErr
+       << std::endl;
 
   return ok;
 }

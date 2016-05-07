@@ -20,7 +20,6 @@
 
 #include <iostream>
 #include <iomanip>
-using namespace std;
 
 #include "Socket.h"
 
@@ -40,15 +39,15 @@ using namespace cv;
 #include "triangulate.h"
 
 void printHelp() {
-  cout << "\n" << "zugelassene Optionen: loadConfig, calibrateCamera, calibrate3D, setFrameMask1, setFrameMask2, save, "
-       << "tracking, loadAndTrack, save&exit, exit" << endl;
+  std::cout << "\n" << "zugelassene Optionen: loadConfig, calibrateCamera, setFrameMask1, setFrameMask2, save, "
+       << "tracking, loadAndTrack, save&exit, exit" << std::endl;
 }
 
 int main(int argc, const char** argv) {
-  string options;
+  std::string options;
 
   Socket remoteInput(1362);
-  string message;
+  std::string message;
 
   char positionData[MESSAGE_LEN];
   positionData[0] = 0xDA;
@@ -79,68 +78,64 @@ int main(int argc, const char** argv) {
     if (argc > 1) {
       options = argv[1];
     } else {
-      cout << "Guten Tag, hier ist das Tracking-System. Was wollen Sie?" << endl;
+      std::cout << "Guten Tag, hier ist das Tracking-System. Was wollen Sie?" << std::endl;
       printHelp();
-      cin >> options;
+      std::cin >> options;
     }
 
     while (1) {
       if (0 == options.compare("loadConfig")) {
-        cout << "--> do loadConfig subroutine" << endl;
+        std::cout << "--> do loadConfig subroutine" << std::endl;
         cam1.readSettings(CAM1_FILENAME);
         cam2.readSettings(CAM2_FILENAME);
 
       } else if (0 == options.compare("calibrateCamera")) {
-        cout << "--> do calibrateCamera subroutine" << endl;
+        std::cout << "--> do calibrateCamera subroutine" << std::endl;
         calibrateCameras(&cam1, &cam2);
 
-      } else if (0 == options.compare("calibrate3D")) {
-        cout << "--> do calibrate3D subroutine" << endl;
-        calibrate3D(&cam1, &cam2);
-
       } else if (0 == options.compare("setFrameMask1")) {
-        cout << "--> do calibrateFrameMask subroutine" << endl;
+        std::cout << "--> do calibrateFrameMask subroutine" << std::endl;
         calibrateFrameMask(&cam1);
 
       } else if (0 == options.compare("setFrameMask2")) {
-        cout << "--> do calibrateFrameMask subroutine" << endl;
+        std::cout << "--> do calibrateFrameMask subroutine" << std::endl;
         calibrateFrameMask(&cam2);
 
       } else if (0 == options.compare("save")) {
-        cout << "--> save camera object parameters" << endl;
+        std::cout << "--> save camera object parameters" << std::endl;
         cam1.saveSettings(CAM1_FILENAME);
         cam2.saveSettings(CAM2_FILENAME);
 
       } else if (0 == options.compare("exit")) {
-        cout << "--> terminating ... Auf Wiedersehen" << endl;
+        std::cout << "--> terminating ... Auf Wiedersehen" << std::endl;
         return (0);
 
       } else if (0 == options.compare("save&exit")) {
-        cout << "--> saving and terminating ... Auf Wiedersehen" << endl;
+        std::cout << "--> saving and terminating ... Auf Wiedersehen" << std::endl;
         cam1.saveSettings(CAM1_FILENAME);
         cam2.saveSettings(CAM2_FILENAME);
         return (0);
 
       } else if (0 == options.compare("tracking")) {
-        cout << "--> do normal operation" << endl;
+        std::cout << "--> do normal operation" << std::endl;
         break;
 
       } else if (0 == options.compare("loadAndTrack")) {
-        cout << "--> loading config and track" << endl;
+        std::cout << "--> loading config and track" << std::endl;
         cam1.readSettings(CAM1_FILENAME);
         cam2.readSettings(CAM2_FILENAME);
         break;
 
       } else {
-        cout << "diese Eingabe ist nicht zugelassen" << endl;
+        std::cout << "diese Eingabe ist nicht zugelassen" << std::endl;
       }
 
       printHelp();
-      cin >> options;
+      std::cin >> options;
     }
 
 #ifdef CAMERA_CALIB_CIRCLES
-    cout << "Overlay zur Kamerakalibrierung wird angezeigt...\nBeenden mit ESC\n" << endl;
+    std::cout << "Overlay zur Kamerakalibrierung wird angezeigt...\nBeenden mit ESC\n" << std::endl;
 
     while (1) {
       namedWindow("Kamera 1 mit Overlay", WINDOW_AUTOSIZE);
@@ -183,7 +178,7 @@ int main(int argc, const char** argv) {
     /*
      * set reference frame for tracking
      */
-    cout << "waiting for reference frame...\n" << std::flush;
+    std::cout << "waiting for reference frame...\n" << std::flush;
     namedWindow("reference frame 1", WINDOW_AUTOSIZE);
     namedWindow("reference frame 2", WINDOW_AUTOSIZE);
     for (int i = 0; i < 60; i++) {
@@ -198,7 +193,7 @@ int main(int argc, const char** argv) {
     }
     detect1.setReferenceFrame(frame1);
     detect2.setReferenceFrame(frame2);
-    cout << "reference frame set\n\n" << std::flush;
+    std::cout << "reference frame set\n\n" << std::flush;
     destroyWindow("reference frame 1");
     destroyWindow("reference frame 2");
 
@@ -293,11 +288,11 @@ int main(int argc, const char** argv) {
       /*
        * Ausgabe und Abbruch
        */
-      cout << "x " << (int) objectPos3D.x << "\ty " << (int) objectPos3D.y << "\tz " << (int) objectPos3D.z;
-      cout << "\t\t" << "Abstand Triangulation: " << (int)triangulationMinDistance;
-      cout << "\t\t" << "Fehlercode: ";
+      std::cout << "x " << (int) objectPos3D.x << "\ty " << (int) objectPos3D.y << "\tz " << (int) objectPos3D.z;
+      std::cout << "\t\t" << "Abstand Triangulation: " << (int)triangulationMinDistance;
+      std::cout << "\t\t" << "Fehlercode: ";
       printf("0x%2x", positionDataErrorCode);
-      cout << "\n" << std::flush;
+      std::cout << "\n" << std::flush;
 
       if (waitKey(1) >= 0) {
         break;
@@ -310,15 +305,15 @@ int main(int argc, const char** argv) {
      */
     destroyWindow("tracking 1");
     destroyWindow("tracking 2");
-    cout << "\n";
-    cout << "--> shut down program\n";
-    cout << "windows destroyed\n";
-    cout << "program successful terminated\n" << std::flush;
+    std::cout << "\n";
+    std::cout << "--> shut down program\n";
+    std::cout << "windows destroyed\n";
+    std::cout << "program successful terminated\n" << std::flush;
 
     return (0);
 
   } catch (cv::Exception & e) {
-    cout << e.msg << "\n" << std::flush;
+    std::cout << e.msg << "\n" << std::flush;
   }
 
 }

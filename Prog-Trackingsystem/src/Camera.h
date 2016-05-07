@@ -23,14 +23,13 @@ using namespace cv;
 #include <time.h>
 #include <iostream>
 #include <iomanip>
-using namespace std;
 
 #include "myGlobalConstants.h"
 
 class Camera {
   VideoCapture capture;
   int cameraID;
-  string settingsFilename;
+  std::string settingsFilename;
   Rect frameMaskRect;
   Mat frameMask;
   bool frameMaskSet;
@@ -52,16 +51,16 @@ public:
 
 public:
   Camera(int cameraIndex);
-  Camera(int cameraIndex, string settingsFile);
+  Camera(int cameraIndex, std::string settingsFile);
   virtual ~Camera();
 
   VideoCapture get_capture();
   int correctDistortion(Point2i src, Point2f dst);
 
-  int readSettings(string settingsFile);  // read from temporarily filename
-  int readSettings();                     // read from filename from constructor
-  int saveSettings(string settingsFile);  // save to temporarily filename
-  int saveSettings();                     // save to filename from constructor
+  int readSettings(std::string settingsFile); // read from temporarily filename
+  int readSettings();                         // read from filename from constructor
+  int saveSettings(std::string settingsFile); // save to temporarily filename
+  int saveSettings();                         // save to filename from constructor
   int get_cameraID();
   int set_frameMask(Rect frameMask);
   int get_newFrame(Mat& frame);
