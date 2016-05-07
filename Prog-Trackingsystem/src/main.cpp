@@ -1,12 +1,14 @@
 /*
- * Bachelorprojekt WS 2015/16 - HAW Hamburg - Quadrocopter-Tracking und Positionsregelung
- * TRACKING SYSTEM
+ * camera based 3D tracking system -- Main Tracking System
+ * Studienarbeit SS 2016 - HAW Hamburg - Jannik Beyerstedt
  *
+ * based on:
+ * Bachelorprojekt WS 2015/16 - HAW Hamburg - Quadrocopter-Tracking und Positionsregelung
  * authors: Jannik Beyerstedt, Daniel Friedrich
  */
 
-#define CAM1_FILENAME "cameraStorage1.xml"
-#define CAM2_FILENAME "cameraStorage2.xml"
+#define CAM1_FILENAME "../Progs-configStore/cameraStorage1.xml"
+#define CAM2_FILENAME "../Progs-configStore/cameraStorage2.xml"
 
 #define ERR_RESET         0x00
 #define ERR_TRACKING_LOST 0x01
