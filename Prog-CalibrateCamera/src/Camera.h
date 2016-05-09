@@ -67,7 +67,7 @@ public:
   int get_rawFrame(Mat& frame);           // get original 3 channel frame, without mask
 
   // vector from Camera to object in world coordinates,
-  // be shure to reload settings after changing intrinsic parameters
+  // be sure to reload settings after changing intrinsic parameters
   int calcNewObjectRayVector(Point2f pixelPosition);
 
 private:
