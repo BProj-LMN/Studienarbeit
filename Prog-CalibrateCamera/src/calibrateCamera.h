@@ -35,24 +35,15 @@ enum {
 
 int executeDistCalib(std::string settingsFile, Camera* cam);
 
-int calibrateCameras(Camera* cam1, Camera* cam2) {
+int calibrateCameras(Camera* cam) {
   std::cout << "\n\nHello, this is the distortion correction subroutine" << std::endl;
   int returnValue = ERR;
 
-  std::cout << "calibrate Camera 2 please" << std::endl;
-  returnValue = executeDistCalib("calibrateCamera.xml", cam2);
+  returnValue = executeDistCalib("calibrateCamera.xml", cam);
   if (ERR == returnValue) {
     return ERR;
   }
-  cam2->intrinsicParamsLoaded = 1;
-
-
-  std::cout << "\n\n" << "calibrate Camera 1 please" << std::endl;
-  returnValue = executeDistCalib("calibrateCamera.xml", cam1);
-  if (ERR == returnValue) {
-    return ERR;
-  }
-  cam1->intrinsicParamsLoaded = 1;
+  cam->intrinsicParamsLoaded = 1;
 
   return OK;
 }
@@ -133,8 +124,7 @@ int executeDistCalib(std::string settingsFile, Camera* cam) {
       if (s.calibrationPattern == DistCalibSettings::CHESSBOARD) {
         Mat viewGray;
         cvtColor(view, viewGray, COLOR_BGR2GRAY);
-        cornerSubPix(viewGray, pointBuf, Size(11, 11), Size(-1, -1),
-                     TermCriteria( CV_TERMCRIT_EPS + CV_TERMCRIT_ITER, 30, 0.1));
+        cornerSubPix(viewGray, pointBuf, Size(11, 11), Size(-1, -1), TermCriteria( CV_TERMCRIT_EPS + CV_TERMCRIT_ITER, 30, 0.1));
       }
 
       if (mode == CAPTURING &&  // For camera only take new samples after delay time
