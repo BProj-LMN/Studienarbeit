@@ -7,6 +7,15 @@
 
 #include "calibrateCamera_Settings.h"
 
+#include <opencv2/imgproc/imgproc.hpp>
+#include <opencv2/calib3d/calib3d.hpp>
+#include <opencv2/highgui/highgui.hpp>
+
+#include <iostream>
+#include <sstream>
+#include <time.h>
+#include <stdio.h>
+
 void DistCalibSettings::read(const FileNode& node) {     //Read serialization for this class
   node["BoardSize_Width"] >> boardSize.width;
   node["BoardSize_Height"] >> boardSize.height;

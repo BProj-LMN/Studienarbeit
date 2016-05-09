@@ -8,6 +8,11 @@
 
 #include "ObjectDetection.h"
 
+#include <opencv2/highgui.hpp>
+#include <opencv2/imgproc.hpp>
+
+#include "myGlobalConstants.h"
+
 const static int SENSITIVITY_VALUE = 35;  // threshold for threshold()
 const static int BLUR_SIZE = 10;  // for absdiff()
 

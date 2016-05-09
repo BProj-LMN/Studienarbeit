@@ -16,15 +16,7 @@
 
 #include <opencv2/core.hpp>
 #include <opencv2/videoio.hpp>
-#include <opencv2/imgproc.hpp>
-#include <opencv2/calib3d.hpp>
 using namespace cv;
-
-#include <time.h>
-#include <iostream>
-#include <iomanip>
-
-#include "myGlobalConstants.h"
 
 class Camera {
   VideoCapture capture;

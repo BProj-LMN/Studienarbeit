@@ -8,15 +8,8 @@
 #ifndef SRC_CALIBRATECAMERA_SETTINGS_H_
 #define SRC_CALIBRATECAMERA_SETTINGS_H_
 
-#include <iostream>
-#include <sstream>
-#include <time.h>
-#include <stdio.h>
-
-#include <opencv2/core/core.hpp>
-#include <opencv2/imgproc/imgproc.hpp>
-#include <opencv2/calib3d/calib3d.hpp>
-#include <opencv2/highgui/highgui.hpp>
+#include <opencv2/core.hpp>
+#include <opencv2/videoio.hpp>
 using namespace cv;
 
 class DistCalibSettings {

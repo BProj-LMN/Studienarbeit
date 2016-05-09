@@ -13,7 +13,7 @@
 #define ERR_RESET         0x00
 #define ERR_TRACKING_LOST 0x01
 #define ERR_BIG_DISTANCE  0x02
-#define DIST_ERR_CAT1  100
+#define DIST_ERR_CAT1     100
 
 #define DEBUG // show tracking image
 
@@ -26,7 +26,6 @@
 #include <opencv2/videoio.hpp>
 #include <opencv2/highgui.hpp>
 #include <opencv2/imgproc.hpp>
-#include <opencv2/imgcodecs.hpp>
 using namespace cv;
 
 #include "Camera.h"
@@ -183,9 +182,8 @@ int main(int argc, const char** argv) {
       /*
        * undistort pixel position
        */
-      // TODO undistort
-      undistPos1 = pixelPos1; // stub
-      undistPos2 = pixelPos2; // stub
+      cam1.correctDistortion(pixelPos1,undistPos1); // TODO: it’s only a stub
+      cam2.correctDistortion(pixelPos2,undistPos2); // TODO: it’s only a stub
 
       /*
        * calculate 3D position - triangulate

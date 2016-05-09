@@ -10,13 +10,6 @@
 #include <iostream>
 #include <iomanip>
 
-#include <opencv2/core.hpp>
-#include <opencv2/videoio.hpp>
-#include <opencv2/highgui.hpp>
-#include <opencv2/imgproc.hpp>
-#include <opencv2/imgcodecs.hpp>
-using namespace cv;
-
 #include "Camera.h"
 #include "calibrateCamera.h"
 #include "myGlobalConstants.h"

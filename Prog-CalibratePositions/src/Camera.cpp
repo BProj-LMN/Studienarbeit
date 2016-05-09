@@ -9,6 +9,15 @@
 
 #include "Camera.h"
 
+#include <opencv2/imgproc.hpp>
+#include <opencv2/calib3d.hpp>
+
+#include <time.h>
+#include <iostream>
+#include <iomanip>
+
+#include "myGlobalConstants.h"
+
 Camera::Camera(int cameraIndex) {
   this->cameraID = cameraIndex;
   intrinsicParamsLoaded = 0;
@@ -62,6 +71,8 @@ int Camera::get_cameraID() {
 int Camera::correctDistortion(Point2i src, Point2f dst) {
   // TODO Task: call undistortPoints()
   //undistortPoints(src, dst, *cameraMatrix, *distCoeffs);
+
+  dst = src; // TODO it’s only a stub
 
   return ERR;
 }
