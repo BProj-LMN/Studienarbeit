@@ -35,8 +35,9 @@ enum {
 
 int executeDistCalib(std::string settingsFile, Camera* cam);
 
-int calibrateCameras(Camera* cam) {
-  std::cout << "\n\nHello, this is the distortion correction subroutine" << std::endl;
+int calibrateCamera(Camera* cam) {
+  std::cout << "\n\nHello, this is the distortion correction subroutine\n";
+  std::cout << "press g to start, press u to toggle original and corrected image" << std::endl;
   int returnValue = ERR;
 
   returnValue = executeDistCalib("calibrateCamera.xml", cam);
@@ -139,7 +140,7 @@ int executeDistCalib(std::string settingsFile, Camera* cam) {
     }
 
     //----------------------------- Output Text ------------------------------------------------
-    std::string msg = (mode == CAPTURING) ? "100/100" : mode == CALIBRATED ? "Calibrated, press 'esc' for next" : "Press 'g' to start";
+    std::string msg = (mode == CAPTURING) ? "100/100" : mode == CALIBRATED ? "Calibrated, press 'esc' to exit" : "Press 'g' to start";
     int baseLine = 0;
     Size textSize = getTextSize(msg, 1, 1, 1, &baseLine);
     Point textOrigin(view.cols - 2 * textSize.width - 10, view.rows - 2 * baseLine - 10);

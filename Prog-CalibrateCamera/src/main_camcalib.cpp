@@ -9,13 +9,15 @@
 
 #include <iostream>
 #include <iomanip>
+#include <string>
+#include <sstream>
 
 #include "Camera.h"
 #include "calibrateCamera.h"
 #include "myGlobalConstants.h"
 
 void printHelp() {
-  std::cout << "\n" << "valid options: loadConfig, calibrateCamera, save, exit" << std::endl;
+  std::cout << "\n" << "valid options: calibrateCamera, save, exit" << std::endl;
 }
 
 int main(int argc, const char** argv) {
@@ -31,7 +33,8 @@ int main(int argc, const char** argv) {
     if (argc > 1) {
       // split camera ID followed by a whitespace and the path
       std::string id = argv[1];
-      cameraID = 0; // TODO string to int
+      std::stringstream temp(id);
+      temp >> cameraID;
       if (!(cameraID >= 0 && cameraID < 10)) {
         std::cout << "Sorry, camera ID is not valid --> terminating\n" << std::flush;
         return (0);
@@ -40,12 +43,14 @@ int main(int argc, const char** argv) {
 
       if (argc > 3) {
         options = argv[3];
+      } else {
+        options = "calibrateCamera";
       }
 
     } else {
       std::cout << "Hi, here’s the camera calibration.\n";
 
-      std::cout << "Please give camera ID (beginning at 0):\n" << std::flush;
+      std::cout << "Please give opencv camera ID (beginning at 0):\n" << std::flush;
       std::cin >> cameraID;
 
       std::cout << "Please give path to camera settings file:\n" << std::flush;
@@ -59,13 +64,9 @@ int main(int argc, const char** argv) {
     Mat frame;
 
     while (1) {
-      if (0 == options.compare("loadConfig")) {
-        std::cout << "--> do loadConfig subroutine" << std::endl;
-        cam.readSettings(path);
-
-      } else if (0 == options.compare("calibrateCamera")) {
+      if (0 == options.compare("calibrateCamera")) {
         std::cout << "--> do calibrateCamera subroutine" << std::endl;
-        calibrateCameras(&cam);
+        calibrateCamera(&cam);
 
       } else if (0 == options.compare("save")) {
         std::cout << "--> save camera object parameters" << std::endl;
