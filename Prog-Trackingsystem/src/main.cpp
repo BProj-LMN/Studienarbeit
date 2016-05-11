@@ -300,11 +300,11 @@ int main(int argc, const char** argv) {
       /*
        * Ausgabe und Abbruch
        */
-      cout << "x " << (int) objectPos3D.x << "\ty " << (int) objectPos3D.y << "\tz " << (int) objectPos3D.z;
-      cout << "\t\t" << "Abstand Triangulation: " << (int)triangulationMinDistance;
-      cout << "\t\t" << "Fehlercode: ";
-      printf("0x%2x", positionDataErrorCode);
-      cout << "\n" << std::flush;
+//      cout << "x " << (int) objectPos3D.x << "\ty " << (int) objectPos3D.y << "\tz " << (int) objectPos3D.z;
+//      cout << "\t\t" << "Abstand Triangulation: " << (int)triangulationMinDistance;
+//      cout << "\t\t" << "Fehlercode: ";
+//      printf("0x%2x", positionDataErrorCode);
+//      cout << "\n" << std::flush;
 
       if (waitKey(1) >= 0) {
         break;
