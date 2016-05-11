@@ -125,8 +125,8 @@ int main(int argc, const char** argv) {
 
       } else if (0 == options.compare("loadAndTrack")) {
         cout << "--> loading config and track" << endl;
-        cam1.readSettings(CAM1_FILENAME);
-        cam2.readSettings(CAM2_FILENAME);
+        //cam1.readSettings(CAM1_FILENAME);
+        //cam2.readSettings(CAM2_FILENAME);
         break;
 
       } else {
@@ -213,10 +213,6 @@ int main(int argc, const char** argv) {
     imshow("zum Beenden: press ESC", destroyimg);
 #endif
 
-    VideoCapture cap1("test/frameCam1-01.png");
-    VideoCapture cap2("test/frameCam2-01.png");
-
-
     while (1) {
       positionDataErrorCode = ERR_RESET;
 
@@ -236,13 +232,8 @@ int main(int argc, const char** argv) {
       /*
        * get frame and track object
        */
-      cap1.set(CAP_PROP_POS_FRAMES, 0);
-      cap2.set(CAP_PROP_POS_FRAMES, 0);
-      cap1 >> frame1;
-      cap2 >> frame2;
-
-//      cam1.get_newFrame(frame1);
-//      cam2.get_newFrame(frame2);
+      cam1.get_newFrame(frame1);
+      cam2.get_newFrame(frame2);
 //
 //      statusTracking1 = detect1.detectObject(frame1, pixelPos1);
 //      statusTracking2 = detect2.detectObject(frame2, pixelPos2);
@@ -300,11 +291,11 @@ int main(int argc, const char** argv) {
       /*
        * Ausgabe und Abbruch
        */
-//      cout << "x " << (int) objectPos3D.x << "\ty " << (int) objectPos3D.y << "\tz " << (int) objectPos3D.z;
-//      cout << "\t\t" << "Abstand Triangulation: " << (int)triangulationMinDistance;
-//      cout << "\t\t" << "Fehlercode: ";
-//      printf("0x%2x", positionDataErrorCode);
-//      cout << "\n" << std::flush;
+      cout << "x " << (int) objectPos3D.x << "\ty " << (int) objectPos3D.y << "\tz " << (int) objectPos3D.z;
+      cout << "\t\t" << "Abstand Triangulation: " << (int)triangulationMinDistance;
+      cout << "\t\t" << "Fehlercode: ";
+      printf("0x%2x", positionDataErrorCode);
+      cout << "\n" << std::flush;
 
       if (waitKey(1) >= 0) {
         break;
