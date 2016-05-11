@@ -53,7 +53,7 @@ int main(int argc, const char** argv) {
   char positionDataErrorCode = 0x00;
   int statusTracking1 = OK;
   int statusTracking2 = OK;
-  float triangulationMinDistance;
+  float triangulationMinDistance = 0.0;
 
   Camera cam1(0);
   Mat frame1;
@@ -213,10 +213,8 @@ int main(int argc, const char** argv) {
     imshow("zum Beenden: press ESC", destroyimg);
 #endif
 
-    pixelPos1.x = 150;
-    pixelPos1.y = 220;
-    pixelPos2.x = 500;
-    pixelPos2.y = 500;
+    VideoCapture cap1("test/frameCam1-01.png");
+    VideoCapture cap2("test/frameCam2-01.png");
 
 
     while (1) {
@@ -238,6 +236,11 @@ int main(int argc, const char** argv) {
       /*
        * get frame and track object
        */
+      cap1.set(CAP_PROP_POS_FRAMES, 0);
+      cap2.set(CAP_PROP_POS_FRAMES, 0);
+      cap1 >> frame1;
+      cap2 >> frame2;
+
 //      cam1.get_newFrame(frame1);
 //      cam2.get_newFrame(frame2);
 //
@@ -268,11 +271,11 @@ int main(int argc, const char** argv) {
       /*
        * calculate 3D position - triangulate
        */
-      cam1.calcNewObjectRayVector(pixelPos1);
-      cam2.calcNewObjectRayVector(pixelPos2);
-
-      triangulate(cam1.positionVector, cam1.objectVector, cam2.positionVector, cam2.objectVector, objectPos3D,
-                  triangulationMinDistance);
+//      cam1.calcNewObjectRayVector(pixelPos1);
+//      cam2.calcNewObjectRayVector(pixelPos2);
+//
+//      triangulate(cam1.positionVector, cam1.objectVector, cam2.positionVector, cam2.objectVector, objectPos3D,
+//                  triangulationMinDistance);
 
       /*
        * send position via UDP socket
