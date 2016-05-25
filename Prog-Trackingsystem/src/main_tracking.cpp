@@ -146,21 +146,21 @@ int main(int argc, const char** argv) {
     /* TIME MEASUREMENT START */
     auto t1 = std::chrono::high_resolution_clock::now();
 
-    for (int i = 0; i < 5000; i++) {
+    for (int i = 0; i < 100000; i++) {
       positionDataErrorCode = ERR_RESET;
 
       /*
        * evaluate remote input - remote control this software
        */
-//      remoteInput.evaluate();
-//      bool newMessage = remoteInput.get_message(message);
-//
-//      if (newMessage) {
-//        // shut down, if requested
-//        if (message.compare("exit")) {
-//          break;
-//        }
-//      }
+      remoteInput.evaluate();
+      bool newMessage = remoteInput.get_message(message);
+
+      if (newMessage) {
+        // shut down, if requested
+        if (message.compare("exit")) {
+          break;
+        }
+      }
 
       /*
        * get frame and track object
@@ -202,27 +202,27 @@ int main(int argc, const char** argv) {
       /*
        * send position via UDP socket
        */
-      triangulationMinDistance = 200;
-      objectPos3D.x = 10;
-      objectPos3D.y = 100;
-      objectPos3D.z = 50;
-
-      if (statusTracking1 == ERR || statusTracking2 == ERR) {
-        positionDataErrorCode |= ERR_TRACKING_LOST;
-      }
-      if (triangulationMinDistance > DIST_ERR_CAT1) {
-        positionDataErrorCode |= ERR_BIG_DISTANCE;
-      }
-
-      positionData[1] = ((int) objectPos3D.x >> 8) & 0x000000FF;
-      positionData[2] = (int) objectPos3D.x & 0x000000FF;
-      positionData[3] = ((int) objectPos3D.y >> 8) & 0x000000FF;
-      positionData[4] = (int) objectPos3D.y & 0x000000FF;
-      positionData[5] = ((int) objectPos3D.z >> 8) & 0x000000FF;
-      positionData[6] = (int) objectPos3D.z & 0x000000FF;
-      positionData[7] = positionDataErrorCode;
-
-      remoteInput.sendMessage(positionData, 8);
+//      triangulationMinDistance = 200;
+//      objectPos3D.x = 10;
+//      objectPos3D.y = 100;
+//      objectPos3D.z = 50;
+//
+//      if (statusTracking1 == ERR || statusTracking2 == ERR) {
+//        positionDataErrorCode |= ERR_TRACKING_LOST;
+//      }
+//      if (triangulationMinDistance > DIST_ERR_CAT1) {
+//        positionDataErrorCode |= ERR_BIG_DISTANCE;
+//      }
+//
+//      positionData[1] = ((int) objectPos3D.x >> 8) & 0x000000FF;
+//      positionData[2] = (int) objectPos3D.x & 0x000000FF;
+//      positionData[3] = ((int) objectPos3D.y >> 8) & 0x000000FF;
+//      positionData[4] = (int) objectPos3D.y & 0x000000FF;
+//      positionData[5] = ((int) objectPos3D.z >> 8) & 0x000000FF;
+//      positionData[6] = (int) objectPos3D.z & 0x000000FF;
+//      positionData[7] = positionDataErrorCode;
+//
+//      remoteInput.sendMessage(positionData, 8);
 
       /*
        * Ausgabe und Abbruch
