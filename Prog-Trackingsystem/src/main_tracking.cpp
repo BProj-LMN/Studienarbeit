@@ -133,6 +133,9 @@ int main(int argc, const char** argv) {
     /*
      * main tracking routine
      */
+    cam1.get_newFrame(frame1);
+    cam2.get_newFrame(frame2);
+    // save frame for main loop
 
 #ifdef DEBUG
     namedWindow("tracking 1", WINDOW_NORMAL);
@@ -147,29 +150,30 @@ int main(int argc, const char** argv) {
     auto t1 = std::chrono::high_resolution_clock::now();
 
     for (int i = 0; i < 1000; i++) {
-      positionDataErrorCode = ERR_RESET;
+//      positionDataErrorCode = ERR_RESET;
 
       /*
        * evaluate remote input - remote control this software
        */
-      remoteInput.evaluate();
-      bool newMessage = remoteInput.get_message(message);
-
-      if (newMessage) {
-        // shut down, if requested
-        if (message.compare("exit")) {
-          break;
-        }
-      }
+//      remoteInput.evaluate();
+//      bool newMessage = remoteInput.get_message(message);
+//
+//      if (newMessage) {
+//        // shut down, if requested
+//        if (message.compare("exit")) {
+//          break;
+//        }
+//      }
 
       /*
        * get frame and track object
        */
-      cam1.get_newFrame(frame1);
-      cam2.get_newFrame(frame2);
+//      cam1.get_newFrame(frame1);
+//      cam2.get_newFrame(frame2);
+      // calculate with a frame, which was saved before the main loop
 
-      statusTracking1 = detect1.detectObject(frame1, pixelPos1);
-      statusTracking2 = detect2.detectObject(frame2, pixelPos2);
+//      statusTracking1 = detect1.detectObject(frame1, pixelPos1);
+//      statusTracking2 = detect2.detectObject(frame2, pixelPos2);
 
 #ifdef DEBUG
       if (statusTracking1 != ERR) {
@@ -194,10 +198,10 @@ int main(int argc, const char** argv) {
       /*
        * calculate 3D position - triangulate
        */
-      cam1.calcNewObjectRayVector(pixelPos1);
-      cam2.calcNewObjectRayVector(pixelPos2);
-
-      triangulate(cam1.positionVector, cam1.objectVector, cam2.positionVector, cam2.objectVector, objectPos3D, triangulationMinDistance);
+//      cam1.calcNewObjectRayVector(pixelPos1);
+//      cam2.calcNewObjectRayVector(pixelPos2);
+//
+//      triangulate(cam1.positionVector, cam1.objectVector, cam2.positionVector, cam2.objectVector, objectPos3D, triangulationMinDistance);
 
       /*
        * send position via UDP socket
@@ -207,31 +211,31 @@ int main(int argc, const char** argv) {
 //      objectPos3D.y = 100;
 //      objectPos3D.z = 50;
 //
-      if (statusTracking1 == ERR || statusTracking2 == ERR) {
-        positionDataErrorCode |= ERR_TRACKING_LOST;
-      }
-      if (triangulationMinDistance > DIST_ERR_CAT1) {
-        positionDataErrorCode |= ERR_BIG_DISTANCE;
-      }
-
-      positionData[1] = ((int) objectPos3D.x >> 8) & 0x000000FF;
-      positionData[2] = (int) objectPos3D.x & 0x000000FF;
-      positionData[3] = ((int) objectPos3D.y >> 8) & 0x000000FF;
-      positionData[4] = (int) objectPos3D.y & 0x000000FF;
-      positionData[5] = ((int) objectPos3D.z >> 8) & 0x000000FF;
-      positionData[6] = (int) objectPos3D.z & 0x000000FF;
-      positionData[7] = positionDataErrorCode;
-
-      remoteInput.sendMessage(positionData, 8);
+//      if (statusTracking1 == ERR || statusTracking2 == ERR) {
+//        positionDataErrorCode |= ERR_TRACKING_LOST;
+//      }
+//      if (triangulationMinDistance > DIST_ERR_CAT1) {
+//        positionDataErrorCode |= ERR_BIG_DISTANCE;
+//      }
+//
+//      positionData[1] = ((int) objectPos3D.x >> 8) & 0x000000FF;
+//      positionData[2] = (int) objectPos3D.x & 0x000000FF;
+//      positionData[3] = ((int) objectPos3D.y >> 8) & 0x000000FF;
+//      positionData[4] = (int) objectPos3D.y & 0x000000FF;
+//      positionData[5] = ((int) objectPos3D.z >> 8) & 0x000000FF;
+//      positionData[6] = (int) objectPos3D.z & 0x000000FF;
+//      positionData[7] = positionDataErrorCode;
+//
+//      remoteInput.sendMessage(positionData, 8);
 
       /*
        * Ausgabe und Abbruch
        */
-      std::cout << "x " << (int) objectPos3D.x << "\ty " << (int) objectPos3D.y << "\tz " << (int) objectPos3D.z;
-      std::cout << "\t\t" << "Abstand Triangulation: " << (int) triangulationMinDistance;
-      std::cout << "\t\t" << "Fehlercode: ";
-      printf("0x%2x", positionDataErrorCode);
-      std::cout << "\n" << std::flush;
+//      std::cout << "x " << (int) objectPos3D.x << "\ty " << (int) objectPos3D.y << "\tz " << (int) objectPos3D.z;
+//      std::cout << "\t\t" << "Abstand Triangulation: " << (int) triangulationMinDistance;
+//      std::cout << "\t\t" << "Fehlercode: ";
+//      printf("0x%2x", positionDataErrorCode);
+//      std::cout << "\n" << std::flush;
 
 //      if (waitKey(1) >= 0) {
 //        break;
