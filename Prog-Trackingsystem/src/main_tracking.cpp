@@ -172,8 +172,8 @@ int main(int argc, const char** argv) {
 //      cam2.get_newFrame(frame2);
       // calculate with a frame, which was saved before the main loop
 
-//      statusTracking1 = detect1.detectObject(frame1, pixelPos1);
-//      statusTracking2 = detect2.detectObject(frame2, pixelPos2);
+      statusTracking1 = detect1.detectObject(frame1, pixelPos1);
+      statusTracking2 = detect2.detectObject(frame2, pixelPos2);
 
 #ifdef DEBUG
       if (statusTracking1 != ERR) {
