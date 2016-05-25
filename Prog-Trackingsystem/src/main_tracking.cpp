@@ -121,6 +121,8 @@ int main(int argc, const char** argv) {
       if (waitKey(30) >= 0) {
         break;
       }
+
+      remoteInput.evaluate();
     }
     detect1.setReferenceFrame(frame1);
     detect2.setReferenceFrame(frame2);
@@ -144,8 +146,8 @@ int main(int argc, const char** argv) {
     /* TIME MEASUREMENT START */
     auto t1 = std::chrono::high_resolution_clock::now();
 
-    for (int i = 0; i < 1000; i++) {
-//      positionDataErrorCode = ERR_RESET;
+    for (int i = 0; i < 5000; i++) {
+      positionDataErrorCode = ERR_RESET;
 
       /*
        * evaluate remote input - remote control this software
@@ -163,11 +165,11 @@ int main(int argc, const char** argv) {
       /*
        * get frame and track object
        */
-      cam1.get_newFrame(frame1);
-      cam2.get_newFrame(frame2);
+//      cam1.get_newFrame(frame1);
+//      cam2.get_newFrame(frame2);
 
-      statusTracking1 = detect1.detectObject(frame1, pixelPos1);
-      statusTracking2 = detect2.detectObject(frame2, pixelPos2);
+//      statusTracking1 = detect1.detectObject(frame1, pixelPos1);
+//      statusTracking2 = detect2.detectObject(frame2, pixelPos2);
 
 #ifdef DEBUG
       if (statusTracking1 != ERR) {
@@ -186,36 +188,41 @@ int main(int argc, const char** argv) {
       /*
        * undistort pixel position
        */
-      cam1.correctDistortion(pixelPos1, undistPos1); // TODO: it’s only a stub
-      cam2.correctDistortion(pixelPos2, undistPos2); // TODO: it’s only a stub
+//      cam1.correctDistortion(pixelPos1, undistPos1); // TODO: it’s only a stub
+//      cam2.correctDistortion(pixelPos2, undistPos2); // TODO: it’s only a stub
 
       /*
        * calculate 3D position - triangulate
        */
-      cam1.calcNewObjectRayVector(pixelPos1);
-      cam2.calcNewObjectRayVector(pixelPos2);
-
-      triangulate(cam1.positionVector, cam1.objectVector, cam2.positionVector, cam2.objectVector, objectPos3D, triangulationMinDistance);
+//      cam1.calcNewObjectRayVector(pixelPos1);
+//      cam2.calcNewObjectRayVector(pixelPos2);
+//
+//      triangulate(cam1.positionVector, cam1.objectVector, cam2.positionVector, cam2.objectVector, objectPos3D, triangulationMinDistance);
 
       /*
        * send position via UDP socket
        */
-//      if (statusTracking1 == ERR || statusTracking2 == ERR) {
-//        positionDataErrorCode |= ERR_TRACKING_LOST;
-//      }
-//      if (triangulationMinDistance > DIST_ERR_CAT1) {
-//        positionDataErrorCode |= ERR_BIG_DISTANCE;
-//      }
-//
-//      positionData[1] = ((int) objectPos3D.x >> 8) & 0x000000FF;
-//      positionData[2] = (int) objectPos3D.x & 0x000000FF;
-//      positionData[3] = ((int) objectPos3D.y >> 8) & 0x000000FF;
-//      positionData[4] = (int) objectPos3D.y & 0x000000FF;
-//      positionData[5] = ((int) objectPos3D.z >> 8) & 0x000000FF;
-//      positionData[6] = (int) objectPos3D.z & 0x000000FF;
-//      positionData[7] = positionDataErrorCode;
-//
-//      remoteInput.sendMessage(positionData, 8);
+      triangulationMinDistance = 200;
+      objectPos3D.x = 10;
+      objectPos3D.y = 100;
+      objectPos3D.z = 50;
+
+      if (statusTracking1 == ERR || statusTracking2 == ERR) {
+        positionDataErrorCode |= ERR_TRACKING_LOST;
+      }
+      if (triangulationMinDistance > DIST_ERR_CAT1) {
+        positionDataErrorCode |= ERR_BIG_DISTANCE;
+      }
+
+      positionData[1] = ((int) objectPos3D.x >> 8) & 0x000000FF;
+      positionData[2] = (int) objectPos3D.x & 0x000000FF;
+      positionData[3] = ((int) objectPos3D.y >> 8) & 0x000000FF;
+      positionData[4] = (int) objectPos3D.y & 0x000000FF;
+      positionData[5] = ((int) objectPos3D.z >> 8) & 0x000000FF;
+      positionData[6] = (int) objectPos3D.z & 0x000000FF;
+      positionData[7] = positionDataErrorCode;
+
+      remoteInput.sendMessage(positionData, 8);
 
       /*
        * Ausgabe und Abbruch
