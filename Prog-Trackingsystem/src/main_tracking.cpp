@@ -166,8 +166,8 @@ int main(int argc, const char** argv) {
       cam1.get_newFrame(frame1);
       cam2.get_newFrame(frame2);
 
-//      statusTracking1 = detect1.detectObject(frame1, pixelPos1);
-//      statusTracking2 = detect2.detectObject(frame2, pixelPos2);
+      statusTracking1 = detect1.detectObject(frame1, pixelPos1);
+      statusTracking2 = detect2.detectObject(frame2, pixelPos2);
 
 #ifdef DEBUG
       if (statusTracking1 != ERR) {
