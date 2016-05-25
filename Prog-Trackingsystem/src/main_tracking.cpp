@@ -186,16 +186,16 @@ int main(int argc, const char** argv) {
       /*
        * undistort pixel position
        */
-//      cam1.correctDistortion(pixelPos1, undistPos1); // TODO: it’s only a stub
-//      cam2.correctDistortion(pixelPos2, undistPos2); // TODO: it’s only a stub
+      cam1.correctDistortion(pixelPos1, undistPos1); // TODO: it’s only a stub
+      cam2.correctDistortion(pixelPos2, undistPos2); // TODO: it’s only a stub
 
       /*
        * calculate 3D position - triangulate
        */
-//      cam1.calcNewObjectRayVector(pixelPos1);
-//      cam2.calcNewObjectRayVector(pixelPos2);
-//
-//      triangulate(cam1.positionVector, cam1.objectVector, cam2.positionVector, cam2.objectVector, objectPos3D, triangulationMinDistance);
+      cam1.calcNewObjectRayVector(pixelPos1);
+      cam2.calcNewObjectRayVector(pixelPos2);
+
+      triangulate(cam1.positionVector, cam1.objectVector, cam2.positionVector, cam2.objectVector, objectPos3D, triangulationMinDistance);
 
       /*
        * send position via UDP socket
