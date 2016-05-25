@@ -15,10 +15,11 @@
 #define ERR_BIG_DISTANCE  0x02
 #define DIST_ERR_CAT1     100
 
-#define DEBUG // show tracking image
+//#define DEBUG // show tracking image
 
 #include <iostream>
 #include <iomanip>
+#include <chrono>
 
 #include "Socket.h"
 
@@ -135,12 +136,15 @@ int main(int argc, const char** argv) {
     namedWindow("tracking 1", WINDOW_NORMAL);
     namedWindow("tracking 2", WINDOW_NORMAL);
 #else
-    Mat destroyimg = imread("test/destroybild.jpg", 1);   // Read the file
-    namedWindow("zum Beenden: press ESC", WINDOW_AUTOSIZE);
-    imshow("zum Beenden: press ESC", destroyimg);
+//    Mat destroyimg = imread("test/destroybild.jpg", 1);   // Read the file
+//    namedWindow("zum Beenden: press ESC", WINDOW_AUTOSIZE);
+//    imshow("zum Beenden: press ESC", destroyimg);
 #endif
 
-    while (1) {
+    /* TIME MEASUREMENT START */
+    auto t1 = std::chrono::high_resolution_clock::now();
+
+    for (int i = 0; i < 1000; i++) {
       positionDataErrorCode = ERR_RESET;
 
       /*
@@ -182,8 +186,8 @@ int main(int argc, const char** argv) {
       /*
        * undistort pixel position
        */
-      cam1.correctDistortion(pixelPos1,undistPos1); // TODO: it’s only a stub
-      cam2.correctDistortion(pixelPos2,undistPos2); // TODO: it’s only a stub
+      cam1.correctDistortion(pixelPos1, undistPos1); // TODO: it’s only a stub
+      cam2.correctDistortion(pixelPos2, undistPos2); // TODO: it’s only a stub
 
       /*
        * calculate 3D position - triangulate
@@ -222,11 +226,19 @@ int main(int argc, const char** argv) {
       printf("0x%2x", positionDataErrorCode);
       std::cout << "\n" << std::flush;
 
-      if (waitKey(1) >= 0) {
-        break;
-      }
+//      if (waitKey(1) >= 0) {
+//        break;
+//      }
 
     }
+
+    /* TIME MEASUREMENT END */
+    auto t2 = std::chrono::high_resolution_clock::now();
+
+    // fractional duration: no duration_cast needed
+    std::chrono::duration<double, std::milli> fp_ms = t2 - t1;
+
+    std::cout << "duration: " << fp_ms.count() << " ms\n";
 
     /*
      * tidy everything up

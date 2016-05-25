@@ -3,7 +3,7 @@
 <timestamp>1452164160</timestamp>
 <datetime>"01/07/16 11:56:00"</datetime>
 <frameMaskRect>
-  209 143 895 705</frameMaskRect>
+  0 0 0 0</frameMaskRect>
 <cameraMatrix type_id="opencv-matrix">
   <rows>3</rows>
   <cols>3</cols>
