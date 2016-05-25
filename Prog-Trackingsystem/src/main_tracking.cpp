@@ -231,11 +231,11 @@ int main(int argc, const char** argv) {
       /*
        * Ausgabe und Abbruch
        */
-//      std::cout << "x " << (int) objectPos3D.x << "\ty " << (int) objectPos3D.y << "\tz " << (int) objectPos3D.z;
-//      std::cout << "\t\t" << "Abstand Triangulation: " << (int) triangulationMinDistance;
-//      std::cout << "\t\t" << "Fehlercode: ";
-//      printf("0x%2x", positionDataErrorCode);
-//      std::cout << "\n" << std::flush;
+      std::cout << "x " << (int) objectPos3D.x << "\ty " << (int) objectPos3D.y << "\tz " << (int) objectPos3D.z;
+      std::cout << "\t\t" << "Abstand Triangulation: " << (int) triangulationMinDistance;
+      std::cout << "\t\t" << "Fehlercode: ";
+      printf("0x%2x", positionDataErrorCode);
+      std::cout << "\n" << std::flush;
 
 //      if (waitKey(1) >= 0) {
 //        break;
