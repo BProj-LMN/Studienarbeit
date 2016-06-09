@@ -22,8 +22,8 @@ using namespace cv;
 #include "myGlobalConstants.h"
 
 void gleichungRechnenEinzeln(Camera* cam, Mat Pixelmatrix, Mat PunktematrixXYZ) {
-  vector<Point3f> Weltvektor;
-  vector<Point2f> Pixelvektor;
+  std::vector<Point3f> Weltvektor;
+  std::vector<Point2f> Pixelvektor;
 
   Weltvektor.resize(PUNKTE);
   Pixelvektor.resize(PUNKTE);
@@ -34,25 +34,25 @@ void gleichungRechnenEinzeln(Camera* cam, Mat Pixelmatrix, Mat PunktematrixXYZ) 
     Pixelvektor[i] = cv::Point2f(Pixelmatrix.at<int>(i, 0), Pixelmatrix.at<int>(i, 1));
   }
 
-  cout << "\n gleichungRechnenEinzeln" << endl;
-  cout << "Weltvektor" << endl << Weltvektor << endl;
-  cout << "Pixelvektor" << endl << Pixelvektor << endl;
+  std::cout << "\n gleichungRechnenEinzeln\n";
+  std::cout << "Weltvektor" << "\n" << Weltvektor << "\n";
+  std::cout << "Pixelvektor" << "\n" << Pixelvektor << "\n";
 
   solvePnP(Weltvektor, Pixelvektor, cam->cameraMatrix, cam->distCoeffs, cam->rvecs, cam->tvecs, false,
            SOLVEPNP_ITERATIVE);
 
-  cout << "tvec" << endl << cam->tvecs << endl;
-  cout << "rvec" << endl << cam->rvecs << endl;
+  std::cout << "tvec" << "\n" << cam->tvecs << "\n";
+  std::cout << "rvec" << "\n" << cam->rvecs << "\n" << std::flush;
 }
 
 int speichern(int KamNr, Mat Pixelmatrix, Mat& PunktematrixXYZ) {
-  stringstream pfad;
+  std::stringstream pfad;
   pfad << MY_FILENAME << KamNr << ".xml";
-  string settingsFilename = pfad.str();
+  std::string settingsFilename = pfad.str();
 
   FileStorage fs(settingsFilename, FileStorage::WRITE); // Read the settings
   if (!fs.isOpened()) {
-    cout << "Could not open the configuration file: \"" << settingsFilename << "\"" << endl;
+    std::cout << "Could not open the configuration file: \"" << settingsFilename << "\"" << std::endl;
     return -1;
   }
 
@@ -69,21 +69,21 @@ int speichern(int KamNr, Mat Pixelmatrix, Mat& PunktematrixXYZ) {
 
   fs.release();                                    // close Settings file
 
-  cout << PunktematrixXYZ << endl;
-  cout << Pixelmatrix << endl;
+  std::cout << PunktematrixXYZ << "\n";
+  std::cout << Pixelmatrix << "\n" << std::flush;
 
   return 1;
 }
 
 int lesen(Camera* cam, Mat Pixelmatrix, Mat& PunktematrixXYZ) {
   int KamNr = cam->get_cameraID();
-  stringstream pfad;
+  std::stringstream pfad;
   pfad << MY_FILENAME << KamNr << ".xml";
-  string settingsFilename = pfad.str();
+  std::string settingsFilename = pfad.str();
 
   FileStorage fs(settingsFilename, FileStorage::READ); // Read the settings
   if (!fs.isOpened()) {
-    cout << "Could not open the configuration file: \"" << settingsFilename << "\"" << endl;
+    std::cout << "Could not open the configuration file: \"" << settingsFilename << "\"" << std::endl;
     return -1;
   }
 

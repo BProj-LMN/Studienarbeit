@@ -7,6 +7,15 @@
 
 #include "calibrateCamera_Settings.h"
 
+#include <opencv2/imgproc/imgproc.hpp>
+#include <opencv2/calib3d/calib3d.hpp>
+#include <opencv2/highgui/highgui.hpp>
+
+#include <iostream>
+#include <sstream>
+#include <time.h>
+#include <stdio.h>
+
 void DistCalibSettings::read(const FileNode& node) {     //Read serialization for this class
   node["BoardSize_Width"] >> boardSize.width;
   node["BoardSize_Height"] >> boardSize.height;
@@ -28,15 +37,15 @@ void DistCalibSettings::read(const FileNode& node) {     //Read serialization fo
 void DistCalibSettings::interprate() {
   goodInput = true;
   if (boardSize.width <= 0 || boardSize.height <= 0) {
-    cerr << "Invalid Board size: " << boardSize.width << " " << boardSize.height << endl;
+    std::cerr << "Invalid Board size: " << boardSize.width << " " << boardSize.height << std::endl;
     goodInput = false;
   }
   if (squareSize <= 10e-6) {
-    cerr << "Invalid square size " << squareSize << endl;
+    std::cerr << "Invalid square size " << squareSize << std::endl;
     goodInput = false;
   }
   if (nrFrames <= 0) {
-    cerr << "Invalid number of frames " << nrFrames << endl;
+    std::cerr << "Invalid number of frames " << nrFrames << std::endl;
     goodInput = false;
   }
 
@@ -59,7 +68,7 @@ void DistCalibSettings::interprate() {
     calibrationPattern = ASYMMETRIC_CIRCLES_GRID;
   }
   if (calibrationPattern == NOT_EXISTING) {
-    cerr << " Inexistent camera calibration mode: " << patternToUse << endl;
+    std::cerr << " Inexistent camera calibration mode: " << patternToUse << std::endl;
     goodInput = false;
   }
 

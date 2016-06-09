@@ -33,35 +33,27 @@ enum {
   DETECTION = 0, CAPTURING = 1, CALIBRATED = 2
 };
 
-int executeDistCalib(string settingsFile, Camera* cam);
+int executeDistCalib(std::string settingsFile, Camera* cam);
 
-int calibrateCameras(Camera* cam1, Camera* cam2) {
-  cout << "\n\nHello, this is the distortion correction subroutine" << endl;
+int calibrateCamera(Camera* cam) {
+  std::cout << "\n\nHello, this is the distortion correction subroutine\n";
+  std::cout << "press g to start, press u to toggle original and corrected image" << std::endl;
   int returnValue = ERR;
 
-  cout << "calibrate Camera 2 please" << endl;
-  returnValue = executeDistCalib("calibrateCamera.xml", cam2);
+  returnValue = executeDistCalib("calibrateCamera.xml", cam);
   if (ERR == returnValue) {
     return ERR;
   }
-  cam2->intrinsicParamsLoaded = 1;
-
-
-  cout << "\n\n" << "calibrate Camera 1 please" << endl;
-  returnValue = executeDistCalib("calibrateCamera.xml", cam1);
-  if (ERR == returnValue) {
-    return ERR;
-  }
-  cam1->intrinsicParamsLoaded = 1;
+  cam->intrinsicParamsLoaded = 1;
 
   return OK;
 }
 
-int executeDistCalib(string settingsFile, Camera* cam) {
+int executeDistCalib(std::string settingsFile, Camera* cam) {
   DistCalibSettings s;
   FileStorage fs(settingsFile, FileStorage::READ); // Read the settings
   if (!fs.isOpened()) {
-    cout << "Could not open the configuration file: \"" << settingsFile << "\"" << endl;
+    std::cout << "Could not open the configuration file: \"" << settingsFile << "\"" << std::endl;
     return -1;
   }
   // hard code some settings
@@ -72,11 +64,11 @@ int executeDistCalib(string settingsFile, Camera* cam) {
   fs.release();                                         // close Settings file
 
   if (!s.goodInput) {
-    cout << "Invalid input detected. Application stopping. " << endl;
+    std::cout << "Invalid input detected. Application stopping. " << std::endl;
     return ERR;
   }
 
-  vector<vector<Point2f> > imagePoints;
+  std::vector<std::vector<Point2f> > imagePoints;
   Mat* cameraMatrix = &cam->cameraMatrix;
   Mat* distCoeffs = &cam->distCoeffs;
 
@@ -109,7 +101,7 @@ int executeDistCalib(string settingsFile, Camera* cam) {
       flip(view, view, 0);
     }
 
-    vector<Point2f> pointBuf;
+    std::vector<Point2f> pointBuf;
 
     bool found;
     switch (s.calibrationPattern) { // Find feature points on the input format
@@ -133,8 +125,7 @@ int executeDistCalib(string settingsFile, Camera* cam) {
       if (s.calibrationPattern == DistCalibSettings::CHESSBOARD) {
         Mat viewGray;
         cvtColor(view, viewGray, COLOR_BGR2GRAY);
-        cornerSubPix(viewGray, pointBuf, Size(11, 11), Size(-1, -1),
-                     TermCriteria( CV_TERMCRIT_EPS + CV_TERMCRIT_ITER, 30, 0.1));
+        cornerSubPix(viewGray, pointBuf, Size(11, 11), Size(-1, -1), TermCriteria( CV_TERMCRIT_EPS + CV_TERMCRIT_ITER, 30, 0.1));
       }
 
       if (mode == CAPTURING &&  // For camera only take new samples after delay time
@@ -149,7 +140,7 @@ int executeDistCalib(string settingsFile, Camera* cam) {
     }
 
     //----------------------------- Output Text ------------------------------------------------
-    string msg = (mode == CAPTURING) ? "100/100" : mode == CALIBRATED ? "Calibrated, press 'esc' for next" : "Press 'g' to start";
+    std::string msg = (mode == CAPTURING) ? "100/100" : mode == CALIBRATED ? "Calibrated, press 'esc' to exit" : "Press 'g' to start";
     int baseLine = 0;
     Size textSize = getTextSize(msg, 1, 1, 1, &baseLine);
     Point textOrigin(view.cols - 2 * textSize.width - 10, view.rows - 2 * baseLine - 10);

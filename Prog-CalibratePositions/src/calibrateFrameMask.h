@@ -24,7 +24,7 @@ void calibrateFrameMask(Camera* cam) {
   VideoCapture cap = cam->get_capture();
   namedWindow("frameMask calibration", 1);
   for (int i = 0; i < 4; i++) { //für die Eingabe der Pixel aus dem Bild per Klicken
-    cout << "Bitte Punkt " << i + 1 << " im Bild anklicken (1: links, 2: rechts, 3: oben, 4: unten)" << endl;
+    std::cout << "Bitte Punkt " << i + 1 << " im Bild anklicken (1: links, 2: rechts, 3: oben, 4: unten)" << std::endl;
     MauscallbackBekommen = 0;
     setMouseCallback("frameMask calibration", frameMaskMouseCallback, NULL);
     while (0 == MauscallbackBekommen) {
@@ -42,10 +42,10 @@ void calibrateFrameMask(Camera* cam) {
                         (Pixelgesammelt.at<int>(1, 0) - Pixelgesammelt.at<int>(0, 0)),
                         (Pixelgesammelt.at<int>(3, 1) - Pixelgesammelt.at<int>(2, 1)));
 
-  cout << "your frameMask is: " << frameMask << endl;
+  std::cout << "your frameMask is: " << frameMask << std::endl;
   cam->set_frameMask(frameMask);
 
   destroyWindow("frameMask calibration");
 
-  cout << "frameMask for Camera " << cam->get_cameraID() << " set" << endl;
+  std::cout << "frameMask for Camera " << cam->get_cameraID() << " set" << std::endl;
 }

@@ -38,7 +38,7 @@ bool MauscallbackBekommen = 0;
 
 void myMouseCallBackFunc(int event, int x, int y, int flags, void* userdata) {
   if (event == EVENT_LBUTTONDOWN) {
-    cout << "Left button of the mouse is clicked - position (" << x << ", " << y << ")" << endl;
+    std::cout << "Left button of the mouse is clicked - position (" << x << ", " << y << ")" << std::endl;
     MauscallbackBekommen = 1;
     PixelX = x;
     PixelY = y;
@@ -51,7 +51,7 @@ void calibrate3Deinzeln(Camera* cam, Mat Pixelmatrix, Mat& PunktematrixXYZ) {
   VideoCapture cap = cam->get_capture();
   namedWindow("Kallibild", 1);
   for (int i = 0; i < PUNKTE; i++) { //für die Eingabe der Kalibrierpixel aus dem Bild per Klicken
-    cout << "Bitte Punkt " << i + 1 << " im Bild anklicken" << endl;
+    std::cout << "Bitte Punkt " << i + 1 << " im Bild anklicken" << std::endl;
     MauscallbackBekommen = 0;
     setMouseCallback("Kallibild", myMouseCallBackFunc, NULL);
     while (0 == MauscallbackBekommen) {
@@ -65,7 +65,7 @@ void calibrate3Deinzeln(Camera* cam, Mat Pixelmatrix, Mat& PunktematrixXYZ) {
     Pixelmatrix.at<int>(i, 1) = PixelY;
   }
   speichern(KamNr, Pixelmatrix, PunktematrixXYZ);
-  cout << "Kamera" << KamNr << "done" << endl;
+  std::cout << "Kamera" << KamNr << "done" << std::endl;
   destroyWindow("Kallibild");
 }
 
@@ -76,17 +76,17 @@ void calibrate3D(Camera* cam1, Camera* cam2) {
     Mat Pixelmatrix1 = Mat::zeros(PUNKTE, 2, CV_32S); //rows, cols, type - 4 für unsigned int 32 bit (CV_32S)
     Mat Pixelmatrix2 = Mat::zeros(PUNKTE, 2, CV_32S); //rows, cols, type - 4 für unsigned int 32 bit (CV_32S)
 
-    cout << "Wollen Sie neue Kalibrierungspunkte eingeben oder abgespeicherte verwendnen? (n - neu; g - gespeichert)"
-         << endl;
-    cin >> Antwortvariable;
+    std::cout << "Wollen Sie neue Kalibrierungspunkte eingeben oder abgespeicherte verwendnen? (n - neu; g - gespeichert)"
+         << std::endl;
+    std::cin >> Antwortvariable;
     if ('g' == Antwortvariable) { //gespeicherte Werte verwenden
       lesen(cam1, Pixelmatrix1, PunktematrixXYZ);
       lesen(cam2, Pixelmatrix2, PunktematrixXYZ);
-      cout << "PunktematrixXYZ: " << endl << PunktematrixXYZ << endl;
-      cout << "Pixelmatrix1: " << endl << Pixelmatrix1 << endl;
-      cout << "Pixelmatrix2: " << endl << Pixelmatrix2 << endl;
-      cout << "Wollen Sie auch Weltkoordinaten einlesen oder neue eintippen? (n - neu; g - gespeichert)" << endl;
-      cin >> Antwortvariable;
+      std::cout << "PunktematrixXYZ: " << "\n" << PunktematrixXYZ << "\n";
+      std::cout << "Pixelmatrix1: " << "\n" << Pixelmatrix1 << "\n";
+      std::cout << "Pixelmatrix2: " << "\n" << Pixelmatrix2 << "\n";
+      std::cout << "Wollen Sie auch Weltkoordinaten einlesen oder neue eintippen? (n - neu; g - gespeichert)\n" << std::flush;
+      std::cin >> Antwortvariable;
       if ('n' == Antwortvariable) {
         calibrate3Deinzeln(cam1, Pixelmatrix1, PunktematrixXYZ);
         calibrate3Deinzeln(cam2, Pixelmatrix2, PunktematrixXYZ);
@@ -94,29 +94,29 @@ void calibrate3D(Camera* cam1, Camera* cam2) {
     } else {
 
       for (int i = 0; i < PUNKTE; i++) { //für die Eingabe der Kalibrierpunkte
-        cout << "Punkt " << i + 1 << "; Koordinate X: " << endl;
-        cin >> PunktematrixXYZ.at<int>(i, 0);
-        cout << "Punkt " << i + 1 << "; Koordinate Y: " << endl;
-        cin >> PunktematrixXYZ.at<int>(i, 1);
-        cout << "Punkt " << i + 1 << "; Koordinate Z: " << endl;
-        cin >> PunktematrixXYZ.at<int>(i, 2);
+        std::cout << "Punkt " << i + 1 << "; Koordinate X: \n" << std::flush;
+        std::cin >> PunktematrixXYZ.at<int>(i, 0);
+        std::cout << "Punkt " << i + 1 << "; Koordinate Y: \n" << std::flush;
+        std::cin >> PunktematrixXYZ.at<int>(i, 1);
+        std::cout << "Punkt " << i + 1 << "; Koordinate Z: \n" << std::flush;
+        std::cin >> PunktematrixXYZ.at<int>(i, 2);
       }
 
       for (int i = 0; i < PUNKTE; i++) { //für die Ausgabe/Bestaetigung der Eingabe
-        cout << "Punkt " << i + 1 << "; Koordinate X = " << PunktematrixXYZ.at<int>(i, 0) << endl;
-        cout << "Punkt " << i + 1 << "; Koordinate Y = " << PunktematrixXYZ.at<int>(i, 1) << endl;
-        cout << "Punkt " << i + 1 << "; Koordinate Z = " << PunktematrixXYZ.at<int>(i, 2) << endl;
+        std::cout << "Punkt " << i + 1 << "; Koordinate X = " << PunktematrixXYZ.at<int>(i, 0) << "\n";
+        std::cout << "Punkt " << i + 1 << "; Koordinate Y = " << PunktematrixXYZ.at<int>(i, 1) << "\n";
+        std::cout << "Punkt " << i + 1 << "; Koordinate Z = " << PunktematrixXYZ.at<int>(i, 2) << "\n" << std::flush;
       }
       calibrate3Deinzeln(cam1, Pixelmatrix1, PunktematrixXYZ);
       calibrate3Deinzeln(cam2, Pixelmatrix2, PunktematrixXYZ);
     }
     gleichungRechnenEinzeln(cam1, Pixelmatrix1, PunktematrixXYZ);
     gleichungRechnenEinzeln(cam2, Pixelmatrix2, PunktematrixXYZ);
-    cout << "Kalibrierung beendet" << endl;
+    std::cout << "Kalibrierung beendet" << std::endl;
   } else {
-    cout
+    std::cout
         << "Kalibrierung konnte nicht abgeschlossen werden \nBitte erst Funktion \"calibrateCamera\" oder \"loadConfig\" aufrufen"
-        << endl;
+        << std::endl;
   }
 }
 

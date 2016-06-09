@@ -8,16 +8,8 @@
 #ifndef SRC_CALIBRATECAMERA_SETTINGS_H_
 #define SRC_CALIBRATECAMERA_SETTINGS_H_
 
-#include <iostream>
-#include <sstream>
-#include <time.h>
-#include <stdio.h>
-using namespace std;
-
-#include <opencv2/core/core.hpp>
-#include <opencv2/imgproc/imgproc.hpp>
-#include <opencv2/calib3d/calib3d.hpp>
-#include <opencv2/highgui/highgui.hpp>
+#include <opencv2/core.hpp>
+#include <opencv2/videoio.hpp>
 using namespace cv;
 
 class DistCalibSettings {
@@ -49,9 +41,9 @@ public:
   bool calibZeroTangentDist;    // Assume zero tangential distortion
   bool calibFixPrincipalPoint;  // Fix the principal point at the center
   bool flipVertical;            // Flip the captured images around the horizontal axis
-  string outputFileName;        // The name of the file where to write
+  std::string outputFileName;   // The name of the file where to write
   bool showUndistorsed;         // Show undistorted images after calibration
-  string input;                 // The input ->
+  std::string input;            // The input ->
 
   VideoCapture inputCapture;
   InputType inputType;
@@ -59,7 +51,7 @@ public:
   int flag;
 
 private:
-  string patternToUse;
+  std::string patternToUse;
 
 };
 

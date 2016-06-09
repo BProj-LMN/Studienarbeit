@@ -239,7 +239,7 @@ int Camera::calcNewObjectRayVector(Point2f pixelPosition) {
   /*
    * calculates objectRay for use in triangulation out of a sensor pixelPosition
    *
-   * pixelPosition is float instead of int, because there are subpixel values after undistort
+   * pixelPosition is float instead if int, because there are subpixel values after undistort
    */
 
   // calculate object ray in world coordinates from pixel position

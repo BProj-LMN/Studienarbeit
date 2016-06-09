@@ -12,12 +12,9 @@
 //#define SHOW_THESHOLD // for debugging the object detection
 
 #include <opencv2/core.hpp>
-#include <opencv2/highgui.hpp>
-#include <opencv2/imgproc.hpp>
 using namespace cv;
 
 #include "Camera.h"
-#include "myGlobalConstants.h"
 
 class ObjectDetection {
   Camera* cam;
