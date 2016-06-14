@@ -1,5 +1,5 @@
 /*
- * camera.h
+ * Camera.h
  *
  * function: store all information of one camera
  *           save/read all parameters to/from file

@@ -1,5 +1,5 @@
 /*
- * Socket.h
+ * UdpSocketServer.h
  *
  * function: create an UDP server for remote connection and control
  *
@@ -28,7 +28,7 @@
 #define MYOK     0
 #define MYERROR -1
 
-class Socket {
+class UdpSocketServer {
   long rc;
 
 #ifndef _WIN32
@@ -52,8 +52,8 @@ class Socket {
   bool clientConnected;
 
 public:
-  Socket(int port);
-  virtual ~Socket();
+  UdpSocketServer(int port);
+  virtual ~UdpSocketServer();
 
   void evaluate();
   bool is_clientConnected();

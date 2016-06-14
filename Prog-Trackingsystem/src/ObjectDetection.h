@@ -1,7 +1,7 @@
 /*
- * objectDetection.h
+ * ObjectDetection.h
  *
- * function: detect object in an image
+ * function: Interface for different object detection implementations
  *
  * author: Jannik Beyerstedt
  */
@@ -9,25 +9,11 @@
 #ifndef SRC_OBJECTDETECTION_H_
 #define SRC_OBJECTDETECTION_H_
 
-//#define SHOW_THESHOLD // for debugging the object detection
-
-#include <opencv2/core.hpp>
-
-#include "Camera.h"
-
 class ObjectDetection {
-  Camera* cam;
-  cv::Mat refereceFrame;
-
+  cv::Mat referenceFrame;
 public:
-  ObjectDetection(Camera* cam);
-  virtual ~ObjectDetection();
-
-  int setReferenceFrame(cv::Mat frame);
-  int detectObject(cv::Mat frame, cv::Point2i& pixelPosition);
-
-private:
-  int getObjectPosition(cv::Mat thresImg, cv::Point2i& objectPos, cv::Rect* boundingRect);
+  virtual PxPosList detect(cv::Mat frame);
+  virtual void setReferenceFrame(cv::Mat frame);
 };
 
 #endif /* SRC_OBJECTDETECTION_H_ */

@@ -1,8 +1,9 @@
 /*
  * DataFormats.h
  *
- *  Created on: 14.06.2016
- *      Author: jannik
+ * function: unify interfaces by a central definition of data exchange formats
+ *
+ * author: Jannik Beyerstedt
  */
 
 #ifndef SRC_DATAFORMATS_H_

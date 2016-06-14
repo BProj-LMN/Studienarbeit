@@ -1,12 +1,12 @@
 /*
- * objectDetection.cpp
+ * ObjDetSimple.cpp
  *
  * function: detect object in an image
  *
  * author: Jannik Beyerstedt
  */
 
-#include "ObjectDetection.h"
+#include "ObjDetSimple.h"
 
 #include <opencv2/highgui.hpp>
 #include <opencv2/imgproc.hpp>
@@ -16,16 +16,16 @@
 const static int SENSITIVITY_VALUE = 35;  // threshold for threshold()
 const static int BLUR_SIZE = 10;  // for absdiff()
 
-ObjectDetection::ObjectDetection(Camera* cam) {
+ObjDetSimple::ObjDetSimple(Camera* cam) {
   this->cam = cam;
 
 }
 
-ObjectDetection::~ObjectDetection() {
+ObjDetSimple::~ObjDetSimple() {
 
 }
 
-int ObjectDetection::setReferenceFrame(cv::Mat frame) {
+int ObjDetSimple::setReferenceFrame(cv::Mat frame) {
   this->refereceFrame = frame;
 
   return OK;
@@ -34,7 +34,7 @@ int ObjectDetection::setReferenceFrame(cv::Mat frame) {
  * input:  grayscale frame
  * output: Point2i with detected position
  */
-int ObjectDetection::detectObject(cv::Mat frame, cv::Point2i& pixelPosition) {
+int ObjDetSimple::detectObject(cv::Mat frame, cv::Point2i& pixelPosition) {
   cv::Mat diffImage, thresholdImage;
   cv::Rect objectBounding = cv::Rect(0, 0, 0, 0);
 
@@ -70,7 +70,7 @@ int ObjectDetection::detectObject(cv::Mat frame, cv::Point2i& pixelPosition) {
 
 }
 
-int ObjectDetection::getObjectPosition(cv::Mat thresImg, cv::Point2i& objectPos, cv::Rect* boundingRectange) {
+int ObjDetSimple::getObjectPosition(cv::Mat thresImg, cv::Point2i& objectPos, cv::Rect* boundingRectange) {
 
   std::vector<std::vector<cv::Point> > contours;
   std::vector<cv::Vec4i> hierarchy;

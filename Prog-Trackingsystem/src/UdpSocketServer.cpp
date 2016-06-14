@@ -1,14 +1,14 @@
 /*
- * Socket.cpp
+ * UdpSocketServer.cpp
  *
  * function: create an UDP server for remote connection and control
  *
  * author: Jannik Beyerstedt
  */
 
-#include "Socket.h"
+#include "UdpSocketServer.h"
 
-Socket::Socket(int port) {
+UdpSocketServer::UdpSocketServer(int port) {
   clientConnected = false;
   newClientMessage = false;
 
@@ -61,7 +61,7 @@ Socket::Socket(int port) {
 
 }
 
-Socket::~Socket() {
+UdpSocketServer::~UdpSocketServer() {
 #ifndef _WIN32
   close(udp_socket);
 #else
@@ -69,7 +69,7 @@ Socket::~Socket() {
 #endif
 }
 
-void Socket::evaluate() {
+void UdpSocketServer::evaluate() {
 #ifndef _WIN32
   rc = recvfrom(udp_socket, message, MESSAGE_LEN, MSG_DONTWAIT, (struct sockaddr *) &remote, &remoteLen);
 
@@ -118,11 +118,11 @@ void Socket::evaluate() {
 
 }
 
-bool Socket::is_clientConnected() {
+bool UdpSocketServer::is_clientConnected() {
   return clientConnected;
 }
 
-bool Socket::get_message(std::string & message) {
+bool UdpSocketServer::get_message(std::string & message) {
   message = this->message;
 
   if (newClientMessage) {
@@ -134,7 +134,7 @@ bool Socket::get_message(std::string & message) {
 
 }
 
-int Socket::sendMessage(char message[MESSAGE_LEN], unsigned int messageLen) {
+int UdpSocketServer::sendMessage(char message[MESSAGE_LEN], unsigned int messageLen) {
 #ifndef _WIN32
   if (clientConnected) {
     rc = sendto(udp_socket, message, messageLen, 0, (struct sockaddr *) &remote, remoteLen);

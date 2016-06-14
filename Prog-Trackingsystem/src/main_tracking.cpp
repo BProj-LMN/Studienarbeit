@@ -20,19 +20,19 @@
 #include <iomanip>
 
 #include "DataFormats.h"
+#include "myGlobalConstants.h"
 #include "Logger.h"
 
-/* soon not needed any more */
-#include "Socket.h"
+#include "ImageProcessingMngmt.h"
+#include "IntraSystemMessaging.h"
+#include "ClusterMngmt.h"
 
 #include <opencv2/core.hpp>
-#include <opencv2/videoio.hpp>
 #include <opencv2/highgui.hpp>
-#include <opencv2/imgproc.hpp>
 
-#include "Camera.h"
-#include "ObjectDetection.h"
-#include "myGlobalConstants.h"
+/* soon not needed any more */
+#include "UdpSocketServer.h"
+#include "ObjDetSimple.h"
 #include "triangulate.h"
 /* end not needed*/
 
@@ -43,7 +43,7 @@ void printHelp() {
 int main(int argc, const char** argv) {
   std::string options;
 
-  Socket remoteInput(1362);
+  UdpSocketServer remoteInput(1362);
   std::string message;
 
   char positionData[MESSAGE_LEN];
@@ -58,10 +58,10 @@ int main(int argc, const char** argv) {
   Camera cam2(1);
   cv::Mat frame2;
 
-  ObjectDetection detect1(&cam1);
+  ObjDetSimple detect1(&cam1);
   cv::Point2i pixelPos1(0, 0);
   cv::Point2f undistPos1(0.0, 0.0);
-  ObjectDetection detect2(&cam2);
+  ObjDetSimple detect2(&cam2);
   cv::Point2i pixelPos2(0, 0);
   cv::Point2f undistPos2(0.0, 0.0);
 
