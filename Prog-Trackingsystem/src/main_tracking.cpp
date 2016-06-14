@@ -7,31 +7,34 @@
  * authors: Jannik Beyerstedt, Daniel Friedrich
  */
 
-#define CAM1_FILENAME "../Progs-configStore/cameraStorage1.xml"
-#define CAM2_FILENAME "../Progs-configStore/cameraStorage2.xml"
+#define SETTINGS "../Progs-configStore/sysConfig.yml"
 
 #define ERR_RESET         0x00
 #define ERR_TRACKING_LOST 0x01
 #define ERR_BIG_DISTANCE  0x02
 #define DIST_ERR_CAT1     100
 
-#define DEBUG // show tracking image
+//#define DEBUG // show tracking image
 
 #include <iostream>
 #include <iomanip>
 
+#include "DataFormats.h"
+#include "Logger.h"
+
+/* soon not needed any more */
 #include "Socket.h"
 
 #include <opencv2/core.hpp>
 #include <opencv2/videoio.hpp>
 #include <opencv2/highgui.hpp>
 #include <opencv2/imgproc.hpp>
-using namespace cv;
 
 #include "Camera.h"
 #include "ObjectDetection.h"
 #include "myGlobalConstants.h"
 #include "triangulate.h"
+/* end not needed*/
 
 void printHelp() {
   std::cout << "\n" << "zugelassene Optionen: loadConfig, tracking, loadAndTrack, exit" << std::endl;
@@ -80,8 +83,8 @@ int main(int argc, const char** argv) {
     while (1) {
       if (0 == options.compare("loadConfig")) {
         std::cout << "--> do loadConfig subroutine" << std::endl;
-        cam1.readSettings(CAM1_FILENAME);
-        cam2.readSettings(CAM2_FILENAME);
+//        cam1.readSettings(CAM1_FILENAME);
+//        cam2.readSettings(CAM2_FILENAME);
 
       } else if (0 == options.compare("exit")) {
         std::cout << "--> terminating ... Auf Wiedersehen" << std::endl;
@@ -93,8 +96,8 @@ int main(int argc, const char** argv) {
 
       } else if (0 == options.compare("loadAndTrack")) {
         std::cout << "--> loading config and track" << std::endl;
-        cam1.readSettings(CAM1_FILENAME);
-        cam2.readSettings(CAM2_FILENAME);
+//        cam1.readSettings(CAM1_FILENAME);
+//        cam2.readSettings(CAM2_FILENAME);
         break;
 
       } else {
