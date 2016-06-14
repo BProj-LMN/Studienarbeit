@@ -9,9 +9,9 @@
 #define SRC_LOGGER_H_
 
 #include <iostream>
+#include <iomanip>
 #include <fstream>
-#include <ctime>
-#include <unistd.h>
+#include <chrono>
 
 /* for Logger Class */
 #define LOG_DEBUG \
@@ -43,7 +43,7 @@ typedef enum {
 
 class Logger {
   std::ofstream logfile;
-  time_t basetime;
+  std::chrono::high_resolution_clock::time_point time_start;
   log_t logLevel;
 
 public:
@@ -53,7 +53,9 @@ public:
   }
   Logger() {
     logfile.open("logfile.txt", std::ios::trunc);
-    basetime = time(NULL);
+    logfile << std::setprecision(3) << std::fixed;
+
+    time_start = std::chrono::high_resolution_clock::now();
     logLevel = ERROR;
   }
   ~Logger() {
@@ -67,13 +69,17 @@ public:
     return logLevel;
   }
   std::ofstream& log(log_t logType) {
-    std::time_t timediff = time(NULL) - basetime;
-    logfile << timediff << " [" << logType << "] ";
+    std::chrono::duration<double, std::milli> timediff_ms = std::chrono::high_resolution_clock::now() - time_start;
+    auto time = std::chrono::system_clock::now();
+
+    logfile << std::chrono::system_clock::to_time_t(time) << " (" << timediff_ms.count() << ") [" << logType << "] ";
     return logfile;
   }
   std::ofstream& log() {
-    std::time_t timediff = time(NULL) - basetime;
-    logfile << timediff << " ";
+    std::chrono::duration<double, std::milli> timediff_ms = std::chrono::high_resolution_clock::now() - time_start;
+    auto time = std::chrono::system_clock::now();
+
+    logfile << std::chrono::system_clock::to_time_t(time) << " (" << timediff_ms.count() << ") ";
     return logfile;
   }
 };
