@@ -12,23 +12,22 @@
 //#define SHOW_THESHOLD // for debugging the object detection
 
 #include <opencv2/core.hpp>
-using namespace cv;
 
 #include "Camera.h"
 
 class ObjectDetection {
   Camera* cam;
-  Mat refereceFrame;
+  cv::Mat refereceFrame;
 
 public:
   ObjectDetection(Camera* cam);
   virtual ~ObjectDetection();
-  
-  int setReferenceFrame(Mat frame);
-  int detectObject(Mat frame, Point2i& pixelPosition);
+
+  int setReferenceFrame(cv::Mat frame);
+  int detectObject(cv::Mat frame, cv::Point2i& pixelPosition);
 
 private:
-  int getObjectPosition(Mat thresImg, Point2i&  objectPos, Rect* boundingRect);
+  int getObjectPosition(cv::Mat thresImg, cv::Point2i& objectPos, cv::Rect* boundingRect);
 };
 
 #endif /* SRC_OBJECTDETECTION_H_ */

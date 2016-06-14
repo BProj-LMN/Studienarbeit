@@ -24,12 +24,12 @@ Camera::Camera(int cameraIndex) {
   frameMaskSet = 0;
 
 #ifndef TEST
-  capture = VideoCapture(cameraIndex);
+  capture = cv::VideoCapture(cameraIndex);
 #else
   if (0 == cameraIndex) {
-    capture = VideoCapture("test/frameCam1-01.png");
+    capture = cv::VideoCapture("test/frameCam1-01.png");
   } else if (1 == cameraIndex) {
-    capture = VideoCapture("test/frameCam2-01.png");
+    capture = cv::VideoCapture("test/frameCam2-01.png");
   }
 #endif
   if (!capture.isOpened()) {
@@ -47,7 +47,7 @@ Camera::Camera(int cameraIndex, std::string settingsFile) {
   intrinsicParamsLoaded = 0;
   frameMaskSet = 0;
 
-  capture = VideoCapture(cameraIndex);
+  capture = cv::VideoCapture(cameraIndex);
   if (!capture.isOpened()) {
     //return -1;
   }
@@ -60,7 +60,7 @@ Camera::~Camera() {
   std::cout << "[INFO]Camera::~Camera - released capture" << std::endl;
 }
 
-VideoCapture Camera::get_capture() {
+cv::VideoCapture Camera::get_capture() {
   return capture;
 }
 
@@ -68,7 +68,7 @@ int Camera::get_cameraID() {
   return cameraID;
 }
 
-int Camera::correctDistortion(Point2i src, Point2f dst) {
+int Camera::correctDistortion(cv::Point2i src, cv::Point2f dst) {
   // TODO Task: call undistortPoints()
   //undistortPoints(src, dst, *cameraMatrix, *distCoeffs);
 
@@ -82,7 +82,7 @@ int Camera::readSettings() {
 }
 
 int Camera::readSettings(std::string settingsFile) {
-  FileStorage fs(settingsFile, FileStorage::READ); // Read the settings
+  cv::FileStorage fs(settingsFile, cv::FileStorage::READ); // Read the settings
   if (!fs.isOpened()) {
     fprintf(stderr, "ERROR: Camera::readSettings - opening file \n");
     return ERR;
@@ -115,7 +115,7 @@ int Camera::saveSettings() {
 }
 
 int Camera::saveSettings(std::string settingsFile) {
-  FileStorage fs(settingsFile, FileStorage::WRITE); // Read the settings
+  cv::FileStorage fs(settingsFile, cv::FileStorage::WRITE); // Read the settings
   if (!fs.isOpened()) {
     fprintf(stderr, "ERROR: Camera::saveSettings - opening file \n");
     return ERR;
@@ -129,12 +129,11 @@ int Camera::saveSettings(std::string settingsFile) {
   strftime(buf, sizeof(buf) - 1, "%c", t2);
   fs << "datetime" << buf;
 
-  fs << "frameMaskRect" << frameMaskRect;
   fs << "cameraMatrix" << cameraMatrix;
   fs << "distCoeffs" << distCoeffs;
-  fs << "rvecs" << rvecs;
-  fs << "tvecs" << tvecs;
+  fs << "globalMask" << frameMaskRect;
   fs << "positionVector" << positionVector;
+  fs << "rotationMatrix" << rotationMatrix;
   fs << "viewingCenter" << viewingCenter;
   fs << "viewingRight" << viewingRight;
 
@@ -142,11 +141,11 @@ int Camera::saveSettings(std::string settingsFile) {
   return OK;
 }
 
-int Camera::set_frameMask(Rect frameMask) {
+int Camera::set_frameMask(cv::Rect frameMask) {
   if (frameMask.area() > 0) {
-    Mat frame;
+    cv::Mat frame;
     capture >> frame;
-    this->frameMask = Mat::zeros(frame.rows, frame.cols, CV_8U);
+    this->frameMask = cv::Mat::zeros(frame.rows, frame.cols, CV_8U);
     this->frameMask(frameMask) = 255;
 
     this->frameMaskRect = frameMask;
@@ -159,10 +158,10 @@ int Camera::set_frameMask(Rect frameMask) {
   return OK;
 }
 
-int Camera::get_newFrame(Mat& frame) {
+int Camera::get_newFrame(cv::Mat& frame) {
 #ifdef TEST
-  if (capture.get(CAP_PROP_POS_FRAMES) >= capture.get(CAP_PROP_FRAME_COUNT)) {
-    capture.set(CAP_PROP_POS_FRAMES, 0);
+  if (capture.get(cv::CAP_PROP_POS_FRAMES) >= capture.get(cv::CAP_PROP_FRAME_COUNT)) {
+    capture.set(cv::CAP_PROP_POS_FRAMES, 0);
   }
 #endif
 
@@ -181,10 +180,10 @@ int Camera::get_newFrame(Mat& frame) {
   return OK;
 }
 
-int Camera::get_rawFrame(Mat& frame) {
+int Camera::get_rawFrame(cv::Mat& frame) {
 #ifdef TEST
-  if (capture.get(CAP_PROP_POS_FRAMES) >= capture.get(CAP_PROP_FRAME_COUNT)) {
-    capture.set(CAP_PROP_POS_FRAMES, 0);
+  if (capture.get(cv::CAP_PROP_POS_FRAMES) >= capture.get(cv::CAP_PROP_FRAME_COUNT)) {
+    capture.set(cv::CAP_PROP_POS_FRAMES, 0);
   }
 #endif
 
@@ -200,14 +199,14 @@ int Camera::setupRotationMatrix() {
    */
 
   // some variables
-  Mat Xaxis = (Mat_<float>(3, 1) << 1, 0, 0);
-  Mat Yaxis = (Mat_<float>(3, 1) << 0, 1, 0);
-  Mat Euler1, Euler2, Euler3;
+  cv::Mat Xaxis = (cv::Mat_<float>(3, 1) << 1, 0, 0);
+  cv::Mat Yaxis = (cv::Mat_<float>(3, 1) << 0, 1, 0);
+  cv::Mat Euler1, Euler2, Euler3;
 
-  Point3f r = viewingCenter - positionVector;
-  Point3f s = viewingRight - positionVector;
-  Mat r_vec = (Mat_<float>(3, 1) << r.x, r.y, r.z);
-  Mat s_vec = (Mat_<float>(3, 1) << s.x, s.y, s.z);
+  cv::Point3i r = viewingCenter - positionVector;
+  cv::Point3i s = viewingRight - positionVector;
+  cv::Mat r_vec = (cv::Mat_<float>(3, 1) << r.x, r.y, r.z);
+  cv::Mat s_vec = (cv::Mat_<float>(3, 1) << s.x, s.y, s.z);
 
   // calculate euler angles
   float w1 = -atan2(r.y, r.x);
@@ -216,10 +215,10 @@ int Camera::setupRotationMatrix() {
   euler1(w1, Euler1);
   euler2(w2, Euler2);
 
-  Mat Xaxis_new = Euler2 * Euler1 * Xaxis;
-  Mat Yaxis_new = Euler2 * Euler1 * Yaxis;
-  Mat plane_reference = Xaxis_new.cross(Yaxis_new);
-  Mat plane_camera = s_vec.cross(r_vec);
+  cv::Mat Xaxis_new = Euler2 * Euler1 * Xaxis;
+  cv::Mat Yaxis_new = Euler2 * Euler1 * Yaxis;
+  cv::Mat plane_reference = Xaxis_new.cross(Yaxis_new);
+  cv::Mat plane_camera = s_vec.cross(r_vec);
   float w3 = -acos(plane_reference.dot(plane_camera) / (norm(plane_reference) * norm(plane_camera)));
   euler3(w3, Euler3);
 
@@ -235,7 +234,7 @@ int Camera::setupRotationMatrix() {
   return OK;
 }
 
-int Camera::calcNewObjectRayVector(Point2f pixelPosition) {
+int Camera::calcNewObjectRayVector(cv::Point2f pixelPosition) {
   /*
    * calculates objectRay for use in triangulation out of a sensor pixelPosition
    *
@@ -243,14 +242,14 @@ int Camera::calcNewObjectRayVector(Point2f pixelPosition) {
    */
 
   // calculate object ray in world coordinates from pixel position
-  Point3f ray;
+  cv::Point3f ray;
   if (ERR == calcObjectRayInCameraCoordinates(pixelPosition, ray)) {
     return ERR;
   }
-  Mat objectRayCameraCoord = (Mat_<float>(3, 1) << ray.x, ray.y, ray.z);
+  cv::Mat objectRayCameraCoord = (cv::Mat_<float>(3, 1) << ray.x, ray.y, ray.z);
 
   // transform vector to world coordinates by multiplying rotationMatrix in front of the vector
-  Mat objectRay_Mat = rotationMatrix * objectRayCameraCoord;
+  cv::Mat objectRay_Mat = rotationMatrix * objectRayCameraCoord;
 
   this->objectVector.x = objectRay_Mat.at<float>(0, 0);
   this->objectVector.y = objectRay_Mat.at<float>(1, 0);
@@ -259,7 +258,7 @@ int Camera::calcNewObjectRayVector(Point2f pixelPosition) {
   return OK;
 }
 
-int Camera::calcObjectRayInCameraCoordinates(Point2f pixelPosition, Point3f& objectRay) {
+int Camera::calcObjectRayInCameraCoordinates(cv::Point2f pixelPosition, cv::Point3f& objectRay) {
   /*
    * calculates object ray from pixel value on the sensor. Vector is in camera coordinate system
    *
@@ -287,37 +286,37 @@ int Camera::calcObjectRayInCameraCoordinates(Point2f pixelPosition, Point3f& obj
  * ==> X-Axis is camera viewing axis !
  * ==> with this correspondance, camera is already upside down
  */
-void Camera::euler1(float angle, Mat& matrix) {
+void Camera::euler1(float angle, cv::Mat& matrix) {
   /* first euler rotation
    * Matrix = [ [ cos(alpha)  sin(alpha)  0];
    [-sin(alpha)  cos(alpha)  0];
    [ 0           0           1] ];
    */
   double m[3][3] = { { cos(angle), sin(angle), 0 }, { -sin(angle), cos(angle), 0 }, { 0, 0, 1 } };
-  Mat result = Mat(3, 3, CV_32F, m);
+  cv::Mat result = cv::Mat(3, 3, CV_32F, m);
   result.copyTo(matrix);
 }
-void Camera::euler2(float angle, Mat& matrix) {
+void Camera::euler2(float angle, cv::Mat& matrix) {
   /* second euler rotation
    * Matrix = [ [ cos(alpha)  0          -sin(alpha)];
    [ 0           1           0];
    [ sin(alpha)  0           cos(alpha)] ];
    */
   double m[3][3] = { { cos(angle), 0, -sin(angle) }, { 0, 1, 0 }, { sin(angle), 0, cos(angle) } };
-  Mat result = Mat(3, 3, CV_32F, m);
+  cv::Mat result = cv::Mat(3, 3, CV_32F, m);
   result.copyTo(matrix);
 }
-void Camera::euler3(float angle, Mat& matrix) {
+void Camera::euler3(float angle, cv::Mat& matrix) {
   /* third euler rotation
    * Matrix = [ [ 1           0           0];
    [ 0           cos(alpha)  sin(alpha)];
    [ 0          -sin(alpha)  cos(alpha)] ];
    */
   double m[3][3] = { { 1, 0, 0 }, { 0, cos(angle), sin(angle) }, { 0, -sin(angle), cos(angle) } };
-  Mat result = Mat(3, 3, CV_32F, m);
+  cv::Mat result = cv::Mat(3, 3, CV_32F, m);
   result.copyTo(matrix);
 }
-float Camera::norm(Mat column_vector) {
+float Camera::norm(cv::Mat column_vector) {
   float result = 0;
 
   if (column_vector.rows > 1 && column_vector.cols == 1) {

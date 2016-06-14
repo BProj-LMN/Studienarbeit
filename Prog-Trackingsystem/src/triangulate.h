@@ -16,12 +16,11 @@
 #include <cstdlib>
 
 #include <opencv2/core.hpp>
-using namespace cv;
 
 #define MYEPS      1.0E-19
 #define ANZ_KOORDS 3       // Anzahl Dimensionen des Koordinatensystems
 
-void triangulate(Point3f cam1_p, Point3f cam1_u, Point3f cam2_p, Point3f cam2_u, Point3f& position, float& distance) {
+void triangulate(cv::Point3f cam1_p, cv::Point3f cam1_u, cv::Point3f cam2_p, cv::Point3f cam2_u, cv::Point3f& position, float& distance) {
 
   /*** Interne Variablen zur Ermittlung des Verbindungsvektors und
    der Elemente des linearen Gleichungssystems ***/

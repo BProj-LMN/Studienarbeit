@@ -54,18 +54,18 @@ int main(int argc, const char** argv) {
   float triangulationMinDistance;
 
   Camera cam1(0);
-  Mat frame1;
+  cv::Mat frame1;
   Camera cam2(1);
-  Mat frame2;
+  cv::Mat frame2;
 
   ObjectDetection detect1(&cam1);
-  Point2i pixelPos1(0, 0);
-  Point2f undistPos1(0.0, 0.0);
+  cv::Point2i pixelPos1(0, 0);
+  cv::Point2f undistPos1(0.0, 0.0);
   ObjectDetection detect2(&cam2);
-  Point2i pixelPos2(0, 0);
-  Point2f undistPos2(0.0, 0.0);
+  cv::Point2i pixelPos2(0, 0);
+  cv::Point2f undistPos2(0.0, 0.0);
 
-  Point3f objectPos3D;
+  cv::Point3f objectPos3D;
 
   try {
 
@@ -112,23 +112,23 @@ int main(int argc, const char** argv) {
      * set reference frame for tracking
      */
     std::cout << "waiting for reference frame...\n" << std::flush;
-    namedWindow("reference frame 1", WINDOW_AUTOSIZE);
-    namedWindow("reference frame 2", WINDOW_AUTOSIZE);
+    cv::namedWindow("reference frame 1", cv::WINDOW_AUTOSIZE);
+    cv::namedWindow("reference frame 2", cv::WINDOW_AUTOSIZE);
     for (int i = 0; i < 60; i++) {
       cam1.get_newFrame(frame1);
       cam2.get_newFrame(frame2);
       imshow("reference frame 1", frame1);
       imshow("reference frame 2", frame2);
 
-      if (waitKey(30) >= 0) {
+      if (cv::waitKey(30) >= 0) {
         break;
       }
     }
     detect1.setReferenceFrame(frame1);
     detect2.setReferenceFrame(frame2);
     std::cout << "reference frame set\n\n" << std::flush;
-    destroyWindow("reference frame 1");
-    destroyWindow("reference frame 2");
+    cv::destroyWindow("reference frame 1");
+    cv::destroyWindow("reference frame 2");
 
     /*
      * main tracking routine
@@ -138,8 +138,8 @@ int main(int argc, const char** argv) {
     namedWindow("tracking 1", WINDOW_NORMAL);
     namedWindow("tracking 2", WINDOW_NORMAL);
 #else
-    Mat destroyimg = imread("test/destroybild.jpg", 1);   // Read the file
-    namedWindow("zum Beenden: press ESC", WINDOW_AUTOSIZE);
+    cv::Mat destroyimg = cv::imread("test/destroybild.jpg", 1);   // Read the file
+    cv::namedWindow("zum Beenden: press ESC", cv::WINDOW_AUTOSIZE);
     imshow("zum Beenden: press ESC", destroyimg);
 #endif
 
@@ -185,8 +185,8 @@ int main(int argc, const char** argv) {
       /*
        * undistort pixel position
        */
-      cam1.correctDistortion(pixelPos1,undistPos1); // TODO: it’s only a stub
-      cam2.correctDistortion(pixelPos2,undistPos2); // TODO: it’s only a stub
+      cam1.correctDistortion(pixelPos1, undistPos1); // TODO: it’s only a stub
+      cam2.correctDistortion(pixelPos2, undistPos2); // TODO: it’s only a stub
 
       /*
        * calculate 3D position - triangulate
@@ -225,7 +225,7 @@ int main(int argc, const char** argv) {
       printf("0x%2x", positionDataErrorCode);
       std::cout << "\n" << std::flush;
 
-      if (waitKey(1) >= 0) {
+      if (cv::waitKey(1) >= 0) {
         break;
       }
 
@@ -234,8 +234,8 @@ int main(int argc, const char** argv) {
     /*
      * tidy everything up
      */
-    destroyWindow("tracking 1");
-    destroyWindow("tracking 2");
+    cv::destroyWindow("tracking 1");
+    cv::destroyWindow("tracking 2");
     std::cout << "\n";
     std::cout << "--> shut down program\n";
     std::cout << "windows destroyed\n";
