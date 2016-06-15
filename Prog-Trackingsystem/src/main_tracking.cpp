@@ -7,8 +7,13 @@
  * authors: Jannik Beyerstedt, Daniel Friedrich
  */
 
-//#define SETTINGS "../Progs-configStore/sysConfig.yml"
+#define TESTING
+
+#ifndef TESTING
+#define SETTINGS "../Progs-configStore/sysConfig.yml"
+#else
 #define SETTINGS "../Progs-configStore/sysConfig-stub.yml"
+#endif
 
 #include "DataFormats.h"
 #include "Logger.h"
@@ -38,39 +43,33 @@ int main(int argc, const char** argv) {
 //    imshow("zum Beenden: press ESC", destroyimg);
 
   try {
-    while (1) {
+#ifndef TESTING
+//    while (1) {
+#else
+    for (int i = 0; i < 10; i++) {
+#endif
       /*
        * calculations
        */
       imgProcManagement.evaluate();
       clusterManagement.evaluate();
 
-      /*
-       * live output to std::cout / console
-       */
-//      std::cout << "x " << (int) objectPos3D.x << "\ty " << (int) objectPos3D.y << "\tz " << (int) objectPos3D.z;
-//      std::cout << "\t\t" << "Abstand Triangulation: " << (int) triangulationMinDistance;
-//      std::cout << "\t\t" << "Fehlercode: ";
-//      printf("0x%2x", positionDataErrorCode);
-      std::cout << "\n" << std::flush;
-
-      // TODO: evaluate some window to terminate the application
+// TODO: evaluate some window to terminate the application
       if (cv::waitKey(1) >= 0) {
         break;
       }
 
+      std::cout << std::flush;
     }
 
     /*
      * tidy everything up
      */
-    std::cout << "exit\n";
-    std::cout << "\n";
     std::cout << "--> shut down program\n";
-
     return (0);
 
   } catch (cv::Exception & e) {
+    std::cout << "---- opencv exception catched ----\n";
     std::cout << e.msg << "\n" << std::flush;
   }
 

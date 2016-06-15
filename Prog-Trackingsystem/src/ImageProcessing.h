@@ -31,7 +31,7 @@ private:
   ImageSource* cap;
   Camera* cam;
   ObjectDetection* objDet;
-  IntraSystemMessaging* msgSink;
+  IntraSystemMessaging* messaging;
 };
 
 #endif /* SRC_IMAGEPROCESSING_H_ */

@@ -1,7 +1,9 @@
 %YAML:1.0
 timestamp: 1465900231
 datetime: "Tue Jun 14 12:30:31 2016"
-objectDetectionUsed: default
+objectDetectionUsed: "ObjDetSimple"
+port: 1362
+comInterfaceUsed: "ComBachelorprojekt"
 cameras:
    -
       cameraID: 1

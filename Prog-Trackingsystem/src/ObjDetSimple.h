@@ -16,8 +16,6 @@
 #include <opencv2/core.hpp>
 
 class ObjDetSimple: public ObjectDetection {
-  cv::Mat referenceFrame;
-
 public:
   virtual ~ObjDetSimple();
   void setReferenceFrame(cv::Mat frame);

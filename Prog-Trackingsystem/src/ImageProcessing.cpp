@@ -18,7 +18,7 @@
 #define REFERENCE_FRAME_DELAY 60
 
 ImageProcessing::ImageProcessing(int cameraID, ImageSource* src, Camera* camera, ObjectDetection* objDetection, IntraSystemMessaging* msgQueue)
-    : camID(cameraID), cap(src), cam(camera), objDet(objDetection), msgSink(msgQueue) {
+    : camID(cameraID), cap(src), cam(camera), objDet(objDetection), messaging(msgQueue) {
   std::cout << "ImageProcessing::ctor start\n";
 
   /*
@@ -95,6 +95,6 @@ void ImageProcessing::evaluate() {
    * send data
    */
   IntraSysMsg message{camID, objectRayList, status};
-  msgSink->send(message);
+  messaging->send(message);
 
 }

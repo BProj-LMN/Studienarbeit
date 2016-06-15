@@ -29,11 +29,12 @@ ImageProcessingMngmt::ImageProcessingMngmt(std::string configFile, IntraSystemMe
     // TODO: exit / throw exception
   }
 
-  std::string objDet;
+  std::string objDetUsed;
   std::vector<CameraProperties> cameras;
 
-  fs["objectDetectionUsed"] >> objDet;
+  fs["objectDetectionUsed"] >> objDetUsed;
   fs["cameras"] >> cameras;
+  fs.release();
 
   for (CameraProperties c : cameras) {
     std::cout << c << "\n";

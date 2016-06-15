@@ -69,4 +69,13 @@ void ClusterMngmt::evaluate() {
   // TODO: send data via ComInterface
   comInterface->sendData(position, errorCode);
 
+  /*
+   * console output
+   */
+  std::cout << "x " << position.x << "\ty " << position.y << "\tz " << position.z;
+  std::cout << "\t\t" << "distance rays: " << triangulationMinDistance;
+  std::cout << "\t\t" << "error code: ";
+  fprintf(stdout, "0x%2x", errorCode);
+  std::cout << "\n";
+
 }

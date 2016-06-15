@@ -13,10 +13,12 @@
 //#include "Logger.h"
 
 class ObjectDetection {
+protected:
   cv::Mat referenceFrame;
 
 public:
-  virtual ~ObjectDetection(){};
+  virtual ~ObjectDetection() {
+  }
 
   virtual ReturnStatus detect(cv::Mat frame, PxPosList& position) = 0;
   virtual void setReferenceFrame(cv::Mat frame) = 0;
