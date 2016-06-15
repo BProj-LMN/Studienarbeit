@@ -9,12 +9,22 @@
 #ifndef SRC_COMINTERFACE_H_
 #define SRC_COMINTERFACE_H_
 
+#include "DataFormats.h"
+//#include "Logger.h"
+
+#include "UdpSocketServer.h"
+
 class ComInterface {
-  // TODO: connection with udp socket server
+protected:
+  UdpSocketServer* socket;
 
 public:
+  //ComInterface(UdpSocketServer* socket);
+  virtual ~ComInterface() {
+  }
+
   virtual void evaluate() = 0;
-  virtual void sendData() = 0;
+  virtual void sendData(Pos3D& position, char errorCode) = 0; // TODO: extend to multiple positions?
 };
 
 #endif /* SRC_COMINTERFACE_H_ */

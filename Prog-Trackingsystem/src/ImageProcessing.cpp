@@ -53,13 +53,13 @@ ImageProcessing::~ImageProcessing() {
   delete cap;
   delete cam;
   delete objDet;
-  delete msgSink;
+  // do not delete messaging, because pointer is held by main!!!
 }
 
 void ImageProcessing::evaluate() {
   std::cout << "ImageProcessing " << camID << " evaluate \n";
   cv::Mat frame;
-  int status = OK;
+  ReturnStatus status = OK;
   PxPosList pxPositions;
   VectRayList objectRayList;
 
@@ -94,7 +94,7 @@ void ImageProcessing::evaluate() {
   /*
    * send data
    */
-  IntraSysMsg message{camID, objectRayList};
+  IntraSysMsg message{camID, objectRayList, status};
   msgSink->send(message);
 
 }

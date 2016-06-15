@@ -8,20 +8,65 @@
 
 #include "ClusterMngmt.h"
 
-//#include "DataFormats.h"
-//#include "Logger.h"
+#include "ComBachelorprojekt.h"
+#include "Logger.h"
+
+#include "UdpSocketServer.h"
+#include "triangulate.h"
 
 ClusterMngmt::ClusterMngmt(std::string configFile, IntraSystemMessaging* messagingSystem) {
-  // TODO Auto-generated constructor stub
-
   messaging = messagingSystem;
+
+  cv::FileStorage fs(configFile, cv::FileStorage::READ); // Read the settings
+  if (!fs.isOpened()) {
+    LOG_ERROR << "ClusterMngmt::ctor - settings file could not be openend\n";
+    std::cout << "ClusterMngmt::ctor - settings file could not be openend\n";
+    // TODO: exit / throw exception
+  }
+
+  std::string comIntUsed;
+  int udpPort;
+
+  fs["comInterfaceUsed"] >> comIntUsed;
+  fs["cameras"] >> cameras;
+  fs["port"] >> udpPort;
+  fs.release();
+
+  for (CameraProperties c : cameras) {
+
+  }
+
+  /*
+   * create ComInterface and Socket
+   */
+  UdpSocketServer* socket = new UdpSocketServer(udpPort);
+
+  comInterface = new ComBachelorprojekt(socket); // TODO switch between different com interfaces
 
 }
 
 ClusterMngmt::~ClusterMngmt() {
-  // TODO Auto-generated destructor stub
+  delete comInterface;
+  // do not delete messaging, because pointer is held by main!!!
 }
 
 void ClusterMngmt::evaluate() {
-  // TODO Auto-generated method stub
+  comInterface->evaluate();
+
+  int triangulationMinDistance{0};
+  Pos3D position;
+  char errorCode{0x00};
+
+  // TODO: receive from IntraSystemMessaging
+  // foreach camera, if IntraSysMsg.trackingStatus == ERR
+  // errorCode |= ERR_TRACKING_LOST;
+
+  // TODO: triangulate
+  if (triangulationMinDistance > DIST_ERR_CAT1) {
+    errorCode |= ERR_BIG_DISTANCE;
+  }
+
+  // TODO: send data via ComInterface
+  comInterface->sendData(position, errorCode);
+
 }

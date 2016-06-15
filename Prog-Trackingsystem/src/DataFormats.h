@@ -65,13 +65,14 @@ class IntraSysMsg {
 public:
   int camID;
   VectRayList rayList;
+  ReturnStatus trackingStatus;
 
   IntraSysMsg() {
     camID = 9999;
   }
 
-  IntraSysMsg(int camID_val, VectRayList rayList_val)
-      : camID(camID_val), rayList(rayList_val) {
+  IntraSysMsg(int camID_val, VectRayList rayList_val, ReturnStatus trackingStatus_val)
+      : camID(camID_val), rayList(rayList_val), trackingStatus(trackingStatus_val) {
   }
 
   friend std::ostream& operator<<(std::ostream& os, const IntraSysMsg& obj) {

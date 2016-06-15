@@ -11,6 +11,7 @@
 
 #include "IntraSystemMessaging.h"
 #include "CameraProperties.h"
+#include "ComInterface.h"
 
 class ClusterMngmt {
 public:
@@ -21,6 +22,9 @@ public:
 
 private:
   IntraSystemMessaging* messaging;
+  std::vector<CameraProperties> cameras;
+
+  ComInterface* comInterface;
 };
 
 #endif /* SRC_CLUSTERMNGMT_H_ */
