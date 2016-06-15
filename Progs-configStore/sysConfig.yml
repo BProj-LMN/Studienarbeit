@@ -6,8 +6,8 @@ cameras:
    -
       cameraID: 1
       videoSrc: "0"
-      configFile: "camConfig-1.yml"
+      configFile: "../Progs-configStore/camConfig-1.yml"
    -
       cameraID: 2
       videoSrc: "test/frameCam2-01.png"
-      configFile: "camConfig-2.yml"
+      configFile: "../Progs-configStore/camConfig-2.yml"

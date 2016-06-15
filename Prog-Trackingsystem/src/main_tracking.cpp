@@ -7,7 +7,8 @@
  * authors: Jannik Beyerstedt, Daniel Friedrich
  */
 
-#define SETTINGS "../Progs-configStore/sysConfig.yml"
+//#define SETTINGS "../Progs-configStore/sysConfig.yml"
+#define SETTINGS "../Progs-configStore/sysConfig-stub.yml"
 
 #define ERR_RESET         0x00
 #define ERR_TRACKING_LOST 0x01
