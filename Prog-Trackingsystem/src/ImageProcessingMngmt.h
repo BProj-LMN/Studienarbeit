@@ -21,7 +21,7 @@ class CameraProperties;
 
 class ImageProcessingMngmt {
 public:
-  ImageProcessingMngmt(std::string configFile);
+  ImageProcessingMngmt(std::string configFile, IntraSystemMessaging* messagingSystem);
   ~ImageProcessingMngmt();
 
   void evaluate();
@@ -31,6 +31,7 @@ private:
 
 private:
   std::vector<ImageProcessing*> cameras;
+  IntraSystemMessaging* messaging;
 };
 
 class CameraProperties {

@@ -1,7 +1,7 @@
 /*
  * Bachelorprojekt.h
  *
- * function: TODO
+ * function: UDP messaging protocol used in the Bachelorprojekt WS 2015/16
  *
  * author: Jannik Beyerstedt
  */

@@ -11,6 +11,7 @@
 
 #include "Camera.h"
 #include "ObjectDetection.h"
+#include "IntraSystemMessaging.h"
 #include "ImageSource.h"
 
 #include <opencv2/core.hpp>
@@ -20,7 +21,7 @@
 
 class ImageProcessing {
 public:
-  ImageProcessing(int cameraID, ImageSource* src, Camera* camera, ObjectDetection* objDetection);
+  ImageProcessing(int cameraID, ImageSource* src, Camera* camera, ObjectDetection* objDetection, IntraSystemMessaging* msgQueue);
   ~ImageProcessing();
 
   void evaluate();
@@ -30,6 +31,7 @@ private:
   ImageSource* cap;
   Camera* cam;
   ObjectDetection* objDet;
+  IntraSystemMessaging* msgSink;
 };
 
 #endif /* SRC_IMAGEPROCESSING_H_ */

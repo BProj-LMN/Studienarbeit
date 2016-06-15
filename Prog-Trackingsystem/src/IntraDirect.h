@@ -1,7 +1,7 @@
 /*
  * IntraDirect.h
  *
- * function: TODO
+ * function: basic implementation of IntraSystemMessaging
  *
  * author: Jannik Beyerstedt
  */
@@ -17,17 +17,19 @@
 class IntraDirect: public IntraSystemMessaging {
   IntraSysMsg msg;
 public:
-  IntraDirect() {
-    msg(1, nullptr);
+  IntraDirect()
+      : msg() {
   }
-  ~IntraDirect();
+  virtual ~IntraDirect() {}
 
   void send(IntraSysMsg msg) {
     this->msg = msg;
+    // TODO: save in vector / queue
   }
 
-  IntraSysMsg recv(){
+  IntraSysMsg recv() {
     return msg;
+    // TODO: return from vector / queue
   }
 };
 

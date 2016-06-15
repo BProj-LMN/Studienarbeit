@@ -11,8 +11,10 @@
 //#include "DataFormats.h"
 //#include "Logger.h"
 
-ClusterMngmt::ClusterMngmt() {
+ClusterMngmt::ClusterMngmt(std::string configFile, IntraSystemMessaging* messagingSystem) {
   // TODO Auto-generated constructor stub
+
+  messaging = messagingSystem;
 
 }
 
@@ -20,3 +22,6 @@ ClusterMngmt::~ClusterMngmt() {
   // TODO Auto-generated destructor stub
 }
 
+void ClusterMngmt::evaluate() {
+  // TODO Auto-generated method stub
+}

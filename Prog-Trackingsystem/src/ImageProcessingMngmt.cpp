@@ -13,11 +13,14 @@
 #include "Logger.h"
 
 #include "ObjDetSimple.h"
+#include "IntraDirect.h"
 
 #include <iostream>
 
-ImageProcessingMngmt::ImageProcessingMngmt(std::string configFile) {
+ImageProcessingMngmt::ImageProcessingMngmt(std::string configFile, IntraSystemMessaging* messagingSystem) {
   LOG_SCOPE;
+
+  messaging = messagingSystem;
 
   cv::FileStorage fs(configFile, cv::FileStorage::READ); // Read the settings
   if (!fs.isOpened()) {
@@ -69,7 +72,7 @@ void ImageProcessingMngmt::parseConfigAndFactory(CameraProperties camProps) {
   Camera* cam = new Camera{camProps.configFile};
   ObjectDetection* objDet = new ObjDetSimple{}; // TODO switch between different object detections
 
-  ImageProcessing* camera = new ImageProcessing{camProps.cameraID, cap, cam, objDet};
+  ImageProcessing* camera = new ImageProcessing{camProps.cameraID, cap, cam, objDet, messaging};
   cameras.push_back(camera);
 
   std::cout << "ImageProcessingMngmt - camera " << camProps.cameraID << " created\n\n";

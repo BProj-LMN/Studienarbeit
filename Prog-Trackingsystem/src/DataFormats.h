@@ -66,6 +66,10 @@ public:
   int camID;
   VectRayList rayList;
 
+  IntraSysMsg() {
+    camID = 9999;
+  }
+
   IntraSysMsg(int camID_val, VectRayList rayList_val)
       : camID(camID_val), rayList(rayList_val) {
   }

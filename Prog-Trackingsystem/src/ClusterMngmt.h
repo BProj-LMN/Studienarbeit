@@ -9,10 +9,17 @@
 #ifndef SRC_CLUSTERMNGMT_H_
 #define SRC_CLUSTERMNGMT_H_
 
+#include "IntraSystemMessaging.h"
+
 class ClusterMngmt {
 public:
-  ClusterMngmt();
+  ClusterMngmt(std::string configFile, IntraSystemMessaging* messagingSystem);
   virtual ~ClusterMngmt();
+
+  void evaluate();
+
+private:
+  IntraSystemMessaging* messaging;
 };
 
 #endif /* SRC_CLUSTERMNGMT_H_ */

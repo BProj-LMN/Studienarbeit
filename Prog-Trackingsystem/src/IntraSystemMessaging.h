@@ -14,8 +14,10 @@
 
 class IntraSystemMessaging {
 public:
-  virtual void send(IntraSysMsg msg);
-  virtual IntraSysMsg recv();
+  virtual ~IntraSystemMessaging(){};
+
+  virtual void send(IntraSysMsg msg) = 0;
+  virtual IntraSysMsg recv() = 0;
 };
 
 #endif /* SRC_INTRASYSTEMMESSAGING_H_ */

@@ -17,8 +17,8 @@
 //#define DEBUG
 #define REFERENCE_FRAME_DELAY 60
 
-ImageProcessing::ImageProcessing(int cameraID, ImageSource* src, Camera* camera, ObjectDetection* objDetection)
-    : camID(cameraID), cap(src), cam(camera), objDet(objDetection) {
+ImageProcessing::ImageProcessing(int cameraID, ImageSource* src, Camera* camera, ObjectDetection* objDetection, IntraSystemMessaging* msgQueue)
+    : camID(cameraID), cap(src), cam(camera), objDet(objDetection), msgSink(msgQueue) {
   std::cout << "ImageProcessing::ctor start\n";
 
   /*
@@ -53,6 +53,7 @@ ImageProcessing::~ImageProcessing() {
   delete cap;
   delete cam;
   delete objDet;
+  delete msgSink;
 }
 
 void ImageProcessing::evaluate() {
@@ -60,7 +61,7 @@ void ImageProcessing::evaluate() {
   cv::Mat frame;
   int status = OK;
   PxPosList pxPositions;
-  VectRayList positionsRays;
+  VectRayList objectRayList;
 
   /*
    * image processing chain
@@ -87,9 +88,13 @@ void ImageProcessing::evaluate() {
     cam->undistort(pixel, undistorted);
     cam->calcObjRay(undistorted, objectRay);
 
-    positionsRays.push_back(objectRay);
+    objectRayList.push_back(objectRay);
   }
 
-  // TODO: send positions rays to intra system messaging
+  /*
+   * send data
+   */
+  IntraSysMsg message{camID, objectRayList};
+  msgSink->send(message);
 
 }
