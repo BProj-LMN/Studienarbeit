@@ -18,7 +18,7 @@
 //#define DEBUG
 #define REFERENCE_FRAME_DELAY 60
 
-ImageProcessing::ImageProcessing(int cameraID, cv::VideoCapture* src, Camera* camera, ObjectDetection* objDetection)
+ImageProcessing::ImageProcessing(int cameraID, ImageSource* src, Camera* camera, ObjectDetection* objDetection)
     : camID(cameraID), cap(src), cam(camera), objDet(objDetection) {
   std::cout << "ImageProcessing::ctor start\n";
 
@@ -30,14 +30,9 @@ ImageProcessing::ImageProcessing(int cameraID, cv::VideoCapture* src, Camera* ca
   std::cout << "camera " << cameraID << ": waiting for reference frame...\n" << std::flush;
   cv::namedWindow("reference frame", cv::WINDOW_AUTOSIZE);
   for (int i = 0; i < REFERENCE_FRAME_DELAY; i++) {
-    if (cap->get(cv::CAP_PROP_POS_FRAMES) >= cap->get(cv::CAP_PROP_FRAME_COUNT)) {
-      cap->set(cv::CAP_PROP_POS_FRAMES, 0);
-    }
     *cap >> frame;
-    cv::cvtColor(frame, frame, CV_BGR2GRAY);
 
     imshow("reference frame", frame);
-
     if (cv::waitKey(30) >= 0) {
       break;
     }
@@ -71,12 +66,7 @@ void ImageProcessing::evaluate() {
   /*
    * image processing chain
    */
-  if (cap->get(cv::CAP_PROP_POS_FRAMES) >= cap->get(cv::CAP_PROP_FRAME_COUNT)) {
-    cap->set(cv::CAP_PROP_POS_FRAMES, 0);
-  }
-
   *cap >> frame;
-  cv::cvtColor(frame, frame, CV_BGR2GRAY);
 
   cam->addGlobalMaskToFrame(frame);
 

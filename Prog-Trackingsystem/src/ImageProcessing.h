@@ -11,6 +11,7 @@
 
 #include "Camera.h"
 #include "ObjectDetection.h"
+#include "ImageSource.h"
 
 #include <opencv2/core.hpp>
 #include <opencv2/videoio.hpp>
@@ -19,14 +20,14 @@
 
 class ImageProcessing {
 public:
-  ImageProcessing(int cameraID, cv::VideoCapture* src, Camera* camera, ObjectDetection* objDetection);
+  ImageProcessing(int cameraID, ImageSource* src, Camera* camera, ObjectDetection* objDetection);
   ~ImageProcessing();
 
   void evaluate();
 
 private:
   int camID;
-  cv::VideoCapture* cap;
+  ImageSource* cap;
   Camera* cam;
   ObjectDetection* objDet;
 };

@@ -38,9 +38,6 @@ ImageProcessingMngmt::ImageProcessingMngmt(std::string configFile) {
 
     parseConfigAndFactory(c);
   }
-
-  // TODO: setup reference frame for each camera
-
 }
 
 ImageProcessingMngmt::~ImageProcessingMngmt() {
@@ -62,7 +59,7 @@ void ImageProcessingMngmt::evaluate() {
 }
 
 void ImageProcessingMngmt::parseConfigAndFactory(CameraProperties camProps) {
-  cv::VideoCapture* cap = new cv::VideoCapture{camProps.videoSrc};
+  ImageSource* cap = new ImageSource{camProps.videoSrc};
   if (!cap->isOpened()) {
     LOG_ERROR << "ImageProcessingMngmt::parseConfigAndFactory - error opening VideoCapture\n";
     std::cout << "ImageProcessingMngmt::parseConfigAndFactory - error opening VideoCapture\n";
