@@ -11,6 +11,10 @@
 
 #include "ComInterface.h"
 
+//#include "DataFormats.h"
+//#include "myGlobalConstants.h"
+//#include "Logger.h"
+
 class Bachelorprojekt: public ComInterface {
 public:
   Bachelorprojekt() {

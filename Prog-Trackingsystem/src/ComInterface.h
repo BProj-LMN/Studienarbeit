@@ -13,8 +13,8 @@ class ComInterface {
   // TODO: connection with udp socket server
 
 public:
-  virtual void evaluate();
-  virtual void sendData();
+  virtual void evaluate() = 0;
+  virtual void sendData() = 0;
 };
 
 #endif /* SRC_COMINTERFACE_H_ */

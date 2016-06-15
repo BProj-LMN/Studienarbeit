@@ -16,9 +16,6 @@
 
 //#define DEBUG // show tracking image
 
-#include <iostream>
-#include <iomanip>
-
 #include "DataFormats.h"
 #include "myGlobalConstants.h"
 #include "Logger.h"
@@ -29,6 +26,9 @@
 
 #include <opencv2/core.hpp>
 #include <opencv2/highgui.hpp>
+
+#include <iostream>
+#include <iomanip>
 
 /* soon not needed any more */
 #include "UdpSocketServer.h"

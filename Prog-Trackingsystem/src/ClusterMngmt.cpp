@@ -8,6 +8,10 @@
 
 #include "ClusterMngmt.h"
 
+//#include "DataFormats.h"
+//#include "myGlobalConstants.h"
+//#include "Logger.h"
+
 ClusterMngmt::ClusterMngmt() {
   // TODO Auto-generated constructor stub
 

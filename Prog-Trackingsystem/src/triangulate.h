@@ -10,12 +10,12 @@
 #ifndef TRIANGULATE_H_
 #define TRIANGULATE_H_
 
+#include <opencv2/core.hpp>
+
 #include <stdio.h>
 #include <stdlib.h>
 #include <math.h>
 #include <cstdlib>
-
-#include <opencv2/core.hpp>
 
 #define MYEPS      1.0E-19
 #define ANZ_KOORDS 3       // Anzahl Dimensionen des Koordinatensystems

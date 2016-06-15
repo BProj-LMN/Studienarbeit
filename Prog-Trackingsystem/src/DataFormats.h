@@ -9,9 +9,9 @@
 #ifndef SRC_DATAFORMATS_H_
 #define SRC_DATAFORMATS_H_
 
-#include <vector>
-
 #include <opencv2/core.hpp>
+
+#include <vector>
 
 class PxPos {
 public:
