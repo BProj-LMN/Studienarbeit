@@ -9,6 +9,10 @@
 
 #include "Camera.h"
 
+//#include "DataFormats.h"
+#include "myGlobalConstants.h"
+//#include "Logger.h"
+
 #include <opencv2/imgproc.hpp>
 #include <opencv2/calib3d.hpp>
 
@@ -16,7 +20,9 @@
 #include <iostream>
 #include <iomanip>
 
-#include "myGlobalConstants.h"
+Camera::Camera(std::string configFile) {
+  std::cout << "Camera ctor stub\n";
+}
 
 Camera::Camera(int cameraIndex) {
   this->cameraID = cameraIndex;

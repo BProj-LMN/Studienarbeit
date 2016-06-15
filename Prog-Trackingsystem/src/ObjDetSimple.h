@@ -11,20 +11,21 @@
 
 //#define SHOW_THESHOLD // for debugging the object detection
 
+#include "DataFormats.h"
+//#include "myGlobalConstants.h"
+//#include "Logger.h"
+
+#include "ObjectDetection.h"
+
 #include <opencv2/core.hpp>
 
-#include "Camera.h"
-
-class ObjDetSimple {
-  Camera* cam;
+class ObjDetSimple: public ObjectDetection {
   cv::Mat refereceFrame;
 
 public:
-  ObjDetSimple(Camera* cam);
   virtual ~ObjDetSimple();
-
-  int setReferenceFrame(cv::Mat frame);
-  int detectObject(cv::Mat frame, cv::Point2i& pixelPosition);
+  void setReferenceFrame(cv::Mat frame);
+  int detect(cv::Mat frame, PxPosList& pxPosition);
 
 private:
   int getObjectPosition(cv::Mat thresImg, cv::Point2i& objectPos, cv::Rect* boundingRect);

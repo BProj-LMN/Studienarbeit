@@ -8,35 +8,31 @@
 
 #include "ObjDetSimple.h"
 
+//#include "DataFormats.h"
+#include "myGlobalConstants.h"
+#include "Logger.h"
+
 #include <opencv2/highgui.hpp>
 #include <opencv2/imgproc.hpp>
-
-#include "myGlobalConstants.h"
 
 const static int SENSITIVITY_VALUE = 35;  // threshold for threshold()
 const static int BLUR_SIZE = 10;  // for absdiff()
 
-ObjDetSimple::ObjDetSimple(Camera* cam) {
-  this->cam = cam;
-
-}
-
 ObjDetSimple::~ObjDetSimple() {
-
+  LOG_DEBUG << "ObjDetSimple::dtor called\n";
+  std::cout << "ObjDetSimple::dtor called\n";
 }
-
-int ObjDetSimple::setReferenceFrame(cv::Mat frame) {
+void ObjDetSimple::setReferenceFrame(cv::Mat frame) {
   this->refereceFrame = frame;
-
-  return OK;
 }
 /*
  * input:  grayscale frame
  * output: Point2i with detected position
  */
-int ObjDetSimple::detectObject(cv::Mat frame, cv::Point2i& pixelPosition) {
+int ObjDetSimple::detect(cv::Mat frame, PxPosList& pxPosition) {
   cv::Mat diffImage, thresholdImage;
   cv::Rect objectBounding = cv::Rect(0, 0, 0, 0);
+  cv::Point2i pixelPosition;
 
   // subtract background and create binary mask
   absdiff(refereceFrame, frame, diffImage); // output: grayscale
@@ -61,6 +57,9 @@ int ObjDetSimple::detectObject(cv::Mat frame, cv::Point2i& pixelPosition) {
 #endif
 
   int error = getObjectPosition(thresholdImage, pixelPosition, &objectBounding);
+
+  PxPos convert{float(pixelPosition.x), float(pixelPosition.y)};
+  pxPosition.push_back(convert);
 
   if (0 == error) {
     return OK;

@@ -41,7 +41,11 @@ void printHelp() {
 }
 
 int main(int argc, const char** argv) {
+  LOG_SET_LEVEL_DEBUG;
+
   std::string options;
+
+  ImageProcessingMngmt a {SETTINGS};
 
   UdpSocketServer remoteInput(1362);
   std::string message;
@@ -51,17 +55,17 @@ int main(int argc, const char** argv) {
   char positionDataErrorCode = 0x00;
   int statusTracking1 = OK;
   int statusTracking2 = OK;
-  float triangulationMinDistance;
+  float triangulationMinDistance {};
 
-  Camera cam1(0);
+//  Camera cam1(0);
   cv::Mat frame1;
-  Camera cam2(1);
+//  Camera cam2(1);
   cv::Mat frame2;
 
-  ObjDetSimple detect1(&cam1);
+//  ObjDetSimple detect1;
   cv::Point2i pixelPos1(0, 0);
   cv::Point2f undistPos1(0.0, 0.0);
-  ObjDetSimple detect2(&cam2);
+//  ObjDetSimple detect2;
   cv::Point2i pixelPos2(0, 0);
   cv::Point2f undistPos2(0.0, 0.0);
 
@@ -88,6 +92,9 @@ int main(int argc, const char** argv) {
 
       } else if (0 == options.compare("exit")) {
         std::cout << "--> terminating ... Auf Wiedersehen" << std::endl;
+
+        std::cout << "exit\n";
+
         return (0);
 
       } else if (0 == options.compare("tracking")) {
@@ -115,8 +122,8 @@ int main(int argc, const char** argv) {
     cv::namedWindow("reference frame 1", cv::WINDOW_AUTOSIZE);
     cv::namedWindow("reference frame 2", cv::WINDOW_AUTOSIZE);
     for (int i = 0; i < 60; i++) {
-      cam1.get_newFrame(frame1);
-      cam2.get_newFrame(frame2);
+//      cam1.get_newFrame(frame1);
+//      cam2.get_newFrame(frame2);
       imshow("reference frame 1", frame1);
       imshow("reference frame 2", frame2);
 
@@ -124,8 +131,8 @@ int main(int argc, const char** argv) {
         break;
       }
     }
-    detect1.setReferenceFrame(frame1);
-    detect2.setReferenceFrame(frame2);
+//    detect1.setReferenceFrame(frame1);
+//    detect2.setReferenceFrame(frame2);
     std::cout << "reference frame set\n\n" << std::flush;
     cv::destroyWindow("reference frame 1");
     cv::destroyWindow("reference frame 2");
@@ -162,12 +169,11 @@ int main(int argc, const char** argv) {
       /*
        * get frame and track object
        */
-      cam1.get_newFrame(frame1);
-      cam2.get_newFrame(frame2);
-
-      statusTracking1 = detect1.detectObject(frame1, pixelPos1);
-      statusTracking2 = detect2.detectObject(frame2, pixelPos2);
-
+//      cam1.get_newFrame(frame1);
+//      cam2.get_newFrame(frame2);
+//
+//      statusTracking1 = detect1.detectObject(frame1, pixelPos1);
+//      statusTracking2 = detect2.detectObject(frame2, pixelPos2);
 #ifdef DEBUG
       if (statusTracking1 != ERR) {
         circle(frame1, Point(pixelPos1.x, pixelPos1.y), 20, Scalar(255, 0, 0), 2);
@@ -185,17 +191,15 @@ int main(int argc, const char** argv) {
       /*
        * undistort pixel position
        */
-      cam1.correctDistortion(pixelPos1, undistPos1); // TODO: it’s only a stub
-      cam2.correctDistortion(pixelPos2, undistPos2); // TODO: it’s only a stub
-
+//      cam1.correctDistortion(pixelPos1, undistPos1); // TODO: it’s only a stub
+//      cam2.correctDistortion(pixelPos2, undistPos2); // TODO: it’s only a stub
       /*
        * calculate 3D position - triangulate
        */
-      cam1.calcNewObjectRayVector(pixelPos1);
-      cam2.calcNewObjectRayVector(pixelPos2);
-
-      triangulate(cam1.positionVector, cam1.objectVector, cam2.positionVector, cam2.objectVector, objectPos3D, triangulationMinDistance);
-
+//      cam1.calcNewObjectRayVector(pixelPos1);
+//      cam2.calcNewObjectRayVector(pixelPos2);
+//
+//      triangulate(cam1.positionVector, cam1.objectVector, cam2.positionVector, cam2.objectVector, objectPos3D, triangulationMinDistance);
       /*
        * send position via UDP socket
        */
@@ -234,6 +238,9 @@ int main(int argc, const char** argv) {
     /*
      * tidy everything up
      */
+    std::cout << "exit\n";
+    a.~ImageProcessingMngmt();
+
     cv::destroyWindow("tracking 1");
     cv::destroyWindow("tracking 2");
     std::cout << "\n";
