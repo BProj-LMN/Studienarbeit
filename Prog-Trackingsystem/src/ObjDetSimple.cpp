@@ -23,7 +23,7 @@ ObjDetSimple::~ObjDetSimple() {
   std::cout << "ObjDetSimple::dtor called\n";
 }
 void ObjDetSimple::setReferenceFrame(cv::Mat frame) {
-  this->refereceFrame = frame;
+  this->referenceFrame = frame;
 }
 /*
  * input:  grayscale frame
@@ -35,7 +35,7 @@ int ObjDetSimple::detect(cv::Mat frame, PxPosList& pxPosition) {
   cv::Point2i pixelPosition;
 
   // subtract background and create binary mask
-  absdiff(refereceFrame, frame, diffImage); // output: grayscale
+  absdiff(referenceFrame, frame, diffImage); // output: grayscale
   threshold(diffImage, thresholdImage, SENSITIVITY_VALUE, 255, cv::THRESH_BINARY); // output: binary
 #ifdef SHOW_THESHOLD
   if (cam->get_cameraID() == 1) {

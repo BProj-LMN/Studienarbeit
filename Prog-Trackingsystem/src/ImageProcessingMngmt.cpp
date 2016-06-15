@@ -23,6 +23,8 @@ ImageProcessingMngmt::ImageProcessingMngmt(std::string configFile) {
   cv::FileStorage fs(configFile, cv::FileStorage::READ); // Read the settings
   if (!fs.isOpened()) {
     LOG_ERROR << "ImageProcessingMngmt::ctor - settings file could not be openend\n";
+    std::cout << "ImageProcessingMngmt::ctor - settings file could not be openend\n";
+    // TODO: exit / throw exception
   }
 
   std::string objDet;
@@ -32,7 +34,7 @@ ImageProcessingMngmt::ImageProcessingMngmt(std::string configFile) {
   fs["cameras"] >> cameras;
 
   for (CameraProperties c : cameras) {
-    std::cout << "\n\n" << c;
+    std::cout << c << "\n";
 
     parseConfigAndFactory(c);
   }
@@ -50,14 +52,30 @@ ImageProcessingMngmt::~ImageProcessingMngmt() {
 
 }
 
+void ImageProcessingMngmt::evaluate() {
+
+  for (ImageProcessing* cam : cameras) {
+    cam->evaluate();
+  }
+
+  std::cout << "\n";
+}
+
 void ImageProcessingMngmt::parseConfigAndFactory(CameraProperties camProps) {
   cv::VideoCapture* cap = new cv::VideoCapture{camProps.videoSrc};
+  if (!cap->isOpened()) {
+    LOG_ERROR << "ImageProcessingMngmt::parseConfigAndFactory - error opening VideoCapture\n";
+    std::cout << "ImageProcessingMngmt::parseConfigAndFactory - error opening VideoCapture\n";
+    std::cout << "videoSrc=" << camProps.videoSrc << "\n";
+    return;
+  }
+
   Camera* cam = new Camera{camProps.configFile};
   ObjectDetection* objDet = new ObjDetSimple{}; // TODO switch between different object detections
 
   ImageProcessing* camera = new ImageProcessing{camProps.cameraID, cap, cam, objDet};
   cameras.push_back(camera);
 
-  std::cout << "camera " << camProps.cameraID << " created\n";
+  std::cout << "ImageProcessingMngmt - camera " << camProps.cameraID << " created\n\n";
 }
 

@@ -25,7 +25,7 @@ Camera::Camera(std::string configFile) {
   parseConfig(configFile);
 }
 
-int Camera::undistort(PxPos src, PxPos dst) {
+int Camera::undistort(const PxPos& src, PxPos& dst) {
   // TODO Task: call undistortPoints()
   //undistortPoints(src, dst, *cameraMatrix, *distCoeffs);
 
@@ -70,7 +70,7 @@ void Camera::addGlobalMaskToFrame(cv::Mat& frame) {
 /*
  * calculates objectRay for use in triangulation from a sensor pixelPosition
  */
-int Camera::calcObjRay(PxPos pixelPos, VectRay objectRay) {
+int Camera::calcObjRay(const PxPos& pixelPos, VectRay& objectRay) {
   cv::Point2f pixelPosition{pixelPos.x, pixelPos.y};
   Pos3D direction;
 
@@ -98,7 +98,7 @@ int Camera::calcObjRay(PxPos pixelPos, VectRay objectRay) {
  *
  * pixelPosition.x <=> u , pixelPosition.y <=> v
  */
-int Camera::calcObjectRayInCameraCoordinates(cv::Point2f pixelPosition, cv::Point3f& objectRay) {
+int Camera::calcObjectRayInCameraCoordinates(const cv::Point2f& pixelPosition, cv::Point3f& objectRay) {
   float c_x = cameraMatrix.at<double>(0, 2);
   float c_y = cameraMatrix.at<double>(1, 2);
   float f = cameraMatrix.at<double>(0, 0);

@@ -20,7 +20,7 @@
 #include <opencv2/core.hpp>
 
 class ObjDetSimple: public ObjectDetection {
-  cv::Mat refereceFrame;
+  cv::Mat referenceFrame;
 
 public:
   virtual ~ObjDetSimple();

@@ -18,6 +18,10 @@ public:
   float x;
   float y;
 
+  PxPos()
+      : x(0.0), y(0.0) {
+  }
+
   PxPos(float x_val, float y_val)
       : x(x_val), y(y_val) {
   }
@@ -36,6 +40,10 @@ class VectRay {
 public:
   Pos3D pos;
   Pos3D dir;
+
+  VectRay()
+      : pos(), dir() {
+  }
 
   VectRay(Pos3D pos_val, Pos3D dir_val)
       : pos(pos_val), dir(dir_val) {

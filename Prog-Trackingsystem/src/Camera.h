@@ -21,8 +21,8 @@ class Camera {
 public:
   Camera(std::string configFile);
 
-  int undistort(PxPos src, PxPos dst);
-  int calcObjRay(PxPos pixelPos, VectRay objectRay);
+  int undistort(const PxPos& src, PxPos& dst);
+  int calcObjRay(const PxPos& pixelPos, VectRay& objectRay);
 
   void initGlobalMask(cv::Mat& frame);
   void addGlobalMaskToFrame(cv::Mat& frame);
@@ -31,7 +31,7 @@ public:
 private:
   int parseConfig(std::string configFile);
 
-  int calcObjectRayInCameraCoordinates(cv::Point2f pixelPosition, cv::Point3f& objectRayCameraCoord);
+  int calcObjectRayInCameraCoordinates(const cv::Point2f& pixelPosition, cv::Point3f& objectRayCameraCoord);
 
   cv::Mat cameraMatrix;
   cv::Mat distCoeffs;

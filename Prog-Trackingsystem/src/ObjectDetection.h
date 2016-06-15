@@ -17,6 +17,8 @@ class ObjectDetection {
   cv::Mat referenceFrame;
 
 public:
+  virtual ~ObjectDetection(){};
+
   virtual int detect(cv::Mat frame, PxPosList& position) = 0;
   virtual void setReferenceFrame(cv::Mat frame) = 0;
 };
