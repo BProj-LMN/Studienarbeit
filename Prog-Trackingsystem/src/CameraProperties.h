@@ -1,7 +1,7 @@
 /*
  * CameraProperties.h
  *
- * function: TODO
+ * function: class holding the config data for each camera in sysConfig. Needed to read data from opencv persistance (FileStorage)
  *
  * author: Jannik Beyerstedt
  */

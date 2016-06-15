@@ -94,10 +94,15 @@ class LogScope {
 public:
   LogScope(const std::string& s)
       : logger(Logger::getLogger()), s_(s) {
-    logger.log() << "entering function " << s_ << "\n";
+    if (!(Logger::getLogger().getLogLevel() < DEBUG)) {
+      logger.log(DEBUG) << "entering function " << s_ << "\n";
+    }
   }
   ~LogScope() {
-    logger.log() << "exiting function " << s_ << "\n";
+    if (!(Logger::getLogger().getLogLevel() < DEBUG)) {
+      logger.log() << "exiting function " << s_ << "\n";
+    }
+
   }
 
 private:

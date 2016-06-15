@@ -17,8 +17,6 @@
 #include <opencv2/core.hpp>
 #include <opencv2/videoio.hpp>
 
-#include <iostream>
-
 class ImageProcessing {
 public:
   ImageProcessing(int cameraID, ImageSource* src, Camera* camera, ObjectDetection* objDetection, IntraSystemMessaging* msgQueue);

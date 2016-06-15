@@ -68,7 +68,7 @@ public:
   ReturnStatus trackingStatus;
 
   IntraSysMsg() {
-    camID = 9999;
+    camID = 9999; // default ctor with invalid ID, because not properly initialized
   }
 
   IntraSysMsg(int camID_val, VectRayList rayList_val, ReturnStatus trackingStatus_val)

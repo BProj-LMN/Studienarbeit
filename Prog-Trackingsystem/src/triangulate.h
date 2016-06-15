@@ -10,7 +10,8 @@
 #ifndef TRIANGULATE_H_
 #define TRIANGULATE_H_
 
-#include <opencv2/core.hpp>
+#include "DataFormats.h"
+//#include "Logger.h"
 
 #include <stdio.h>
 #include <stdlib.h>

@@ -11,7 +11,7 @@
 #define SRC_CAMERA_H_
 
 #include "DataFormats.h"
-#include "Logger.h"
+//#include "Logger.h"
 
 #include <opencv2/core.hpp>
 #include <opencv2/videoio.hpp>

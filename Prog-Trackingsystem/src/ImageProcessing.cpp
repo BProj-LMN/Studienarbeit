@@ -14,6 +14,8 @@
 #include <opencv2/imgproc.hpp>
 #include <opencv2/highgui.hpp>
 
+#include <iostream>
+
 //#define DEBUG
 #define REFERENCE_FRAME_DELAY 60
 

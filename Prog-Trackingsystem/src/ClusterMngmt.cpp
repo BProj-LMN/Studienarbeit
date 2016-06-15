@@ -32,17 +32,8 @@ ClusterMngmt::ClusterMngmt(std::string configFile, IntraSystemMessaging* messagi
   fs["port"] >> udpPort;
   fs.release();
 
-  for (CameraProperties c : cameras) {
-
-  }
-
-  /*
-   * create ComInterface and Socket
-   */
   UdpSocketServer* socket = new UdpSocketServer(udpPort);
-
   comInterface = new ComBachelorprojekt(socket); // TODO switch between different com interfaces
-
 }
 
 ClusterMngmt::~ClusterMngmt() {
@@ -66,7 +57,6 @@ void ClusterMngmt::evaluate() {
     errorCode |= ERR_BIG_DISTANCE;
   }
 
-  // TODO: send data via ComInterface
   comInterface->sendData(position, errorCode);
 
   /*
