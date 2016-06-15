@@ -10,6 +10,7 @@
 #define SRC_CLUSTERMNGMT_H_
 
 #include "IntraSystemMessaging.h"
+#include "CameraProperties.h"
 
 class ClusterMngmt {
 public:
