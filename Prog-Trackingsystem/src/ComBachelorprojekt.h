@@ -12,7 +12,6 @@
 #include "ComInterface.h"
 
 //#include "DataFormats.h"
-//#include "myGlobalConstants.h"
 //#include "Logger.h"
 
 class Bachelorprojekt: public ComInterface {
@@ -23,8 +22,10 @@ public:
   }
 
   void evaluate() {
+    // TODO: implement
   }
   void sendData() {
+    // TODO: implement
   }
 };
 

@@ -13,6 +13,10 @@
 
 #include <vector>
 
+typedef enum {
+  ERR = -1, OK = 0
+} ReturnStatus;
+
 class PxPos {
 public:
   float x;

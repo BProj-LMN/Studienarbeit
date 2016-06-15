@@ -9,10 +9,6 @@
 
 #include "Camera.h"
 
-//#include "DataFormats.h"
-#include "myGlobalConstants.h"
-//#include "Logger.h"
-
 #include <opencv2/imgproc.hpp>
 #include <opencv2/calib3d.hpp>
 
@@ -25,7 +21,7 @@ Camera::Camera(std::string configFile) {
   parseConfig(configFile);
 }
 
-int Camera::undistort(const PxPos& src, PxPos& dst) {
+ReturnStatus Camera::undistort(const PxPos& src, PxPos& dst) {
   // TODO Task: call undistortPoints()
   //undistortPoints(src, dst, *cameraMatrix, *distCoeffs);
 
@@ -34,10 +30,10 @@ int Camera::undistort(const PxPos& src, PxPos& dst) {
   return ERR;
 }
 
-int Camera::parseConfig(std::string configFile) {
+ReturnStatus Camera::parseConfig(std::string configFile) {
   cv::FileStorage fs(configFile, cv::FileStorage::READ); // Read the settings
   if (!fs.isOpened()) {
-    fprintf(stderr, "ERROR: Camera::readSettings - opening file \n");
+    std::cerr << "ERROR: Camera::readSettings - opening file" << std::endl;
     return ERR;
   }
 
@@ -70,7 +66,7 @@ void Camera::addGlobalMaskToFrame(cv::Mat& frame) {
 /*
  * calculates objectRay for use in triangulation from a sensor pixelPosition
  */
-int Camera::calcObjRay(const PxPos& pixelPos, VectRay& objectRay) {
+ReturnStatus Camera::calcObjRay(const PxPos& pixelPos, VectRay& objectRay) {
   cv::Point2f pixelPosition{pixelPos.x, pixelPos.y};
   Pos3D direction;
 
@@ -98,7 +94,7 @@ int Camera::calcObjRay(const PxPos& pixelPos, VectRay& objectRay) {
  *
  * pixelPosition.x <=> u , pixelPosition.y <=> v
  */
-int Camera::calcObjectRayInCameraCoordinates(const cv::Point2f& pixelPosition, cv::Point3f& objectRay) {
+ReturnStatus Camera::calcObjectRayInCameraCoordinates(const cv::Point2f& pixelPosition, cv::Point3f& objectRay) {
   float c_x = cameraMatrix.at<double>(0, 2);
   float c_y = cameraMatrix.at<double>(1, 2);
   float f = cameraMatrix.at<double>(0, 0);

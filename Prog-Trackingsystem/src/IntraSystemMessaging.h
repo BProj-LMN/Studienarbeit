@@ -10,7 +10,6 @@
 #define SRC_INTRASYSTEMMESSAGING_H_
 
 #include "DataFormats.h"
-//#include "myGlobalConstants.h"
 //#include "Logger.h"
 
 class IntraSystemMessaging {

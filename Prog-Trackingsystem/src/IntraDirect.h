@@ -12,7 +12,6 @@
 #include "IntraSystemMessaging.h"
 
 //#include "DataFormats.h"
-//#include "myGlobalConstants.h"
 //#include "Logger.h"
 
 class IntraDirect: public IntraSystemMessaging {

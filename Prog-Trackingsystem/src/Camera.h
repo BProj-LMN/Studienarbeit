@@ -11,7 +11,6 @@
 #define SRC_CAMERA_H_
 
 #include "DataFormats.h"
-//#include "myGlobalConstants.h"
 #include "Logger.h"
 
 #include <opencv2/core.hpp>
@@ -21,17 +20,17 @@ class Camera {
 public:
   Camera(std::string configFile);
 
-  int undistort(const PxPos& src, PxPos& dst);
-  int calcObjRay(const PxPos& pixelPos, VectRay& objectRay);
+  ReturnStatus undistort(const PxPos& src, PxPos& dst);
+  ReturnStatus calcObjRay(const PxPos& pixelPos, VectRay& objectRay);
 
   void initGlobalMask(cv::Mat& frame);
   void addGlobalMaskToFrame(cv::Mat& frame);
   bool globalMaskSet;
 
 private:
-  int parseConfig(std::string configFile);
+  ReturnStatus parseConfig(std::string configFile);
 
-  int calcObjectRayInCameraCoordinates(const cv::Point2f& pixelPosition, cv::Point3f& objectRayCameraCoord);
+  ReturnStatus calcObjectRayInCameraCoordinates(const cv::Point2f& pixelPosition, cv::Point3f& objectRayCameraCoord);
 
   cv::Mat cameraMatrix;
   cv::Mat distCoeffs;

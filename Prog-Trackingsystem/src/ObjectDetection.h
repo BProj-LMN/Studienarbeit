@@ -10,7 +10,6 @@
 #define SRC_OBJECTDETECTION_H_
 
 #include "DataFormats.h"
-//#include "myGlobalConstants.h"
 //#include "Logger.h"
 
 class ObjectDetection {
@@ -19,7 +18,7 @@ class ObjectDetection {
 public:
   virtual ~ObjectDetection(){};
 
-  virtual int detect(cv::Mat frame, PxPosList& position) = 0;
+  virtual ReturnStatus detect(cv::Mat frame, PxPosList& position) = 0;
   virtual void setReferenceFrame(cv::Mat frame) = 0;
 };
 

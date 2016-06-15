@@ -8,8 +8,7 @@
 
 #include "ObjDetSimple.h"
 
-//#include "DataFormats.h"
-#include "myGlobalConstants.h"
+#include "DataFormats.h"
 #include "Logger.h"
 
 #include <opencv2/highgui.hpp>
@@ -29,7 +28,7 @@ void ObjDetSimple::setReferenceFrame(cv::Mat frame) {
  * input:  grayscale frame
  * output: Point2i with detected position
  */
-int ObjDetSimple::detect(cv::Mat frame, PxPosList& pxPosition) {
+ReturnStatus ObjDetSimple::detect(cv::Mat frame, PxPosList& pxPosition) {
   cv::Mat diffImage, thresholdImage;
   cv::Rect objectBounding = cv::Rect(0, 0, 0, 0);
   cv::Point2i pixelPosition;
@@ -38,22 +37,14 @@ int ObjDetSimple::detect(cv::Mat frame, PxPosList& pxPosition) {
   absdiff(referenceFrame, frame, diffImage); // output: grayscale
   threshold(diffImage, thresholdImage, SENSITIVITY_VALUE, 255, cv::THRESH_BINARY); // output: binary
 #ifdef SHOW_THESHOLD
-  if (cam->get_cameraID() == 1) {
-    imshow("cam2 threshold 1", thresholdImage);
-  } else {
-    imshow("cam1 threshold 1", thresholdImage);
-  }
+  imshow("cam threshold 1", thresholdImage);
 #endif
 
   // blur and threshold again to get rid of noise
   blur(thresholdImage, thresholdImage, cv::Size(BLUR_SIZE, BLUR_SIZE)); // output: grayscale
   threshold(thresholdImage, thresholdImage, SENSITIVITY_VALUE, 255, cv::THRESH_BINARY); // output: binary
 #ifdef SHOW_THESHOLD
-  if (cam->get_cameraID() == 1) {
-    imshow("cam2 threshold 2", thresholdImage);
-  } else {
-    imshow("cam1 threshold 2", thresholdImage);
-  }
+  imshow("cam threshold 2", thresholdImage);
 #endif
 
   int error = getObjectPosition(thresholdImage, pixelPosition, &objectBounding);
@@ -69,7 +60,7 @@ int ObjDetSimple::detect(cv::Mat frame, PxPosList& pxPosition) {
 
 }
 
-int ObjDetSimple::getObjectPosition(cv::Mat thresImg, cv::Point2i& objectPos, cv::Rect* boundingRectange) {
+ReturnStatus ObjDetSimple::getObjectPosition(cv::Mat thresImg, cv::Point2i& objectPos, cv::Rect* boundingRectange) {
 
   std::vector<std::vector<cv::Point> > contours;
   std::vector<cv::Vec4i> hierarchy;

@@ -18,7 +18,6 @@
 //#define DEBUG // show tracking image
 
 #include "DataFormats.h"
-#include "myGlobalConstants.h"
 #include "Logger.h"
 
 #include "ImageProcessingMngmt.h"
