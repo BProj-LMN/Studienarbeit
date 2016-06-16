@@ -28,7 +28,7 @@ void ObjDetSimple::setReferenceFrame(cv::Mat frame) {
  * input:  grayscale frame
  * output: Point2i with detected position
  */
-ReturnStatus ObjDetSimple::detect(cv::Mat frame, PxPosList& pxPosition) {
+Status ObjDetSimple::detect(cv::Mat frame, PxPosList& positions) {
   cv::Mat diffImage, thresholdImage;
   cv::Rect objectBounding = cv::Rect(0, 0, 0, 0);
   cv::Point2i pixelPosition;
@@ -50,7 +50,7 @@ ReturnStatus ObjDetSimple::detect(cv::Mat frame, PxPosList& pxPosition) {
   int error = getObjectPosition(thresholdImage, pixelPosition, &objectBounding);
 
   PxPos convert{float(pixelPosition.x), float(pixelPosition.y)};
-  pxPosition.push_back(convert);
+  positions.push_back(convert);
 
   if (0 == error) {
     return OK;
@@ -60,12 +60,12 @@ ReturnStatus ObjDetSimple::detect(cv::Mat frame, PxPosList& pxPosition) {
 
 }
 
-ReturnStatus ObjDetSimple::getObjectPosition(cv::Mat thresImg, cv::Point2i& objectPos, cv::Rect* boundingRectange) {
+Status ObjDetSimple::getObjectPosition(cv::Mat binaryImg, cv::Point2i& objectPos, cv::Rect* boundingRectange) {
 
   std::vector<std::vector<cv::Point> > contours;
   std::vector<cv::Vec4i> hierarchy;
 
-  findContours(thresImg, contours, hierarchy, CV_RETR_EXTERNAL, CV_CHAIN_APPROX_SIMPLE); // retrieves external contours
+  findContours(binaryImg, contours, hierarchy, CV_RETR_EXTERNAL, CV_CHAIN_APPROX_SIMPLE); // retrieves external contours
 
   // TODO: merge the two nearby contours ! - with erode and dilate !?
 

@@ -19,8 +19,8 @@
 //#define DEBUG
 #define REFERENCE_FRAME_DELAY 60
 
-ImageProcessing::ImageProcessing(int cameraID, ImageSource* src, Camera* camera, ObjectDetection* objDetection, IntraSystemMessaging* msgQueue)
-    : camID(cameraID), cap(src), cam(camera), objDet(objDetection), messaging(msgQueue) {
+ImageProcessing::ImageProcessing(int camID, ImageSource* src, CameraParams* cam, ObjectDetection* objDet, IntraSystemMessaging* intMsg)
+    : cameraID(camID), capture(src), camParams(cam), objectDet(objDet), internalCom(intMsg) {
   std::cout << "ImageProcessing::ctor start\n";
 
   /*
@@ -28,51 +28,51 @@ ImageProcessing::ImageProcessing(int cameraID, ImageSource* src, Camera* camera,
    */
   cv::Mat frame;
 
-  std::cout << "camera " << cameraID << ": waiting for reference frame...\n" << std::flush;
+  std::cout << "camera " << camID << ": waiting for reference frame...\n" << std::flush;
   cv::namedWindow("reference frame", cv::WINDOW_AUTOSIZE);
   for (int i = 0; i < REFERENCE_FRAME_DELAY; i++) {
-    *cap >> frame;
+    *capture >> frame;
 
     imshow("reference frame", frame);
     if (cv::waitKey(30) >= 0) {
       break;
     }
   }
-  objDet->setReferenceFrame(frame);
-  std::cout << "camera " << cameraID << " :reference frame set\n" << std::flush;
+  objectDet->setReferenceFrame(frame);
+  std::cout << "camera " << camID << " :reference frame set\n" << std::flush;
   cv::destroyWindow("reference frame");
 
   /*
    * initialize global frame mask
    */
-  cam->initGlobalMask(frame);
+  camParams->initGlobalMask(frame);
 
 }
 
 ImageProcessing::~ImageProcessing() {
-  std::cout << "ImageProcessing " << camID << " dtor\n";
+  std::cout << "ImageProcessing " << cameraID << " dtor\n";
 
-  delete cap;
-  delete cam;
-  delete objDet;
+  delete capture;
+  delete camParams;
+  delete objectDet;
   // do not delete messaging, because pointer is held by main!!!
 }
 
 void ImageProcessing::evaluate() {
-  std::cout << "ImageProcessing " << camID << " evaluate \n";
+  std::cout << "ImageProcessing " << cameraID << " evaluate \n";
   cv::Mat frame;
-  ReturnStatus status = OK;
+  Status status = OK;
   PxPosList pxPositions;
   VectRayList objectRayList;
 
   /*
    * image processing chain
    */
-  *cap >> frame;
+  *capture >> frame;
 
-  cam->addGlobalMaskToFrame(frame);
+  camParams->addGlobalMaskToFrame(frame);
 
-  status = objDet->detect(frame, pxPositions);
+  status = objectDet->detect(frame, pxPositions);
 
 #ifdef DEBUG
   PxPos pixelPos = pxPositions[0];
@@ -87,8 +87,8 @@ void ImageProcessing::evaluate() {
     PxPos undistorted;
     VectRay objectRay;
 
-    cam->undistort(pixel, undistorted);
-    cam->calcObjRay(undistorted, objectRay);
+    camParams->undistort(pixel, undistorted);
+    camParams->calcObjRay(undistorted, objectRay);
 
     objectRayList.push_back(objectRay);
   }
@@ -96,7 +96,7 @@ void ImageProcessing::evaluate() {
   /*
    * send data
    */
-  IntraSysMsg message{camID, objectRayList, status};
-  messaging->send(message);
+  IntraSysMsg message{cameraID, objectRayList, status};
+  internalCom->send(message);
 
 }

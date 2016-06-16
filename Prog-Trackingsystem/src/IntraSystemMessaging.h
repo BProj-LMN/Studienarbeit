@@ -14,7 +14,8 @@
 
 class IntraSystemMessaging {
 public:
-  virtual ~IntraSystemMessaging(){};
+  virtual ~IntraSystemMessaging() {
+  }
 
   virtual void send(IntraSysMsg msg) = 0;
   virtual IntraSysMsg recv() = 0;

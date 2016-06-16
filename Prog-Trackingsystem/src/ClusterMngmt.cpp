@@ -14,8 +14,8 @@
 #include "UdpSocketServer.h"
 #include "triangulate.h"
 
-ClusterMngmt::ClusterMngmt(std::string configFile, IntraSystemMessaging* messagingSystem) {
-  messaging = messagingSystem;
+ClusterMngmt::ClusterMngmt(std::string configFile, IntraSystemMessaging* intMsg) {
+  internalCom = intMsg;
 
   cv::FileStorage fs(configFile, cv::FileStorage::READ); // Read the settings
   if (!fs.isOpened()) {
@@ -33,16 +33,16 @@ ClusterMngmt::ClusterMngmt(std::string configFile, IntraSystemMessaging* messagi
   fs.release();
 
   UdpSocketServer* socket = new UdpSocketServer(udpPort);
-  comInterface = new ComBachelorprojekt(socket); // TODO switch between different com interfaces
+  externalCom = new ComBachelorprojekt(socket); // TODO switch between different com interfaces
 }
 
 ClusterMngmt::~ClusterMngmt() {
-  delete comInterface;
+  delete externalCom;
   // do not delete messaging, because pointer is held by main!!!
 }
 
 void ClusterMngmt::evaluate() {
-  comInterface->evaluate();
+  externalCom->evaluate();
 
   int triangulationMinDistance{0};
   Pos3D position;
@@ -57,7 +57,7 @@ void ClusterMngmt::evaluate() {
     errorCode |= ERR_BIG_DISTANCE;
   }
 
-  comInterface->sendData(position, errorCode);
+  externalCom->sendData(position, errorCode);
 
   /*
    * console output

@@ -15,16 +15,16 @@
 
 class ClusterMngmt {
 public:
-  ClusterMngmt(std::string configFile, IntraSystemMessaging* messagingSystem);
+  ClusterMngmt(std::string configFile, IntraSystemMessaging* intMsg);
   virtual ~ClusterMngmt();
 
   void evaluate();
 
 private:
-  IntraSystemMessaging* messaging;
+  IntraSystemMessaging* internalCom;
   std::vector<CameraProperties> cameras;
 
-  ComInterface* comInterface;
+  ComInterface* externalCom;
 };
 
 #endif /* SRC_CLUSTERMNGMT_H_ */

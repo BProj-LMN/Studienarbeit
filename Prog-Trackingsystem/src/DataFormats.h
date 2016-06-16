@@ -15,7 +15,7 @@
 
 typedef enum {
   ERR = -1, OK = 0
-} ReturnStatus;
+} Status;
 
 class PxPos {
 public:
@@ -59,19 +59,19 @@ public:
   }
 };
 
-typedef std::vector<VectRay> VectRayList;
+typedef std::vector<VectRay> VectRayList; // TODO: some deep copy needed?
 
 class IntraSysMsg {
 public:
   int camID;
   VectRayList rayList;
-  ReturnStatus trackingStatus;
+  Status trackingStatus;
 
   IntraSysMsg() {
     camID = 9999; // default ctor with invalid ID, because not properly initialized
   }
 
-  IntraSysMsg(int camID_val, VectRayList rayList_val, ReturnStatus trackingStatus_val)
+  IntraSysMsg(int camID_val, VectRayList rayList_val, Status trackingStatus_val)
       : camID(camID_val), rayList(rayList_val), trackingStatus(trackingStatus_val) {
   }
 

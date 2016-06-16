@@ -21,15 +21,14 @@
 #define MYEPS      1.0E-19
 #define ANZ_KOORDS 3       // Anzahl Dimensionen des Koordinatensystems
 
-void triangulate(cv::Point3f cam1_p, cv::Point3f cam1_u, cv::Point3f cam2_p, cv::Point3f cam2_u, cv::Point3f& position, float& distance) {
+int triangulate(VectRay& ray1, VectRay& ray2, Pos3D& pos) {
+  /*** Eingabeparameter fuer Algomithmus umwandeln ***/
+  float g1_posVec[3] = { float(ray1.pos.x), float(ray1.pos.y), float(ray1.pos.z) }; // Gerade 1 Ortsvektor
+  float g1_dirVec[3] = { float(ray1.dir.x), float(ray1.dir.y), float(ray1.dir.z) }; // Gerade 1 Richtungsvektor
+  float g2_posVec[3] = { float(ray2.pos.x), float(ray2.pos.y), float(ray2.pos.z) }; // Gerade 2 Ortsvektor
+  float g2_dirVec[3] = { float(ray2.dir.x), float(ray2.dir.y), float(ray2.dir.z) }; // Gerade 2 Richtungsvektor
 
-  /*** Interne Variablen zur Ermittlung des Verbindungsvektors und
-   der Elemente des linearen Gleichungssystems ***/
-  float g1_posVec[3] = { cam1_p.x, cam1_p.y, cam1_p.z }; // Gerade 1 Ortsvektor
-  float g1_dirVec[3] = { cam1_u.x, cam1_u.y, cam1_u.z }; // Gerade 1 Richtungsvektor
-  float g2_posVec[3] = { cam2_p.x, cam2_p.y, cam2_p.z }; // Gerade 2 Ortsvektor
-  float g2_dirVec[3] = { cam2_u.x, cam2_u.y, cam2_u.z }; // Gerade 2 Richtungsvektor
-
+  /*** interne Variablen anlegen ***/
   int i = 0;
   float a[ANZ_KOORDS][ANZ_KOORDS];
   float b[ANZ_KOORDS][ANZ_KOORDS];
@@ -104,12 +103,13 @@ void triangulate(cv::Point3f cam1_p, cv::Point3f cam1_u, cv::Point3f cam2_p, cv:
     Schnittpunkt[i] = g1_posVec[i] + Skalar[1] * g1_dirVec[i] + Verbindungsvektor_halbiert[i];
   }
 
-  /*** Berechnung des kleinsten Abstands ***/
-  distance = sqrt(pow(Verbindungsvektor[0], 2) + pow(Verbindungsvektor[1], 2) + pow(Verbindungsvektor[2], 2));
+  /*** Rückgabewert (Referenz als Paramteter erhalten) zusammenstellen ***/
+  pos.x = Schnittpunkt[0];
+  pos.y = Schnittpunkt[1];
+  pos.z = Schnittpunkt[2];
 
-  position.x = Schnittpunkt[0];
-  position.y = Schnittpunkt[1];
-  position.z = Schnittpunkt[2];
+  /*** BERECHNUNG DES KLEINSTEN ABSTANDS ***/
+  return sqrt(pow(Verbindungsvektor[0], 2) + pow(Verbindungsvektor[1], 2) + pow(Verbindungsvektor[2], 2));
 }
 
 #endif /* TRIANGULATE_H_ */

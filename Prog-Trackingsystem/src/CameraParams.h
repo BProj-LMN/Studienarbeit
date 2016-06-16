@@ -7,8 +7,8 @@
  * author: Jannik Beyerstedt
  */
 
-#ifndef SRC_CAMERA_H_
-#define SRC_CAMERA_H_
+#ifndef SRC_CAMERAPARAMS_H_
+#define SRC_CAMERAPARAMS_H_
 
 #include "DataFormats.h"
 //#include "Logger.h"
@@ -16,21 +16,21 @@
 #include <opencv2/core.hpp>
 #include <opencv2/videoio.hpp>
 
-class Camera {
+class CameraParams {
 public:
-  Camera(std::string configFile);
+  CameraParams(std::string configFile);
 
-  ReturnStatus undistort(const PxPos& src, PxPos& dst);
-  ReturnStatus calcObjRay(const PxPos& pixelPos, VectRay& objectRay);
+  Status undistort(const PxPos& src, PxPos& dst);
+  Status calcObjRay(const PxPos& pos, VectRay& objectRay);
 
   void initGlobalMask(cv::Mat& frame);
   void addGlobalMaskToFrame(cv::Mat& frame);
   bool globalMaskSet;
 
 private:
-  ReturnStatus parseConfig(std::string configFile);
+  Status parseConfig(std::string configFile);
 
-  ReturnStatus calcObjectRayInCameraCoordinates(const cv::Point2f& pixelPosition, cv::Point3f& objectRayCameraCoord);
+  Status calcObjectRayInCameraCoordinates(const cv::Point2f& pixelPosition, cv::Point3f& objectRayCameraCoord);
 
   cv::Mat cameraMatrix;
   cv::Mat distCoeffs;
@@ -41,4 +41,4 @@ private:
   cv::Mat globalMask;
 };
 
-#endif /* SRC_CAMERA_H_ */
+#endif /* SRC_CAMERAPARAMS_H_ */

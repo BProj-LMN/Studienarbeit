@@ -100,7 +100,7 @@ public:
   }
   ~LogScope() {
     if (!(Logger::getLogger().getLogLevel() < DEBUG)) {
-      logger.log() << "exiting function " << s_ << "\n";
+      logger.log(DEBUG) << "exiting function " << s_ << "\n";
     }
 
   }

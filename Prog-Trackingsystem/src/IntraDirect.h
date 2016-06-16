@@ -20,7 +20,8 @@ public:
   IntraDirect()
       : msg() {
   }
-  virtual ~IntraDirect() {}
+  virtual ~IntraDirect() {
+  }
 
   void send(IntraSysMsg msg) {
     this->msg = msg;

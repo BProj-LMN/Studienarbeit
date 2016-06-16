@@ -22,7 +22,7 @@ class CameraProperties;
 
 class ImageProcessingMngmt {
 public:
-  ImageProcessingMngmt(std::string configFile, IntraSystemMessaging* messagingSystem);
+  ImageProcessingMngmt(std::string configFile, IntraSystemMessaging* intMsg);
   ~ImageProcessingMngmt();
 
   void evaluate();

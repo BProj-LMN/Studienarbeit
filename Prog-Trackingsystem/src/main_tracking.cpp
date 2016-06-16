@@ -7,7 +7,7 @@
  * authors: Jannik Beyerstedt, Daniel Friedrich
  */
 
-#define TESTING
+//#define TESTING
 
 #ifndef TESTING
 #define SETTINGS "../Progs-configStore/sysConfig.yml"

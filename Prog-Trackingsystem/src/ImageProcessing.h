@@ -9,7 +9,7 @@
 #ifndef SRC_IMAGEPROCESSING_H_
 #define SRC_IMAGEPROCESSING_H_
 
-#include "Camera.h"
+#include "CameraParams.h"
 #include "ObjectDetection.h"
 #include "IntraSystemMessaging.h"
 #include "ImageSource.h"
@@ -19,17 +19,17 @@
 
 class ImageProcessing {
 public:
-  ImageProcessing(int cameraID, ImageSource* src, Camera* camera, ObjectDetection* objDetection, IntraSystemMessaging* msgQueue);
+  ImageProcessing(int camID, ImageSource* src, CameraParams* cam, ObjectDetection* objDet, IntraSystemMessaging* intMsg);
   ~ImageProcessing();
 
   void evaluate();
 
 private:
-  int camID;
-  ImageSource* cap;
-  Camera* cam;
-  ObjectDetection* objDet;
-  IntraSystemMessaging* messaging;
+  int cameraID;
+  ImageSource* capture;
+  CameraParams* camParams;
+  ObjectDetection* objectDet;
+  IntraSystemMessaging* internalCom;
 };
 
 #endif /* SRC_IMAGEPROCESSING_H_ */

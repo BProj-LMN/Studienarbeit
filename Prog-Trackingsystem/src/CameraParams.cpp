@@ -7,7 +7,7 @@
  * author: Jannik Beyerstedt
  */
 
-#include "Camera.h"
+#include "CameraParams.h"
 
 #include <opencv2/imgproc.hpp>
 #include <opencv2/calib3d.hpp>
@@ -16,12 +16,12 @@
 #include <iostream>
 #include <iomanip>
 
-Camera::Camera(std::string configFile) {
+CameraParams::CameraParams(std::string configFile) {
   globalMaskSet = 0;
   parseConfig(configFile);
 }
 
-ReturnStatus Camera::undistort(const PxPos& src, PxPos& dst) {
+Status CameraParams::undistort(const PxPos& src, PxPos& dst) {
   // TODO Task: call undistortPoints()
   //undistortPoints(src, dst, *cameraMatrix, *distCoeffs);
 
@@ -30,7 +30,7 @@ ReturnStatus Camera::undistort(const PxPos& src, PxPos& dst) {
   return ERR;
 }
 
-ReturnStatus Camera::parseConfig(std::string configFile) {
+Status CameraParams::parseConfig(std::string configFile) {
   cv::FileStorage fs(configFile, cv::FileStorage::READ); // Read the settings
   if (!fs.isOpened()) {
     std::cerr << "ERROR: Camera::readSettings - opening file" << std::endl;
@@ -47,7 +47,7 @@ ReturnStatus Camera::parseConfig(std::string configFile) {
   return OK;
 }
 
-void Camera::initGlobalMask(cv::Mat& frame) {
+void CameraParams::initGlobalMask(cv::Mat& frame) {
   if (globalMask_Rect.area() > 0) {
     this->globalMask = cv::Mat::zeros(frame.rows, frame.cols, CV_8U);
     this->globalMask(globalMask_Rect) = 255;
@@ -57,7 +57,7 @@ void Camera::initGlobalMask(cv::Mat& frame) {
   }
 }
 
-void Camera::addGlobalMaskToFrame(cv::Mat& frame) {
+void CameraParams::addGlobalMaskToFrame(cv::Mat& frame) {
   if (globalMaskSet) {
     frame = frame & globalMask;
   }
@@ -66,8 +66,8 @@ void Camera::addGlobalMaskToFrame(cv::Mat& frame) {
 /*
  * calculates objectRay for use in triangulation from a sensor pixelPosition
  */
-ReturnStatus Camera::calcObjRay(const PxPos& pixelPos, VectRay& objectRay) {
-  cv::Point2f pixelPosition{pixelPos.x, pixelPos.y};
+Status CameraParams::calcObjRay(const PxPos& pos, VectRay& objectRay) {
+  cv::Point2f pixelPosition{pos.x, pos.y};
   Pos3D direction;
 
   // calculate object ray in world coordinates from pixel position
@@ -94,7 +94,7 @@ ReturnStatus Camera::calcObjRay(const PxPos& pixelPos, VectRay& objectRay) {
  *
  * pixelPosition.x <=> u , pixelPosition.y <=> v
  */
-ReturnStatus Camera::calcObjectRayInCameraCoordinates(const cv::Point2f& pixelPosition, cv::Point3f& objectRay) {
+Status CameraParams::calcObjectRayInCameraCoordinates(const cv::Point2f& pixelPosition, cv::Point3f& objectRay) {
   float c_x = cameraMatrix.at<double>(0, 2);
   float c_y = cameraMatrix.at<double>(1, 2);
   float f = cameraMatrix.at<double>(0, 0);

@@ -19,10 +19,10 @@ class ObjDetSimple: public ObjectDetection {
 public:
   virtual ~ObjDetSimple();
   void setReferenceFrame(cv::Mat frame);
-  ReturnStatus detect(cv::Mat frame, PxPosList& pxPosition);
+  Status detect(cv::Mat frame, PxPosList& positions);
 
 private:
-  ReturnStatus getObjectPosition(cv::Mat thresImg, cv::Point2i& objectPos, cv::Rect* boundingRect);
+  Status getObjectPosition(cv::Mat binaryImg, cv::Point2i& objectPos, cv::Rect* boundingRect);
 };
 
 #endif /* SRC_OBJDETSIMPLE_H_ */

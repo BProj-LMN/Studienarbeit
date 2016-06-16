@@ -20,7 +20,7 @@ public:
   virtual ~ObjectDetection() {
   }
 
-  virtual ReturnStatus detect(cv::Mat frame, PxPosList& position) = 0;
+  virtual Status detect(cv::Mat frame, PxPosList& positions) = 0;
   virtual void setReferenceFrame(cv::Mat frame) = 0;
 };
 
