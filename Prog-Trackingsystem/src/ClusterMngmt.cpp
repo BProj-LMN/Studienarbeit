@@ -15,13 +15,14 @@
 #include "triangulate.h"
 
 ClusterMngmt::ClusterMngmt(std::string configFile, IntraSystemMessaging* intMsg) {
+  LOG_SCOPE;
+
   internalCom = intMsg;
 
   cv::FileStorage fs(configFile, cv::FileStorage::READ); // Read the settings
   if (!fs.isOpened()) {
-    LOG_ERROR << "ClusterMngmt::ctor - settings file could not be openend\n";
-    std::cout << "ClusterMngmt::ctor - settings file could not be openend\n";
-    // TODO: exit / throw exception
+    LOG_ERROR << "ClusterMngmt::ctor - sysConfig settings file could not be opened\n";
+    throw Error("sysConfig settings file could not be opened");
   }
 
   std::string comIntUsed;
@@ -37,6 +38,8 @@ ClusterMngmt::ClusterMngmt(std::string configFile, IntraSystemMessaging* intMsg)
 }
 
 ClusterMngmt::~ClusterMngmt() {
+  LOG_SCOPE;
+
   delete externalCom;
   // do not delete messaging, because pointer is held by main!!!
 }
@@ -67,5 +70,4 @@ void ClusterMngmt::evaluate() {
   std::cout << "\t\t" << "error code: ";
   fprintf(stdout, "0x%2x", errorCode);
   std::cout << "\n";
-
 }

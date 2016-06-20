@@ -17,7 +17,6 @@
 
 class ObjDetSimple: public ObjectDetection {
 public:
-  virtual ~ObjDetSimple();
   void setReferenceFrame(cv::Mat frame);
   Status detect(cv::Mat frame, PxPosList& positions);
 

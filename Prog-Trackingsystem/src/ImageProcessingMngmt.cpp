@@ -24,9 +24,8 @@ ImageProcessingMngmt::ImageProcessingMngmt(std::string configFile, IntraSystemMe
 
   cv::FileStorage fs(configFile, cv::FileStorage::READ); // Read the settings
   if (!fs.isOpened()) {
-    LOG_ERROR << "ImageProcessingMngmt::ctor - settings file could not be openend\n";
-    std::cout << "ImageProcessingMngmt::ctor - settings file could not be openend\n";
-    // TODO: exit / throw exception
+    LOG_ERROR << "ImageProcessingMngmt::ctor - sysConfig settings file could not be opened\n";
+    throw Error("sysConfig settings file could not be opened");
   }
 
   std::string objDetUsed;
@@ -37,9 +36,7 @@ ImageProcessingMngmt::ImageProcessingMngmt(std::string configFile, IntraSystemMe
   fs.release();
 
   for (CameraProperties c : cameras) {
-    std::cout << c << "\n";
-
-    parseConfigAndFactory(c);
+    factoryCamera(c);
   }
 }
 
@@ -53,21 +50,19 @@ ImageProcessingMngmt::~ImageProcessingMngmt() {
 }
 
 void ImageProcessingMngmt::evaluate() {
-
   for (ImageProcessing* cam : cameras) {
     cam->evaluate();
   }
-
-  std::cout << "\n";
 }
 
-void ImageProcessingMngmt::parseConfigAndFactory(CameraProperties camProps) {
+void ImageProcessingMngmt::factoryCamera(CameraProperties camProps) {
+  std::cout << "ImageProcessingMngmt - create " << camProps << "\n";
+
   ImageSource* cap = new ImageSource{camProps.videoSrc};
   if (!cap->isOpened()) {
-    LOG_ERROR << "ImageProcessingMngmt::parseConfigAndFactory - error opening VideoCapture\n";
-    std::cout << "ImageProcessingMngmt::parseConfigAndFactory - error opening VideoCapture\n";
+    LOG_ERROR << "ImageProcessingMngmt::factoryCamerar - error opening VideoCapture - videoSrc=" << camProps.videoSrc << "\n";
     std::cout << "videoSrc=" << camProps.videoSrc << "\n";
-    return;
+    throw Error("ImageProcessingMngmt::factoryCamera - error opening VideoCapture\n");
   }
 
   CameraParams* cam = new CameraParams{camProps.configFile};

@@ -28,7 +28,7 @@ public:
   bool globalMaskSet;
 
 private:
-  Status parseConfig(std::string configFile);
+  void parseConfig(std::string configFile);
 
   Status calcObjectRayInCameraCoordinates(const cv::Point2f& pixelPosition, cv::Point3f& objectRayCameraCoord);
 

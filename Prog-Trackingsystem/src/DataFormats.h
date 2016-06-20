@@ -12,6 +12,7 @@
 #include <opencv2/core.hpp>
 
 #include <vector>
+#include <exception>
 
 typedef enum {
   ERR = -1, OK = 0
@@ -80,6 +81,25 @@ public:
     os << "IntraSystMsg for camID: " << obj.camID;
     return os;
   }
+};
+
+class Error {
+public:
+  Error(std::string message)
+      : msg(message) {
+  }
+
+  friend std::ostream& operator<<(std::ostream& os, const Error& obj) {
+    os << "Error: " << obj.msg;
+    return os;
+  }
+
+  std::string what() {
+    return msg;
+  }
+
+private:
+  std::string msg;
 };
 
 #endif /* SRC_DATAFORMATS_H_ */

@@ -9,6 +9,9 @@
 
 #include "CameraParams.h"
 
+//#include "DataFormats.h"
+#include "Logger.h"
+
 #include <opencv2/imgproc.hpp>
 #include <opencv2/calib3d.hpp>
 
@@ -17,6 +20,8 @@
 #include <iomanip>
 
 CameraParams::CameraParams(std::string configFile) {
+  LOG_SCOPE;
+
   globalMaskSet = 0;
   parseConfig(configFile);
 }
@@ -30,11 +35,11 @@ Status CameraParams::undistort(const PxPos& src, PxPos& dst) {
   return ERR;
 }
 
-Status CameraParams::parseConfig(std::string configFile) {
+void CameraParams::parseConfig(std::string configFile) {
   cv::FileStorage fs(configFile, cv::FileStorage::READ); // Read the settings
   if (!fs.isOpened()) {
-    std::cerr << "ERROR: Camera::readSettings - opening file" << std::endl;
-    return ERR;
+    LOG_ERROR << "CameraParams::parseConfig - settings file could not be opened\n";
+    throw Error("camConfig settings file could not be opened");
   }
 
   fs["cameraMatrix"] >> cameraMatrix;
@@ -43,8 +48,6 @@ Status CameraParams::parseConfig(std::string configFile) {
   fs["positionVector"] >> positionVector;
   fs["rotationMatrix"] >> rotationMatrix;
   fs.release();                                    // close Settings file
-
-  return OK;
 }
 
 void CameraParams::initGlobalMask(cv::Mat& frame) {
@@ -53,7 +56,7 @@ void CameraParams::initGlobalMask(cv::Mat& frame) {
     this->globalMask(globalMask_Rect) = 255;
     globalMaskSet = 1;
   } else {
-    std::cout << "[ERROR] Camera::initGlobalMask - area of globalMask_Rect is 0" << std::endl;
+    globalMaskSet = 0;
   }
 }
 

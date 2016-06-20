@@ -17,10 +17,6 @@
 const static int SENSITIVITY_VALUE = 35;  // threshold for threshold()
 const static int BLUR_SIZE = 10;  // for absdiff()
 
-ObjDetSimple::~ObjDetSimple() {
-  LOG_DEBUG << "ObjDetSimple::dtor called\n";
-  std::cout << "ObjDetSimple::dtor called\n";
-}
 void ObjDetSimple::setReferenceFrame(cv::Mat frame) {
   this->referenceFrame = frame;
 }

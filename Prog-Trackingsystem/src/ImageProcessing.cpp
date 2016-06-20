@@ -9,7 +9,7 @@
 #include "ImageProcessing.h"
 
 #include "DataFormats.h"
-//#include "Logger.h"
+#include "Logger.h"
 
 #include <opencv2/imgproc.hpp>
 #include <opencv2/highgui.hpp>
@@ -21,7 +21,7 @@
 
 ImageProcessing::ImageProcessing(int camID, ImageSource* src, CameraParams* cam, ObjectDetection* objDet, IntraSystemMessaging* intMsg)
     : cameraID(camID), capture(src), camParams(cam), objectDet(objDet), internalCom(intMsg) {
-  std::cout << "ImageProcessing::ctor start\n";
+  LOG_SCOPE;
 
   /*
    * set reference frame for tracking
@@ -34,23 +34,22 @@ ImageProcessing::ImageProcessing(int camID, ImageSource* src, CameraParams* cam,
     *capture >> frame;
 
     imshow("reference frame", frame);
-    if (cv::waitKey(30) >= 0) {
+    if (cv::waitKey(1) >= 0) {
       break;
     }
   }
   objectDet->setReferenceFrame(frame);
-  std::cout << "camera " << camID << " :reference frame set\n" << std::flush;
+  std::cout << "camera " << camID << ": reference frame set\n" << std::flush;
   cv::destroyWindow("reference frame");
 
   /*
    * initialize global frame mask
    */
   camParams->initGlobalMask(frame);
-
 }
 
 ImageProcessing::~ImageProcessing() {
-  std::cout << "ImageProcessing " << cameraID << " dtor\n";
+  LOG_SCOPE;
 
   delete capture;
   delete camParams;
@@ -59,7 +58,6 @@ ImageProcessing::~ImageProcessing() {
 }
 
 void ImageProcessing::evaluate() {
-  std::cout << "ImageProcessing " << cameraID << " evaluate \n";
   cv::Mat frame;
   Status status = OK;
   PxPosList pxPositions;
@@ -98,5 +96,4 @@ void ImageProcessing::evaluate() {
    */
   IntraSysMsg message{cameraID, objectRayList, status};
   internalCom->send(message);
-
 }

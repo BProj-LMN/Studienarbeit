@@ -12,15 +12,17 @@
 #include "IntraSystemMessaging.h"
 
 //#include "DataFormats.h"
-//#include "Logger.h"
+#include "Logger.h"
 
 class IntraDirect: public IntraSystemMessaging {
   IntraSysMsg msg;
 public:
   IntraDirect()
       : msg() {
+    LOG_SCOPE;
   }
   virtual ~IntraDirect() {
+    LOG_SCOPE;
   }
 
   void send(IntraSysMsg msg) {

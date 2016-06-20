@@ -28,7 +28,7 @@ public:
   void evaluate();
 
 private:
-  void parseConfigAndFactory(CameraProperties camProps);
+  void factoryCamera(CameraProperties camProps);
 
 private:
   std::vector<ImageProcessing*> cameras;

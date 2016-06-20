@@ -33,18 +33,23 @@
 int main(int argc, const char** argv) {
   LOG_SET_LEVEL_DEBUG;
 
-  IntraSystemMessaging* messaging = new IntraDirect {};
+  try {
+    std::cout << "--- tracking system application start ---\n\n" << std::flush;
 
-  ImageProcessingMngmt imgProcManagement {SETTINGS, messaging};
-  ClusterMngmt clusterManagement {SETTINGS, messaging};
+    IntraSystemMessaging* messaging = new IntraDirect {};
+
+    ImageProcessingMngmt imgProcManagement {SETTINGS, messaging};
+    ClusterMngmt clusterManagement {SETTINGS, messaging};
 
 //    cv::Mat destroyimg = cv::imread("test/destroybild.jpg", 1);   // Read the file
 //    cv::namedWindow("zum Beenden: press ESC", cv::WINDOW_AUTOSIZE);
 //    imshow("zum Beenden: press ESC", destroyimg);
 
-  try {
+    std::cout << "--- setup ok, doing tracking loop ---\n\n" << std::flush;
+    LOG_ERROR << "setup done\n";
+
 #ifndef TESTING
-//    while (1) {
+    while (1) {
 #else
     for (int i = 0; i < 10; i++) {
 #endif
@@ -66,11 +71,18 @@ int main(int argc, const char** argv) {
      * tidy everything up
      */
     std::cout << "--> shut down program\n";
+    LOG_ERROR << "normal program shutdown\n";
     return (0);
 
-  } catch (cv::Exception & e) {
-    std::cout << "---- opencv exception catched ----\n";
+  } catch (cv::Exception& e) {
+    std::cout << "---- opencv exception caught ----\n";
+    LOG_ERROR << "catch cv::Exception\n";
     std::cout << e.msg << "\n" << std::flush;
+
+  } catch (Error& e) {
+    std::cout << "---- Error caught ----\n";
+    LOG_ERROR << "catch Error\n";
+    std::cout << e << "\n" << std::flush;;
   }
 
 }

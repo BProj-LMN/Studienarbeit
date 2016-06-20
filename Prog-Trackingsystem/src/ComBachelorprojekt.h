@@ -12,7 +12,7 @@
 #include "ComInterface.h"
 
 #include "DataFormats.h"
-//#include "Logger.h"
+#include "Logger.h"
 
 #define ERR_TRACKING_LOST 0x01
 #define ERR_BIG_DISTANCE  0x02
@@ -21,10 +21,14 @@
 class ComBachelorprojekt: public ComInterface {
 public:
   ComBachelorprojekt(UdpSocketServer* socketServer) {
+    LOG_SCOPE;
+
     socket = socketServer;
   }
 
   ~ComBachelorprojekt() {
+    LOG_SCOPE;
+
     delete socket;
   }
 
@@ -40,7 +44,7 @@ public:
     if (newMessage) {
       // shut down, if requested
       if (message.compare("exit")) {
-        // TODO: throw exception or something to quit application
+        throw Error("remote exit command received"); // throw exception to abort/ exit application
       }
     }
 
