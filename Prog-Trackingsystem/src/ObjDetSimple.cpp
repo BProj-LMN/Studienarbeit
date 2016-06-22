@@ -63,7 +63,7 @@ Status ObjDetSimple::getObjectPosition(cv::Mat binaryImg, cv::Point2i& objectPos
 
   findContours(binaryImg, contours, hierarchy, CV_RETR_EXTERNAL, CV_CHAIN_APPROX_SIMPLE); // retrieves external contours
 
-  // TODO: merge the two nearby contours ! - with erode and dilate !?
+  // TODO-enh: merge the two nearby contours ! - with erode and dilate !?
 
   // if contours vector is empty, we have found no objects
   if (contours.size() == 0) {

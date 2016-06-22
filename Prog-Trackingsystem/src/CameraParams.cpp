@@ -27,10 +27,10 @@ CameraParams::CameraParams(std::string configFile) {
 }
 
 Status CameraParams::undistort(const PxPos& src, PxPos& dst) {
-  // TODO Task: call undistortPoints()
+  // TODO-enh Task: call undistortPoints()
   //undistortPoints(src, dst, *cameraMatrix, *distCoeffs);
 
-  dst = src; // TODO it’s only a stub
+  dst = src; // TODO-enh it’s only a stub
 
   return ERR;
 }

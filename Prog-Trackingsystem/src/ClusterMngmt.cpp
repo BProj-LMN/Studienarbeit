@@ -51,7 +51,7 @@ void ClusterMngmt::evaluate() {
   Pos3D position;
   char errorCode{0x00};
 
-  // TODO: receive from IntraSystemMessaging
+  // TODO-1: receive from IntraSystemMessaging
   // foreach camera, if IntraSysMsg.trackingStatus == ERR
   // errorCode |= ERR_TRACKING_LOST;
 
