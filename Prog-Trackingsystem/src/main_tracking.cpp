@@ -7,13 +7,10 @@
  * authors: Jannik Beyerstedt, Daniel Friedrich
  */
 
-//#define TESTING
+//#define REMOTE_ONLY  // switch on to disable possibility to exit application by key press locally
 
-#ifndef TESTING
 #define SETTINGS "../Progs-configStore/sysConfig.yml"
-#else
-#define SETTINGS "../Progs-configStore/sysConfig-stub.yml"
-#endif
+//#define SETTINGS "../Progs-configStore/sysConfig-stub.yml"
 
 #include "DataFormats.h"
 #include "Logger.h"
@@ -41,28 +38,29 @@ int main(int argc, const char** argv) {
     ImageProcessingMngmt imgProcManagement {SETTINGS, messaging};
     ClusterMngmt clusterManagement {SETTINGS, messaging};
 
-//    cv::Mat destroyimg = cv::imread("test/destroybild.jpg", 1);   // Read the file
-//    cv::namedWindow("zum Beenden: press ESC", cv::WINDOW_AUTOSIZE);
-//    imshow("zum Beenden: press ESC", destroyimg);
+#ifndef REMOTE_ONLY
+    // display some image, so that an keypress can be detected
+    cv::Mat uiPlaceholderIcon = cv::imread("cog-icon.jpg", 1);
+    cv::namedWindow("press ESC to exit application", cv::WINDOW_AUTOSIZE);
+    imshow("press ESC to exit application", uiPlaceholderIcon);
+#endif
 
     std::cout << "--- setup ok, doing tracking loop ---\n\n" << std::flush;
     LOG_ERROR << "setup done\n";
 
-#ifndef TESTING
     while (1) {
-#else
-    for (int i = 0; i < 10; i++) {
-#endif
       /*
        * calculations
        */
       imgProcManagement.evaluate();
       clusterManagement.evaluate();
 
-// TODO: evaluate some window to terminate the application
-      if (cv::waitKey(1) >= 0) {
+#ifndef REMOTE_ONLY
+      // evaluate key events from window to terminate the application
+      if (cv::waitKey(1) == 27) { // ESC key is number 27
         break;
       }
+#endif
 
       std::cout << std::flush;
     }
