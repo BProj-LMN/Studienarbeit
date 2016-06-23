@@ -12,7 +12,7 @@
 #include "Logger.h"
 
 #include "UdpSocketServer.h"
-#include "triangulate.h"
+#include "Triangulation.h"
 
 ClusterMngmt::ClusterMngmt(std::string configFile, IntraSystemMessaging* intMsg) {
   LOG_SCOPE;
@@ -71,8 +71,9 @@ void ClusterMngmt::evaluate() {
     }
   }
 
+  // calculate position
+  Triangulation::calculatePosition(messages, positions, triangulationDistances);
 
-  // TODO: triangulate
   // set error "big object ray distance", if at least one triangulation has detected a big distance
   for (int distance : triangulationDistances) {
     if (distance > DIST_ERR_CAT1) {

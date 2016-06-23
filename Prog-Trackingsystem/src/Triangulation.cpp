@@ -1,16 +1,14 @@
 /*
- * triangulate.h
+ * Triangulation.h
  *
- * function: Lotfusspunktverfahren zur Bestimmung des Schnittpunktes
- * zweier windschiefer Geraden innerhalb eines globalen Koordinatensystems
+ * function: utility class for triangulation of a 3D position using multiple linear equations in vector form (Object Rays / VectRay)
  *
- * author: Martin Kroh
+ * author: Jannik Beyerstedt
  */
 
-#ifndef TRIANGULATE_H_
-#define TRIANGULATE_H_
+#include "Triangulation.h"
 
-#include "DataFormats.h"
+//#include "DataFormats.h"
 //#include "Logger.h"
 
 #include <stdio.h>
@@ -21,12 +19,39 @@
 #define MYEPS      1.0E-19
 #define ANZ_KOORDS 3       // Anzahl Dimensionen des Koordinatensystems
 
-int triangulate(VectRay& ray1, VectRay& ray2, Pos3D& pos) {
+/*
+ * wrapper for calculation of the position with multiple cameras (more than 2)
+ */
+void Triangulation::calculatePosition(std::vector<IntraSysMsg>& messages, std::vector<Pos3D>& positions, std::vector<int>& triangulationDistances) {
+  // calculate triangulation for each pair of cameras
+  for (int i = 1; i < messages.size(); i++) {
+    IntraSysMsg a = messages[i - 1];
+    std::for_each(messages.begin() + i, messages.end(), [&a, &positions, &triangulationDistances](IntraSysMsg b) {
+      Pos3D pos {};
+      int distance {};
+
+      distance = triangulate(a.rayList[0], b.rayList[0], pos);
+
+      triangulationDistances.push_back(distance);
+      positions.push_back(pos);
+
+      /* TODO-enh: handle multiple object rays correctly */
+    });
+  }
+}
+
+/*
+ * Lotfusspunktverfahren zur Bestimmung des Schnittpunktes
+ * zweier windschiefer Geraden innerhalb eines globalen Koordinatensystems
+ *
+ * author: Martin Kroh
+ */
+int Triangulation::triangulate(VectRay& ray1, VectRay& ray2, Pos3D& pos) {
   /*** Eingabeparameter fuer Algomithmus umwandeln ***/
-  float g1_posVec[3] = { float(ray1.pos.x), float(ray1.pos.y), float(ray1.pos.z) }; // Gerade 1 Ortsvektor
-  float g1_dirVec[3] = { float(ray1.dir.x), float(ray1.dir.y), float(ray1.dir.z) }; // Gerade 1 Richtungsvektor
-  float g2_posVec[3] = { float(ray2.pos.x), float(ray2.pos.y), float(ray2.pos.z) }; // Gerade 2 Ortsvektor
-  float g2_dirVec[3] = { float(ray2.dir.x), float(ray2.dir.y), float(ray2.dir.z) }; // Gerade 2 Richtungsvektor
+  float g1_posVec[3] = {float(ray1.pos.x), float(ray1.pos.y), float(ray1.pos.z)}; // Gerade 1 Ortsvektor
+  float g1_dirVec[3] = {float(ray1.dir.x), float(ray1.dir.y), float(ray1.dir.z)}; // Gerade 1 Richtungsvektor
+  float g2_posVec[3] = {float(ray2.pos.x), float(ray2.pos.y), float(ray2.pos.z)}; // Gerade 2 Ortsvektor
+  float g2_dirVec[3] = {float(ray2.dir.x), float(ray2.dir.y), float(ray2.dir.z)}; // Gerade 2 Richtungsvektor
 
   /*** interne Variablen anlegen ***/
   int i = 0;
@@ -112,4 +137,3 @@ int triangulate(VectRay& ray1, VectRay& ray2, Pos3D& pos) {
   return sqrt(pow(Verbindungsvektor[0], 2) + pow(Verbindungsvektor[1], 2) + pow(Verbindungsvektor[2], 2));
 }
 
-#endif /* TRIANGULATE_H_ */
