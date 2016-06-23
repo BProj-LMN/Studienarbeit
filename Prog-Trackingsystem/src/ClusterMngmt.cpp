@@ -47,17 +47,37 @@ ClusterMngmt::~ClusterMngmt() {
 void ClusterMngmt::evaluate() {
   externalCom->evaluate();
 
-  int triangulationMinDistance{0};
-  Pos3D position;
+  Pos3D position{};
   char errorCode{0x00};
+  std::vector<Pos3D> positions{};
+  std::vector<int> triangulationDistances{};
+  std::vector<IntraSysMsg> messages{};
 
-  // TODO-1: receive from IntraSystemMessaging
-  // foreach camera, if IntraSysMsg.trackingStatus == ERR
-  // errorCode |= ERR_TRACKING_LOST;
+  // receive from IntraSystemMessaging
+  IntraSysMsg receivedMessage{};
+  while (internalCom->recv(receivedMessage) != ERR) {
+    messages.push_back(receivedMessage);
+  }
+
+  // TODO: assure, that exactly one message from each camera is received!
+  // TODO: assure, that the time stamps of the messages are in a certain range.
+
+  // TODO-enh: detect missing cameras
+
+  // set error "tracking lost", if at least one camera has lost tracking
+  for (IntraSysMsg m : messages) {
+    if (m.trackingStatus == ERR) {
+      errorCode |= ERR_TRACKING_LOST;
+    }
+  }
+
 
   // TODO: triangulate
-  if (triangulationMinDistance > DIST_ERR_CAT1) {
-    errorCode |= ERR_BIG_DISTANCE;
+  // set error "big object ray distance", if at least one triangulation has detected a big distance
+  for (int distance : triangulationDistances) {
+    if (distance > DIST_ERR_CAT1) {
+      errorCode |= ERR_BIG_DISTANCE;
+    }
   }
 
   externalCom->sendData(position, errorCode);
@@ -66,7 +86,6 @@ void ClusterMngmt::evaluate() {
    * console output
    */
   std::cout << "x " << position.x << "\ty " << position.y << "\tz " << position.z;
-  std::cout << "\t\t" << "distance rays: " << triangulationMinDistance;
   std::cout << "\t\t" << "error code: ";
   fprintf(stdout, "0x%2x", errorCode);
   std::cout << "\n";
