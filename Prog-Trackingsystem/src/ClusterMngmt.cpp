@@ -49,7 +49,6 @@ void ClusterMngmt::evaluate() {
 
   Pos3D position{};
   char errorCode{0x00};
-  std::vector<Pos3D> positions{};
   std::vector<int> triangulationDistances{};
   std::vector<IntraSysMsg> messages{};
 
@@ -72,7 +71,7 @@ void ClusterMngmt::evaluate() {
   }
 
   // calculate position
-  Triangulation::calculatePosition(messages, positions, triangulationDistances);
+  Triangulation::calculatePosition(messages, position, triangulationDistances);
 
   // set error "big object ray distance", if at least one triangulation has detected a big distance
   for (int distance : triangulationDistances) {

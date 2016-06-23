@@ -22,7 +22,9 @@
 /*
  * wrapper for calculation of the position with multiple cameras (more than 2)
  */
-void Triangulation::calculatePosition(std::vector<IntraSysMsg>& messages, std::vector<Pos3D>& positions, std::vector<int>& triangulationDistances) {
+void Triangulation::calculatePosition(std::vector<IntraSysMsg>& messages, Pos3D& position, std::vector<int>& triangulationDistances) {
+  std::vector<Pos3D> positions{};
+
   // calculate triangulation for each pair of cameras
   for (int i = 1; i < messages.size(); i++) {
     IntraSysMsg a = messages[i - 1];
@@ -38,6 +40,18 @@ void Triangulation::calculatePosition(std::vector<IntraSysMsg>& messages, std::v
       /* TODO-enh: handle multiple object rays correctly */
     });
   }
+
+  // calculate mean of positions
+  // TODO-enh: fit sphere in all positions, take center of sphere as position
+  position = positions[0];
+  int size = positions.size();
+  if (size > 1) {
+    std::for_each(positions.begin() + 1, positions.end(), [&position](Pos3D p) {
+      position += p;
+    });
+    position /= size;
+  }
+
 }
 
 /*
