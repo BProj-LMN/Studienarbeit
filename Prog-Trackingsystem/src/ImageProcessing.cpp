@@ -23,15 +23,23 @@ ImageProcessing::ImageProcessing(int camID, ImageSource* src, CameraParams* cam,
     : cameraID(camID), capture(src), camParams(cam), objectDet(objDet), internalCom(intMsg) {
   LOG_SCOPE;
 
+  cv::Mat frame;
+
+  /*
+   * initialize global frame mask
+   */
+  *capture >> frame;
+  camParams->initGlobalMask(frame);
+
   /*
    * set reference frame for tracking
    */
-  cv::Mat frame;
-
   std::cout << "camera " << camID << ": waiting for reference frame...\n" << std::flush;
   cv::namedWindow("reference frame", cv::WINDOW_AUTOSIZE);
   for (int i = 0; i < REFERENCE_FRAME_DELAY; i++) {
     *capture >> frame;
+
+    camParams->addGlobalMaskToFrame(frame);
 
     imshow("reference frame", frame);
     if (cv::waitKey(1) >= 0) {
@@ -41,11 +49,6 @@ ImageProcessing::ImageProcessing(int camID, ImageSource* src, CameraParams* cam,
   objectDet->setReferenceFrame(frame);
   std::cout << "camera " << camID << ": reference frame set\n" << std::flush;
   cv::destroyWindow("reference frame");
-
-  /*
-   * initialize global frame mask
-   */
-  camParams->initGlobalMask(frame);
 }
 
 ImageProcessing::~ImageProcessing() {
