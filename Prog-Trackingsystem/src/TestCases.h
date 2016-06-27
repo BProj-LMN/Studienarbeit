@@ -20,7 +20,7 @@
 
 #define PX_TOLERANCE 3
 
-BOOST_AUTO_TEST_CASE(test01a_CameraParams_calcObjRay) {
+BOOST_AUTO_TEST_CASE(ImageProcessing_test01a_CameraParams_calcObjRay) {
   CameraParams cam{"test/camConfig-test1.yml"};
 
   PxPos foo{100, 200};
@@ -38,7 +38,7 @@ BOOST_AUTO_TEST_CASE(test01a_CameraParams_calcObjRay) {
   BOOST_TEST(ray.dir.z == -39);
 }
 
-BOOST_AUTO_TEST_CASE(test01b_CameraParams_calcObjRay) {
+BOOST_AUTO_TEST_CASE(ImageProcessing_test01b_CameraParams_calcObjRay) {
   CameraParams cam{"test/camConfig-test2.yml"};
 
   PxPos foo{100, 200};
@@ -56,7 +56,7 @@ BOOST_AUTO_TEST_CASE(test01b_CameraParams_calcObjRay) {
   BOOST_TEST(ray.dir.z == -904);
 }
 
-BOOST_AUTO_TEST_CASE(test02a_ObjectDetection) {
+BOOST_AUTO_TEST_CASE(ImageProcessing_test02a_ObjectDetection) {
   ObjectDetection* test = new ObjDetSimple();
   ImageSource capRef{"test/camFrame-test1-01.png"};
   ImageSource capDet{"test/camFrame-test1-02.png"};
@@ -75,7 +75,7 @@ BOOST_AUTO_TEST_CASE(test02a_ObjectDetection) {
   BOOST_TEST(std::abs(position[0].y - 329) < PX_TOLERANCE);
 }
 
-BOOST_AUTO_TEST_CASE(test02b_ObjectDetection) {
+BOOST_AUTO_TEST_CASE(ImageProcessing_test02b_ObjectDetection) {
   ObjectDetection* test = new ObjDetSimple();
   ImageSource capRef{"test/camFrame-test2-01.png"};
   ImageSource capDet{"test/camFrame-test2-02.png"};
@@ -104,7 +104,7 @@ BOOST_AUTO_TEST_CASE(test02b_ObjectDetection) {
   BOOST_TEST(positionsSize == positions.size()); // check, if positions vector does not increase size
 }
 
-BOOST_AUTO_TEST_CASE(test03_ObjectDetection) {
+BOOST_AUTO_TEST_CASE(ImageProcessing_test03_Integration) {
   ObjectDetection* objDet = new ObjDetSimple();
   ImageSource* src = new ImageSource{"test/camFrame-test1-01.png"};
   IntraSystemMessaging* intMsg = new IntraSystemMessagingStub{};
@@ -142,7 +142,7 @@ BOOST_AUTO_TEST_CASE(test03_ObjectDetection) {
   // delete handled by BOOST
 }
 
-BOOST_AUTO_TEST_CASE(test04_IntraSystemMessaging) {
+BOOST_AUTO_TEST_CASE(IntraSystemMessaging_test01) {
   IntraSystemMessaging* test = new IntraDirect{};
   VectRayList* vectList = new VectRayList{};
   VectRay ray1{Pos3D(11,12,13), Pos3D{110,120,130}};
