@@ -58,6 +58,14 @@ public:
     os << "{" << "pos: " << obj.pos << ", dir: " << obj.dir << "}";
     return os;
   }
+
+  bool operator== (const VectRay& other) const {
+    if (pos == other.pos && dir == other.dir) {
+      return true;
+    } else {
+      return false;
+    }
+  }
 };
 
 typedef std::vector<VectRay> VectRayList; // TODO: some deep copy needed?

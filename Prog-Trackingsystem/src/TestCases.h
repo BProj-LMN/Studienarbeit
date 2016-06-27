@@ -142,4 +142,24 @@ BOOST_AUTO_TEST_CASE(test03_ObjectDetection) {
   // delete handled by BOOST
 }
 
+BOOST_AUTO_TEST_CASE(test04_IntraSystemMessaging) {
+  IntraSystemMessaging* test = new IntraDirect{};
+  VectRayList* vectList = new VectRayList{};
+  VectRay ray1{Pos3D(11,12,13), Pos3D{110,120,130}};
+  VectRay ray2{Pos3D(21,22,23), Pos3D{210,220,230}};
+  vectList->push_back(ray1);
+  vectList->push_back(ray2);
+  IntraSysMsg msgSent{1, *vectList, Status::ERR};
+  IntraSysMsg msgRecv{};
+
+  test->send(msgSent);
+  test->recv(msgRecv);
+
+  BOOST_TEST(&msgSent != &msgRecv);
+  BOOST_TEST(msgSent.camID == msgRecv.camID);
+  BOOST_TEST(msgSent.trackingStatus == msgRecv.trackingStatus);
+  BOOST_TEST(msgSent.rayList.size() == msgRecv.rayList.size());
+  BOOST_TEST(msgSent.rayList == msgRecv.rayList);
+}
+
 #endif /* SRC_TESTCASES_H_ */
