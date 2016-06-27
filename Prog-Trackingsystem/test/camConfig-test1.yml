@@ -1,0 +1,22 @@
+%YAML:1.0
+timestamp: 1465900231
+datetime: "Tue Jun 14 12:30:31 2016"
+cameraMatrix: !!opencv-matrix
+   rows: 3
+   cols: 3
+   dt: d
+   data: [ 8.5e+02, 0., 3.1950000000000000e+02, 0.,
+       8.5e+02, 2.3950000000000000e+02, 0., 0., 1. ]
+distCoeffs: !!opencv-matrix
+   rows: 5
+   cols: 1
+   dt: d
+   data: [ 1.3392145366499965e-02, -4.1782588839462909e+00, 0., 0.,
+       2.1980263488194488e+01 ]
+globalMask: [ 6, 9, 631, 462 ]
+positionVector: [ 8950, 3510, 2900 ]
+rotationMatrix: !!opencv-matrix
+   rows: 3
+   cols: 3
+   dt: f
+   data: [ -1., 0., 0., 0., -1., 0., 0., 0., 1. ]

@@ -8,9 +8,13 @@
  */
 
 //#define REMOTE_ONLY  // switch on to disable possibility to exit application by key press locally
+//#define TESTS // switch unit and other function tests on
 
+#ifndef TESTS
 #define SETTINGS "../Progs-configStore/sysConfig.yml"
-//#define SETTINGS "../Progs-configStore/sysConfig-stub.yml"
+#else
+#define SETTINGS "/test/sysConfig-test.yml"
+#endif
 
 #include "DataFormats.h"
 #include "Logger.h"
@@ -27,16 +31,24 @@
 #include <iostream>
 #include <iomanip>
 
-int main(int argc, const char** argv) {
+#ifdef TESTS
+#include "TestCases.h"
+#endif
+
+int main(int argc, char* argv[]) {
+#ifdef TESTS
+  return boost::unit_test::unit_test_main(init_unit_test, argc, argv);
+#endif
+
   LOG_SET_LEVEL_DEBUG;
 
   try {
     std::cout << "--- tracking system application start ---\n\n" << std::flush;
 
-    IntraSystemMessaging* messaging = new IntraDirect {};
+    IntraSystemMessaging* messaging = new IntraDirect{};
 
-    ImageProcessingMngmt imgProcManagement {SETTINGS, messaging};
-    ClusterMngmt clusterManagement {SETTINGS, messaging};
+    ImageProcessingMngmt imgProcManagement{SETTINGS, messaging};
+    ClusterMngmt clusterManagement{SETTINGS, messaging};
 
 #ifndef REMOTE_ONLY
     // display some image, so that an keypress can be detected
@@ -80,7 +92,7 @@ int main(int argc, const char** argv) {
   } catch (Error& e) {
     std::cout << "---- Error caught ----\n";
     LOG_ERROR << "catch Error\n";
-    std::cout << e << "\n" << std::flush;;
+    std::cout << e << "\n" << std::flush;
   }
 
 }
