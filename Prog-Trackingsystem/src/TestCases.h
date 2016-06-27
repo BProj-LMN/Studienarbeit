@@ -17,6 +17,7 @@
 #include "CameraParams.h"
 #include "ObjDetSimple.h"
 #include "IntraSystemMessagingStub.h"
+#include "Triangulation.h"
 
 #define PX_TOLERANCE 3
 
@@ -145,8 +146,8 @@ BOOST_AUTO_TEST_CASE(ImageProcessing_test03_Integration) {
 BOOST_AUTO_TEST_CASE(IntraSystemMessaging_test01) {
   IntraSystemMessaging* test = new IntraDirect{};
   VectRayList* vectList = new VectRayList{};
-  VectRay ray1{Pos3D(11,12,13), Pos3D{110,120,130}};
-  VectRay ray2{Pos3D(21,22,23), Pos3D{210,220,230}};
+  VectRay ray1{Pos3D(11, 12, 13), Pos3D{110, 120, 130}};
+  VectRay ray2{Pos3D(21, 22, 23), Pos3D{210, 220, 230}};
   vectList->push_back(ray1);
   vectList->push_back(ray2);
   IntraSysMsg msgSent{1, *vectList, Status::ERR};
@@ -160,6 +161,36 @@ BOOST_AUTO_TEST_CASE(IntraSystemMessaging_test01) {
   BOOST_TEST(msgSent.trackingStatus == msgRecv.trackingStatus);
   BOOST_TEST(msgSent.rayList.size() == msgRecv.rayList.size());
   BOOST_TEST(msgSent.rayList == msgRecv.rayList);
+}
+
+BOOST_AUTO_TEST_CASE(ClusterMngmt_test01_Triangulation) {
+  Triangulation test{};
+  Pos3D position{};
+  std::vector<int> triangulationDistances{};
+  std::vector<IntraSysMsg> messages{};
+
+  Pos3D pos1{0, 100, 300};
+  Pos3D dir1{100, 20, 1};
+  VectRay ray1{pos1, dir1};
+  VectRayList list1{ray1};
+  IntraSysMsg msg1{1, list1, Status::OK};
+  messages.push_back(msg1);
+
+  Pos3D pos2{0, 500, 300};
+  Pos3D dir2{100, -20, 0};
+  VectRay ray2{pos2, dir2};
+  VectRayList list2{ray2};
+  IntraSysMsg msg2{2, list2, Status::OK};
+  messages.push_back(msg2);
+
+  test.calculatePosition(messages, position, triangulationDistances);
+
+  BOOST_TEST(triangulationDistances.size() == 1);
+  BOOST_TEST(triangulationDistances[0] < 10);
+  BOOST_TEST(triangulationDistances[0] > 0); // distance always positive
+  BOOST_TEST(std::abs(position.x - 1000) < PX_TOLERANCE);
+  BOOST_TEST(std::abs(position.y - 300) < PX_TOLERANCE);
+  BOOST_TEST(std::abs(position.z - 302) < PX_TOLERANCE);
 }
 
 #endif /* SRC_TESTCASES_H_ */
