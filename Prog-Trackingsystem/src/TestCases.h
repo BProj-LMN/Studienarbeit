@@ -16,6 +16,7 @@
 
 #include "CameraParams.h"
 #include "ObjDetSimple.h"
+#include "IntraSystemMessagingStub.h"
 
 #define PX_TOLERANCE 3
 
@@ -101,6 +102,44 @@ BOOST_AUTO_TEST_CASE(test02b_ObjectDetection) {
 
   BOOST_TEST(status == Status::ERR);
   BOOST_TEST(positionsSize == positions.size()); // check, if positions vector does not increase size
+}
+
+BOOST_AUTO_TEST_CASE(test03_ObjectDetection) {
+  ObjectDetection* objDet = new ObjDetSimple();
+  ImageSource* src = new ImageSource{"test/camFrame-test1-01.png"};
+  IntraSystemMessaging* intMsg = new IntraSystemMessagingStub{};
+  CameraParams* cam = new CameraParams{"test/camConfig-test1.yml"};
+
+  ImageProcessing imgProc{1, src, cam, objDet, intMsg};
+  // ImageProcessing ctor is setting up the reference frame
+  // then change the source of the ImageSource from reference frame to tracking image
+  src->release();
+  src->open("test/camFrame-test1-02.png");
+
+  imgProc.evaluate();
+
+  // check IntraSystemMessagingStub for correct IntraSysMsg input
+  IntraSystemMessagingStub* messagingStub = static_cast<IntraSystemMessagingStub*>(intMsg);
+  IntraSysMsg message = messagingStub->getMessage();
+
+  //BOOST_TEST(std::abs(position[0].x - 101) < PX_TOLERANCE);
+  //BOOST_TEST(std::abs(position[0].y - 329) < PX_TOLERANCE);
+  BOOST_TEST(message.camID == 1);
+  BOOST_TEST(message.trackingStatus == Status::OK);
+
+  BOOST_TEST_REQUIRE(message.rayList.size() > 0);
+  Pos3D dir = message.rayList[0].dir;
+  Pos3D pos = message.rayList[0].pos;
+
+  BOOST_TEST(pos.x == 8950);
+  BOOST_TEST(pos.y == 3510);
+  BOOST_TEST(pos.z == 2900);
+
+  BOOST_TEST(std::abs(dir.x - -850) < PX_TOLERANCE);
+  BOOST_TEST(std::abs(dir.y - 218) < PX_TOLERANCE);
+  BOOST_TEST(std::abs(dir.z - 89) < PX_TOLERANCE);
+
+  // delete handled by BOOST
 }
 
 #endif /* SRC_TESTCASES_H_ */
