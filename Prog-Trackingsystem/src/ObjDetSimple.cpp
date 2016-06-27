@@ -45,10 +45,10 @@ Status ObjDetSimple::detect(cv::Mat frame, PxPosList& positions) {
 
   int error = getObjectPosition(thresholdImage, pixelPosition, &objectBounding);
 
-  PxPos convert{float(pixelPosition.x), float(pixelPosition.y)};
-  positions.push_back(convert);
-
   if (0 == error) {
+    PxPos convert{float(pixelPosition.x), float(pixelPosition.y)};
+    positions.push_back(convert);
+
     return OK;
   } else {
     return ERR;
