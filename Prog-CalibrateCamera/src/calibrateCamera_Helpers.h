@@ -10,10 +10,10 @@
 #ifndef SRC_CALIBRATECAMERA_HELPERS_H_
 #define SRC_CALIBRATECAMERA_HELPERS_H_
 
-#include <iostream>
-#include <sstream>
-#include <time.h>
-#include <stdio.h>
+#include "DataFormats.h"
+//#include "Logger.h"
+
+#include "calibrateCamera_Settings.h"
 
 #include <opencv2/core/core.hpp>
 #include <opencv2/imgproc/imgproc.hpp>
@@ -21,8 +21,10 @@
 #include <opencv2/highgui/highgui.hpp>
 using namespace cv;
 
-#include "calibrateCamera_Settings.h"
-#include "myGlobalConstants.h"
+#include <iostream>
+#include <sstream>
+#include <time.h>
+#include <stdio.h>
 
 static void read(const FileNode& node, DistCalibSettings& x, const DistCalibSettings& default_value =
                      DistCalibSettings()) {

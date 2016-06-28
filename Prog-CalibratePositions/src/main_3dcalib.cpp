@@ -9,6 +9,12 @@
 
 //#define CAMERA_CALIB_CIRCLES // show circles for calibration crosses on the wall
 
+/*
+ * IMPORTANT !!!
+ * only use this program to check the position of the calibration targets on the wall!
+ * because this program is not adopted to the new config file format yet.
+ */
+
 #include <iostream>
 #include <iomanip>
 
