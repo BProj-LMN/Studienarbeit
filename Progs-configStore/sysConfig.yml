@@ -11,5 +11,5 @@ cameras:
       configFile: "../Progs-configStore/camConfig-1.yml"
    -
       cameraID: 2
-      videoSrc: "test/frameCam2-01.png"
+      videoSrc: "test/camFrame-test2-01.png"
       configFile: "../Progs-configStore/camConfig-2.yml"

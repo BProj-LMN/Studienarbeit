@@ -21,5 +21,5 @@ rotationMatrix: !!opencv-matrix
    dt: f
    data: [ -2.95302899e+38, -4.18153954e+00, 7.96554947e+01, 0., 0., 0.,
        0., 0., 0. ]
-viewingCenter: [ 0., 1780., 910. ]
-viewingRight: [ 0., 6430., 1050. ]
+viewingCenter: [ 0, 1780, 910 ]
+viewingRight: [ 0, 6430, 1050 ]

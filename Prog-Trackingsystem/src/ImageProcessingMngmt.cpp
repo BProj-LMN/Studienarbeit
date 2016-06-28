@@ -58,7 +58,17 @@ void ImageProcessingMngmt::evaluate() {
 void ImageProcessingMngmt::factoryCamera(CameraProperties camProps) {
   std::cout << "ImageProcessingMngmt - create " << camProps << "\n";
 
-  ImageSource* cap = new ImageSource{camProps.videoSrc};
+  ImageSource* cap;
+  std::string videoSrc = camProps.videoSrc;
+
+  try {                   // try to convert to int (device ID)
+    int devideID = std::stoi(videoSrc);
+    std::cout << "device ID detected\n";
+
+    cap = new ImageSource{devideID};
+  } catch(std::invalid_argument e) {  // else leave it as string (video / image file)
+    cap = new ImageSource{videoSrc};
+  }
   if (!cap->isOpened()) {
     LOG_ERROR << "ImageProcessingMngmt::factoryCamerar - error opening VideoCapture - videoSrc=" << camProps.videoSrc << "\n";
     std::cout << "videoSrc=" << camProps.videoSrc << "\n";
