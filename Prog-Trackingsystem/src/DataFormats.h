@@ -23,18 +23,10 @@ public:
   float x;
   float y;
 
-  PxPos()
-      : x(0.0), y(0.0) {
-  }
+  PxPos();
+  PxPos(float x_val, float y_val);
 
-  PxPos(float x_val, float y_val)
-      : x(x_val), y(y_val) {
-  }
-
-  friend std::ostream& operator<<(std::ostream& os, const PxPos& obj) {
-    os << "{" << "x: " << obj.x << ", y: " << obj.y << "}";
-    return os;
-  }
+  friend std::ostream& operator<<(std::ostream& os, const PxPos& obj);
 };
 
 typedef std::vector<PxPos> PxPosList;
@@ -46,26 +38,11 @@ public:
   Pos3D pos;
   Pos3D dir;
 
-  VectRay()
-      : pos(), dir() {
-  }
+  VectRay();
+  VectRay(Pos3D pos_val, Pos3D dir_val);
 
-  VectRay(Pos3D pos_val, Pos3D dir_val)
-      : pos(pos_val), dir(dir_val) {
-  }
-
-  friend std::ostream& operator<<(std::ostream& os, const VectRay& obj) {
-    os << "{" << "pos: " << obj.pos << ", dir: " << obj.dir << "}";
-    return os;
-  }
-
-  bool operator== (const VectRay& other) const {
-    if (pos == other.pos && dir == other.dir) {
-      return true;
-    } else {
-      return false;
-    }
-  }
+  friend std::ostream& operator<<(std::ostream& os, const VectRay& obj);
+  bool operator==(const VectRay& other) const;
 };
 
 typedef std::vector<VectRay> VectRayList; // TODO: some deep copy needed?
@@ -76,35 +53,18 @@ public:
   VectRayList rayList;
   Status trackingStatus;
 
-  IntraSysMsg() {
-    camID = 9999; // default ctor with invalid ID, because not properly initialized
-  }
+  IntraSysMsg();
+  IntraSysMsg(int camID_val, VectRayList rayList_val, Status trackingStatus_val);
 
-  IntraSysMsg(int camID_val, VectRayList rayList_val, Status trackingStatus_val)
-      : camID(camID_val), rayList(rayList_val), trackingStatus(trackingStatus_val) {
-  }
-
-  friend std::ostream& operator<<(std::ostream& os, const IntraSysMsg& obj) {
-    // TODO: good output of the data
-    os << "IntraSystMsg for camID: " << obj.camID;
-    return os;
-  }
+  friend std::ostream& operator<<(std::ostream& os, const IntraSysMsg& obj);
 };
 
 class Error {
 public:
-  Error(std::string message)
-      : msg(message) {
-  }
+  Error(std::string message);
 
-  friend std::ostream& operator<<(std::ostream& os, const Error& obj) {
-    os << "Error: " << obj.msg;
-    return os;
-  }
-
-  std::string what() {
-    return msg;
-  }
+  friend std::ostream& operator<<(std::ostream& os, const Error& obj);
+  std::string what();
 
 private:
   std::string msg;

@@ -1,15 +1,15 @@
 /*
  * Logger.h
  *
- *  Created on: 09.06.2016
- *      Author: jannik
+ * function: Logger Singleton for logging with different log levels to a file
+ *
+ * author: Jannik Beyerstedt
  */
 
 #ifndef SRC_LOGGER_H_
 #define SRC_LOGGER_H_
 
 #include <iostream>
-#include <iomanip>
 #include <fstream>
 #include <chrono>
 
@@ -42,46 +42,24 @@ typedef enum {
 } log_t;
 
 class Logger {
-  std::ofstream logfile;
-  std::chrono::high_resolution_clock::time_point time_start;
-  log_t logLevel;
-
 public:
   static Logger& getLogger() {
     static Logger Instance;
     return Instance;
   }
-  Logger() {
-    logfile.open("logfile.txt", std::ios::trunc);
-    logfile << std::setprecision(3) << std::fixed;
 
-    time_start = std::chrono::high_resolution_clock::now();
-    logLevel = ERROR;
-  }
-  ~Logger() {
-    logfile.close();
-  }
-  void setLogLevel(log_t logLevel) {
+  Logger();
+  ~Logger();
 
-    this->logLevel = logLevel;
-  }
-  log_t getLogLevel() {
-    return logLevel;
-  }
-  std::ofstream& log(log_t logType) {
-    std::chrono::duration<double, std::milli> timediff_ms = std::chrono::high_resolution_clock::now() - time_start;
-    auto time = std::chrono::system_clock::now();
+  void setLogLevel(log_t logLevel);
+  log_t getLogLevel();
+  std::ofstream& log(log_t logType);
+  std::ofstream& log();
 
-    logfile << std::chrono::system_clock::to_time_t(time) << " (" << timediff_ms.count() << ") [" << logType << "] ";
-    return logfile;
-  }
-  std::ofstream& log() {
-    std::chrono::duration<double, std::milli> timediff_ms = std::chrono::high_resolution_clock::now() - time_start;
-    auto time = std::chrono::system_clock::now();
-
-    logfile << std::chrono::system_clock::to_time_t(time) << " (" << timediff_ms.count() << ") ";
-    return logfile;
-  }
+private:
+  std::ofstream logfile;
+  std::chrono::high_resolution_clock::time_point time_start;
+  log_t logLevel;
 };
 
 /*
@@ -92,18 +70,8 @@ public:
  */
 class LogScope {
 public:
-  LogScope(const std::string& s)
-      : logger(Logger::getLogger()), s_(s) {
-    if (!(Logger::getLogger().getLogLevel() < DEBUG)) {
-      logger.log(DEBUG) << "entering function " << s_ << "\n";
-    }
-  }
-  ~LogScope() {
-    if (!(Logger::getLogger().getLogLevel() < DEBUG)) {
-      logger.log(DEBUG) << "exiting function " << s_ << "\n";
-    }
-
-  }
+  LogScope(const std::string& s);
+  ~LogScope();
 
 private:
   Logger& logger;
