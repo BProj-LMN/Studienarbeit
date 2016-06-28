@@ -64,11 +64,16 @@ void ClusterMngmt::evaluate() {
   // TODO-enh: detect missing cameras
 
   // set error "tracking lost", if at least one camera has lost tracking
-  for (IntraSysMsg m : messages) {
+  // and delete all messages with "tracking lost" from messages list
+  messages.erase(std::remove_if(messages.begin(), messages.end(), [&errorCode](IntraSysMsg m) {
     if (m.trackingStatus == ERR) {
       errorCode |= ERR_TRACKING_LOST;
+      return true;
+    } else {
+      return false;
     }
-  }
+  }),
+                 messages.end());
 
   // calculate position
   Triangulation::calculatePosition(messages, position, triangulationDistances);

@@ -14,7 +14,7 @@
 
 class Triangulation {
 public:
-  static void calculatePosition(std::vector<IntraSysMsg>& messages, Pos3D& position, std::vector<int>& triangulationDistances);
+  static Status calculatePosition(std::vector<IntraSysMsg>& messages, Pos3D& position, std::vector<int>& triangulationDistances);
 
 private:
   static int triangulate(VectRay& ray1, VectRay& ray2, Pos3D& pos);

@@ -22,7 +22,11 @@
 /*
  * wrapper for calculation of the position with multiple cameras (more than 2)
  */
-void Triangulation::calculatePosition(std::vector<IntraSysMsg>& messages, Pos3D& position, std::vector<int>& triangulationDistances) {
+Status Triangulation::calculatePosition(std::vector<IntraSysMsg>& messages, Pos3D& position, std::vector<int>& triangulationDistances) {
+  if (messages.size() < 2) {
+    return Status::ERR;
+  }
+
   std::vector<Pos3D> positions{};
 
   // calculate triangulation for each pair of cameras
@@ -52,6 +56,7 @@ void Triangulation::calculatePosition(std::vector<IntraSysMsg>& messages, Pos3D&
     position /= size;
   }
 
+  return Status::OK;
 }
 
 /*
