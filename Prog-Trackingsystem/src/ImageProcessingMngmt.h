@@ -28,7 +28,7 @@ public:
   void evaluate();
 
 private:
-  void factoryCamera(CameraProperties camProps);
+  void factoryCamera(CameraProperties camProps, std::string objDetUsed);
 
 private:
   std::vector<ImageProcessing*> cameras;

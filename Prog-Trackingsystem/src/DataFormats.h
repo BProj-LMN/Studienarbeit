@@ -45,7 +45,7 @@ public:
   bool operator==(const VectRay& other) const;
 };
 
-typedef std::vector<VectRay> VectRayList; // TODO: some deep copy needed?
+typedef std::vector<VectRay> VectRayList;
 
 class IntraSysMsg {
 public:

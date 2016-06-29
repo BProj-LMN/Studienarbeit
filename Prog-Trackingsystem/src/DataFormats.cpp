@@ -51,8 +51,14 @@ IntraSysMsg::IntraSysMsg(int camID_val, VectRayList rayList_val, Status tracking
 }
 
 std::ostream& operator<<(std::ostream& os, const IntraSysMsg& obj) {
-  // TODO: good output of the data
-  os << "IntraSystMsg for camID: " << obj.camID;
+  os << "IntraSystMsg: camID: " << obj.camID << ", Status: " << obj.trackingStatus;
+  if (obj.rayList.size() > 0) {
+    for (auto ray : obj.rayList) {
+      os << "\n              " << ray;
+    }
+  } else {
+    os << "\n              {no VectRay in list}";
+  }
   return os;
 }
 

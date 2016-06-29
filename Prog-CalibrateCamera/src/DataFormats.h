@@ -45,7 +45,7 @@ public:
   bool operator==(const VectRay& other) const;
 };
 
-typedef std::vector<VectRay> VectRayList; // TODO: some deep copy needed?
+typedef std::vector<VectRay> VectRayList;
 
 class IntraSysMsg {
 public:
@@ -55,7 +55,6 @@ public:
 
   IntraSysMsg();
   IntraSysMsg(int camID_val, VectRayList rayList_val, Status trackingStatus_val);
-  //IntraSysMsg(const IntraSysMsg& other);
 
   friend std::ostream& operator<<(std::ostream& os, const IntraSysMsg& obj);
 };

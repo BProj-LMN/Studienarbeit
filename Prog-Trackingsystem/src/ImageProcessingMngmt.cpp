@@ -36,7 +36,7 @@ ImageProcessingMngmt::ImageProcessingMngmt(std::string configFile, IntraSystemMe
   fs.release();
 
   for (CameraProperties c : cameras) {
-    factoryCamera(c);
+    factoryCamera(c, objDetUsed);
   }
 }
 
@@ -55,7 +55,7 @@ void ImageProcessingMngmt::evaluate() {
   }
 }
 
-void ImageProcessingMngmt::factoryCamera(CameraProperties camProps) {
+void ImageProcessingMngmt::factoryCamera(CameraProperties camProps, std::string objDetUsed) {
   std::cout << "ImageProcessingMngmt - create " << camProps << "\n";
 
   ImageSource* cap;
@@ -76,7 +76,12 @@ void ImageProcessingMngmt::factoryCamera(CameraProperties camProps) {
   }
 
   CameraParams* cam = new CameraParams{camProps.configFile};
-  ObjectDetection* objDet = new ObjDetSimple{}; // TODO switch between different object detections
+  ObjectDetection* objDet;
+  if ("ObjDetSimple" == objDetUsed) {
+    objDet = new ObjDetSimple{};
+  } else {
+    throw Error("invalid objectDetectionUsed in sysConfig file!\n if it’s a valid class name, it must be registered manually in ImageProcessingMngmt.cpp!");
+  }
 
   ImageProcessing* camera = new ImageProcessing{camProps.cameraID, cap, cam, objDet, messaging};
   cameras.push_back(camera);

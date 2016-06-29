@@ -34,7 +34,11 @@ ClusterMngmt::ClusterMngmt(std::string configFile, IntraSystemMessaging* intMsg)
   fs.release();
 
   UdpSocketServer* socket = new UdpSocketServer(udpPort);
-  externalCom = new ComBachelorprojekt(socket); // TODO switch between different com interfaces
+  if ("ComBachelorprojekt" == comIntUsed) {
+    externalCom = new ComBachelorprojekt(socket);
+  } else {
+    throw Error("invalid comInterfaceUsed in sysConfig file!\n if it’s a valid class name, it must be registered manually in ClusterMngmt.cpp!");
+  }
 }
 
 ClusterMngmt::~ClusterMngmt() {

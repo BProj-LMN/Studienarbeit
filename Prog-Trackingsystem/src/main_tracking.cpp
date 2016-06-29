@@ -85,14 +85,14 @@ int main(int argc, char* argv[]) {
     return (0);
 
   } catch (cv::Exception& e) {
-    std::cout << "---- opencv exception caught ----\n";
+    std::cerr << "---- opencv exception caught ----\n";
     LOG_ERROR << "catch cv::Exception\n";
-    std::cout << e.msg << "\n" << std::flush;
+    std::cerr << e.msg << "\n" << std::flush;
 
   } catch (Error& e) {
-    std::cout << "---- Error caught ----\n";
+    std::cerr << "---- Error caught ----\n";
     LOG_ERROR << "catch Error\n";
-    std::cout << e << "\n" << std::flush;
+    std::cerr << e << "\n" << std::flush;
   }
 
 }
