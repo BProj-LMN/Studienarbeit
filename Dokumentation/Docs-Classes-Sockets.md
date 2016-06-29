@@ -21,7 +21,7 @@ Einige Methoden geben aber auch ein bool-Wert zurück, da hierbei der Rückgabew
 Der UDP-Client verbindet sich mit dem UDP-Server. Damit der Server Nachrichten an den Client senden kann, muss dieser erst einmal eine Nachricht an den Server senden, damit die IP-Adresse des Clients dem Server bekannt ist.
 
 #### Einstellungen (#define)
-Die einzige Einstellung, die nicht zur Laufzeit geändert werden kann, ist die maximale Nachrichtenlänge. Diese wird mit `MESSAGE_LEN` vorgegenen.
+Die einzige Einstellung, die nicht zur Laufzeit geändert werden kann, ist die maximale Nachrichtenlänge. Diese wird mit `MESSAGE_LEN` vorgegeben.
 
 #### Methoden
 - SocketClient(char ipAddress[], int port);
@@ -31,18 +31,18 @@ Die einzige Einstellung, die nicht zur Laufzeit geändert werden kann, ist die m
 
 Mit `SocketClient` wird ein Objekt des Clients erstellt. Hierfür muss zuerst die IP-Adresse des Servers angegeben werden. Diese wird einfach als char-Array übergeben. Außerdem muss dem Client der Port des Servers mitgeteilt werden.
 
-In jedem Programmzyklus sollte `evaluate()` aufgerufen werden, damit der Socket nach neuen Paketen anbgefragt wird.
+In jedem Programmzyklus sollte `evaluate()` aufgerufen werden, damit der Socket nach neuen Paketen angefragt wird.
 
-Mit `get_message` wird der Inhalt des letzten Paktets in den string gespeichert, der der Methode übergeben wird. Der Rückgabewert gibt an, ob das Paket neu ist, d.h. nicht schon einmal mit diese Methode abgefragt wurde.
+Mit `get_message` wird der Inhalt des letzten Pakets in den string gespeichert, der der Methode übergeben wird. Der Rückgabewert gibt an, ob das Paket neu ist, d.h. nicht schon einmal mit diese Methode abgefragt wurde.
 
 Mit `sendMessage` wird die übergebene Nachricht gesendet. Der Rückgabewert gibt an, ob ein Fehler beim Senden aufgetreten ist. Der genaue Fehler wird in stderr ausgegeben.
 
 
 ### Socket Server
-Der Server öffnet einen Socket auf einem vorgegebenen Port und wartet auf eintreffende Pakete. Auf diese Pakete kann dann geantwortet werden. Mit der aktuellen Implementation ist leider nicht möglich mehere Clients gleichzeitig zu bedienen!
+Der Server öffnet einen Socket auf einem vorgegebenen Port und wartet auf eintreffende Pakete. Auf diese Pakete kann dann geantwortet werden. Mit der aktuellen Implementation ist leider nicht möglich mehrere Clients gleichzeitig zu bedienen!
 
 #### Einstellungen (#define)
-Die einzige Einstellung, die nicht zur Laufzeit geändert werden kann, ist die maximale Nachrichtenlänge. Diese wird mit `MESSAGE_LEN` vorgegenen.
+Die einzige Einstellung, die nicht zur Laufzeit geändert werden kann, ist die maximale Nachrichtenlänge. Diese wird mit `MESSAGE_LEN` vorgegeben.
 
 #### Methoden
 - Socket(int port);
@@ -53,11 +53,11 @@ Die einzige Einstellung, die nicht zur Laufzeit geändert werden kann, ist die m
 
 Mit `Socket` wird ein Objekt des Server erstellt. Hierfür muss ein Port angegeben werden, der dann natürlich auch dem Client mitgeteilt werden muss.
 
-In jedem Programmzyklus sollte `evaluate()` aufgerufen werden, damit der Socket nach neuen Paketen anbgefragt wird.
+In jedem Programmzyklus sollte `evaluate()` aufgerufen werden, damit der Socket nach neuen Paketen angefragt wird.
 
 Mit `is_clientConnected()` kann abgefragt werden, ob der Client schon ein `connect`-Paket gesendet hat. Nur wenn der Client connected ist, können Pakete gesendet werden.
 
-Mit `get_message` wird der Inhalt des letzten Paktets in den string gespeichert, der der Methode übergeben wird. Der Rückgabewert gibt an, ob das Paket neu ist, d.h. nicht schon einmal mit diese Methode abgefragt wurde.
+Mit `get_message` wird der Inhalt des letzten Pakets in den string gespeichert, der der Methode übergeben wird. Der Rückgabewert gibt an, ob das Paket neu ist, d.h. nicht schon einmal mit diese Methode abgefragt wurde.
 
 Mit `sendMessage` wird die übergebene Nachricht gesendet. Der Rückgabewert gibt an, ob ein Fehler beim Senden aufgetreten ist. Der genaue Fehler wird in stderr ausgegeben.
 

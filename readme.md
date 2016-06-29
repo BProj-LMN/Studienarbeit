@@ -1,10 +1,10 @@
-*Studienarbeit SS 2016 - HAW Hamburg - Quadrocopter-Tracking*
+*Studienarbeit SS 2016 - HAW Hamburg - optische Trackinganlage*
 # Readme (Github)
 
 ## Einleitung
 Im Wintersemester 2015/16 wurde im Rahmen eines sog. Bachelorprojektes des Studiengangs Mechatronik ein Trackingsystem für einen Quadcopter (ready-to-fly) entwickelt. Beim Bachelorprojekt handelt es sich um eine Gruppenarbeit im 5. Semester, anhand derer Projektmanagementmethoden erlernt und ausprobiert werden sollen.
 
-Das Trackingsystem arbeitet mit 2 Monochrom-Kameras und die Position im Raum wird per Triangulation ermittelt. Die Positionsdaten wurden verwendet, um den Copter automatisch in einem Raum fliegen zu lassen. Hierfür wurde noch eine entsprechende Regelungssortware entwickelt, die auch mit der Fernsteuerung des Copters kommunizert hat.  
+Das Trackingsystem arbeitet mit 2 Monochrom-Kameras und die Position im Raum wird per Triangulation ermittelt. Die Positionsdaten wurden verwendet, um den Copter automatisch in einem Raum fliegen zu lassen. Hierfür wurde noch eine entsprechende Regelungssoftware entwickelt, die auch mit der Fernsteuerung des Copters komunizert hat.  
 Für die Bildverarbeitung wurde die freie Bibliothek [OpenCV](http://opencv.org/) verwendet.
 
 ## Aufgabe der Studienarbeit
@@ -17,13 +17,12 @@ Zuletzt wird das System mit der neuen Architektur den selben Performanceanalysen
 
 
 ## Organisation des Projektes
-Alle Dateien sind genrell UTF-8 codiert und haben UNIX-style line breaks! Dateien, die im Code referenziert werden (können) sollten keine Leerzeichen enthalten.
+Alle Dateien sind generell UTF-8 codiert und haben UNIX-style line breaks! Dateien, die im Code referenziert werden (können) sollten keine Leerzeichen enthalten.
 
 ### Ordnerstruktur
 ```
-+-- Doku-Bachelorprojekt (Doku zur Einordnung des Systems / Hintergrundwissen)
 +-- Dokumentation
-+-- Prog-Trackingsystem      (Hauptprogamm)
++-- Prog-Trackingsystem      (Hauptprogramm)
 +-- Prog-CalibrateCamera     (zum Kalibrieren der Linsenverzeichnung)
 +-- Prog-CalibratePositions  (zum Einmessen der Kamerapositionen)
 +-- Progs-configStore        (zentraler Ort zum Austausch von Config-Dateien zw. den Programmen)
