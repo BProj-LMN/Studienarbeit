@@ -8,8 +8,8 @@ cameras:
    -
       cameraID: 1
       videoSrc: "0"
-      configFile: "../Progs-configStore/camConfig-1.yml"
+      configFile: "../Progs-configStore/camConfig-USB1.yml"
    -
       cameraID: 2
       videoSrc: "1"
-      configFile: "../Progs-configStore/camConfig-2.yml"
+      configFile: "../Progs-configStore/camConfig-USB2.yml"

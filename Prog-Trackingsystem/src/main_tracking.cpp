@@ -11,7 +11,7 @@
 //#define TESTS // switch unit and other function tests on
 
 #ifndef TESTS
-#define SETTINGS "../Progs-configStore/sysConfig.yml"
+#define SETTINGS "../Progs-configStore/sysConfig-USB.yml"
 #else
 #define SETTINGS "/test/sysConfig-test.yml"
 #endif
@@ -82,17 +82,19 @@ int main(int argc, char* argv[]) {
      */
     std::cout << "--> shut down program\n";
     LOG_ERROR << "normal program shutdown\n";
-    return (0);
+    return EXIT_SUCCESS;
 
   } catch (cv::Exception& e) {
     std::cerr << "---- opencv exception caught ----\n";
     LOG_ERROR << "catch cv::Exception\n";
     std::cerr << e.msg << "\n" << std::flush;
+    return EXIT_FAILURE;
 
   } catch (Error& e) {
     std::cerr << "---- Error caught ----\n";
     LOG_ERROR << "catch Error\n";
     std::cerr << e << "\n" << std::flush;
+    return EXIT_FAILURE;
   }
 
 }
