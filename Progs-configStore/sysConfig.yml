@@ -1,0 +1,15 @@
+%YAML:1.0
+timestamp: 1465900231
+datetime: "Tue Jun 14 12:30:31 2016"
+objectDetectionUsed: "ObjDetSimple"
+port: 1362
+comInterfaceUsed: "ComBachelorprojekt"
+cameras:
+   -
+      cameraID: 1
+      videoSrc: "0"
+      configFile: "../Progs-configStore/camConfig-1.yml"
+   -
+      cameraID: 2
+      videoSrc: "1"
+      configFile: "../Progs-configStore/camConfig-2.yml"

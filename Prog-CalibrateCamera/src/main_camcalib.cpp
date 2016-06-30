@@ -7,14 +7,16 @@
  * authors: Jannik Beyerstedt, Daniel Friedrich
  */
 
+#include "DataFormats.h"
+//#include "Logger.h"
+
+#include "calibrateCamera.h"
+#include "CameraParamsSetup.h"
+
 #include <iostream>
 #include <iomanip>
 #include <string>
 #include <sstream>
-
-#include "Camera.h"
-#include "calibrateCamera.h"
-#include "myGlobalConstants.h"
 
 void printHelp() {
   std::cout << "\n" << "valid options: calibrateCamera, save, exit" << std::endl;
@@ -60,17 +62,22 @@ int main(int argc, const char** argv) {
       std::cin >> options;
     }
 
-    Camera cam(cameraID);
+    /*
+     * construct CameraParamsExt and VideoSource objects
+     */
+    CameraParamsSetup cam{};
+    cam.readConfig(path);
+    cv::VideoCapture* cap = new cv::VideoCapture(cameraID);
     Mat frame;
 
     while (1) {
       if (0 == options.compare("calibrateCamera")) {
         std::cout << "--> do calibrateCamera subroutine" << std::endl;
-        calibrateCamera(&cam);
+        calibrateCamera(&cam, cap);
 
       } else if (0 == options.compare("save")) {
         std::cout << "--> save camera object parameters" << std::endl;
-        cam.saveSettings(path);
+        cam.saveConfig(path);
 
       } else if (0 == options.compare("exit")) {
         std::cout << "--> terminating ..." << std::endl;

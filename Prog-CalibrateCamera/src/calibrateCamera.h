@@ -14,58 +14,58 @@
 #define _CRT_SECURE_NO_WARNINGS
 #endif
 
-#include <iostream>
-#include <sstream>
-#include <time.h>
-#include <stdio.h>
+#include "DataFormats.h"
+//#include "Logger.h"
+
+#include "calibrateCamera_Helpers.h"
+#include "calibrateCamera_Settings.h"
+#include "CameraParamsSetup.h"
 
 #include <opencv2/core/core.hpp>
 #include <opencv2/imgproc/imgproc.hpp>
 #include <opencv2/calib3d/calib3d.hpp>
 #include <opencv2/highgui/highgui.hpp>
 
-#include "calibrateCamera_Helpers.h"
-#include "calibrateCamera_Settings.h"
-
-#include "myGlobalConstants.h"
+#include <iostream>
+#include <sstream>
+#include <time.h>
+#include <stdio.h>
 
 enum {
   DETECTION = 0, CAPTURING = 1, CALIBRATED = 2
 };
 
-int executeDistCalib(std::string settingsFile, Camera* cam);
+Status executeDistCalib(std::string settingsFile, CameraParamsSetup* cam, cv::VideoCapture* cap);
 
-int calibrateCamera(Camera* cam) {
+Status calibrateCamera(CameraParamsSetup* cam, cv::VideoCapture* cap) {
   std::cout << "\n\nHello, this is the distortion correction subroutine\n";
   std::cout << "press g to start, press u to toggle original and corrected image" << std::endl;
-  int returnValue = ERR;
+  Status returnValue = Status::ERR;
 
-  returnValue = executeDistCalib("calibrateCamera.xml", cam);
-  if (ERR == returnValue) {
-    return ERR;
+  returnValue = executeDistCalib("calibrateCamera.xml", cam, cap);
+  if (Status::ERR == returnValue) {
+    return Status::ERR;
   }
-  cam->intrinsicParamsLoaded = 1;
 
-  return OK;
+  return Status::OK;
 }
 
-int executeDistCalib(std::string settingsFile, Camera* cam) {
+Status executeDistCalib(std::string settingsFile, CameraParamsSetup* cam, cv::VideoCapture* cap) {
   DistCalibSettings s;
   FileStorage fs(settingsFile, FileStorage::READ); // Read the settings
   if (!fs.isOpened()) {
     std::cout << "Could not open the configuration file: \"" << settingsFile << "\"" << std::endl;
-    return -1;
+    return Status::ERR;
   }
   // hard code some settings
   s.inputType = DistCalibSettings::CAMERA;
-  VideoCapture cap = cam->get_capture();
-  s.inputCapture = cap;
+  s.inputCapture = *cap;
   fs["Settings"] >> s;
   fs.release();                                         // close Settings file
 
   if (!s.goodInput) {
     std::cout << "Invalid input detected. Application stopping. " << std::endl;
-    return ERR;
+    return Status::ERR;
   }
 
   std::vector<std::vector<Point2f> > imagePoints;
@@ -84,7 +84,7 @@ int executeDistCalib(std::string settingsFile, Camera* cam) {
 
     view = s.nextImage();
     if (view.empty()) {
-      return ERR;
+      return Status::ERR;
     }
 
     //-----  If no more image, or got enough, then stop calibration and show result -------------
@@ -180,7 +180,7 @@ int executeDistCalib(std::string settingsFile, Camera* cam) {
     }
   }
 
-  return OK;
+  return Status::OK;
 }
 
 #endif /* SRC_CALIBRATECAMERA_H_ */
