@@ -15,18 +15,18 @@
 
 /* for Logger Class */
 #define LOG_DEBUG \
-  if (Logger::getLogger().getLogLevel() < DEBUG) ; \
-  else Logger::getLogger().log(DEBUG)
+  if (Logger::getLogger().getLogLevel() < debug) ; \
+  else Logger::getLogger().log(debug)
 #define LOG_WARNING \
-  if (Logger::getLogger().getLogLevel() < WARNING) ; \
-  else Logger::getLogger().log(WARNING)
+  if (Logger::getLogger().getLogLevel() < warning) ; \
+  else Logger::getLogger().log(warning)
 #define LOG_ERROR \
-  if (Logger::getLogger().getLogLevel() < ERROR) ; \
-  else Logger::getLogger().log(ERROR)
+  if (Logger::getLogger().getLogLevel() < error) ; \
+  else Logger::getLogger().log(error)
 
-#define LOG_SET_LEVEL_DEBUG Logger::getLogger().setLogLevel(DEBUG)
-#define LOG_SET_LEVEL_WARNING Logger::getLogger().setLogLevel(WARNING)
-#define LOG_SET_LEVEL_ERROR Logger::getLogger().setLogLevel(ERROR)
+#define LOG_SET_LEVEL_DEBUG Logger::getLogger().setLogLevel(debug)
+#define LOG_SET_LEVEL_WARNING Logger::getLogger().setLogLevel(warning)
+#define LOG_SET_LEVEL_ERROR Logger::getLogger().setLogLevel(error)
 
 /* for LogScope Class */
 #define LOG_SCOPE LogScope log(__FUNCTION__)
@@ -38,7 +38,7 @@
  * use LOG_SET_LEVEL_* to set the debug level written to the logfile
  */
 typedef enum {
-  ERROR, WARNING, DEBUG
+  error, warning, debug  // can't use ERROR on windows!
 } log_t;
 
 class Logger {

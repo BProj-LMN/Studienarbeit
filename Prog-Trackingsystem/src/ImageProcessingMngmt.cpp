@@ -61,6 +61,7 @@ void ImageProcessingMngmt::factoryCamera(CameraProperties camProps, std::string 
   ImageSource* cap;
   std::string videoSrc = camProps.videoSrc;
 
+#ifndef _WIN32
   try {                   // try to convert to int (device ID)
     int devideID = std::stoi(videoSrc);
     std::cout << "device ID detected\n";
@@ -69,6 +70,17 @@ void ImageProcessingMngmt::factoryCamera(CameraProperties camProps, std::string 
   } catch(std::invalid_argument e) {  // else leave it as string (video / image file)
     cap = new ImageSource{videoSrc};
   }
+#else
+  // ugly windows approach assuming less that 100 cameras AND filenames with more that 2 characters
+  // because minGW claims to do c++11, but does not have std::stoi implemented
+  if (videoSrc.length() < 3) {
+    int devideID = atoi(videoSrc.c_str());
+
+    cap = new ImageSource{devideID};
+  } else {
+    cap = new ImageSource{videoSrc};
+  }
+#endif
   if (!cap->isOpened()) {
     LOG_ERROR << "ImageProcessingMngmt::factoryCamerar - error opening VideoCapture - videoSrc=" << camProps.videoSrc << "\n";
     std::cout << "videoSrc=" << camProps.videoSrc << "\n";

@@ -15,7 +15,7 @@ Logger::Logger() {
   logfile << std::setprecision(3) << std::fixed;
 
   time_start = std::chrono::high_resolution_clock::now();
-  logLevel = ERROR;
+  logLevel = error;
 }
 
 Logger::~Logger() {
@@ -48,13 +48,13 @@ std::ofstream& Logger::log() {
 
 LogScope::LogScope(const std::string& s)
     : logger(Logger::getLogger()), s_(s) {
-  if (!(Logger::getLogger().getLogLevel() < DEBUG)) {
-    logger.log(DEBUG) << "entering function " << s_ << "\n";
+  if (!(Logger::getLogger().getLogLevel() < debug)) {
+    logger.log(debug) << "entering function " << s_ << "\n";
   }
 }
 
 LogScope::~LogScope() {
-  if (!(Logger::getLogger().getLogLevel() < DEBUG)) {
-    logger.log(DEBUG) << "exiting function " << s_ << "\n";
+  if (!(Logger::getLogger().getLogLevel() < debug)) {
+    logger.log(debug) << "exiting function " << s_ << "\n";
   }
 }
