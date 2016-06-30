@@ -19547,5 +19547,5 @@
 	"documentation": "Documentation of the new, modular software architecture of the optical tracking system developed in the Bachelorprojekt WS15/16.\n\nProfile holds some general data types and stereotypes.\n\nTrackingSystem holds the software model and it’s views.",
 	"author": "Jannik Beyerstedt",
 	"company": "HAW Hamburg",
-	"version": "v0.3"
+	"version": "v1.0"
 }
