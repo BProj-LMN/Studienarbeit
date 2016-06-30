@@ -8,6 +8,8 @@
 
 #include "UdpSocketServer.h"
 
+#include <cstring>
+
 UdpSocketServer::UdpSocketServer(int port) {
   clientConnected = false;
   newClientMessage = false;
@@ -21,7 +23,6 @@ UdpSocketServer::UdpSocketServer(int port) {
     fprintf(stderr, "ERROR: in Socket::Socket - opening socket \n");
     exit(0);
   }
-  bzero(&server, serverLen);
   server.sin_family = AF_INET;
   server.sin_addr.s_addr = INADDR_ANY;
   server.sin_port = htons(port);

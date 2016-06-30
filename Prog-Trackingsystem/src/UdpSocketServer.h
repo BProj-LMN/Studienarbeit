@@ -33,9 +33,9 @@ class UdpSocketServer {
 
 #ifndef _WIN32
   int udp_socket;
-  struct sockaddr_in server;
+  struct sockaddr_in server{};
   socklen_t serverLen;
-  struct sockaddr_in remote;
+  struct sockaddr_in remote{};
   socklen_t remoteLen;
 
 #else
