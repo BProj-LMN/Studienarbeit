@@ -13,10 +13,11 @@
 ImageSource& ImageSource::operator>>(cv::Mat& image) {
   if (imgIsNotSet) {
     static_cast<cv::VideoCapture>(*this).operator>>(img);
+    cv::cvtColor(img, img, CV_BGR2GRAY);
     imgIsNotSet = false;
   }
 
-  cv::cvtColor(img, image, CV_BGR2GRAY);
+  image = img;
 
   return *this;
 }
