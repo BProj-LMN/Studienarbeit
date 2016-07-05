@@ -7,9 +7,9 @@ comInterfaceUsed: "ComBachelorprojekt"
 cameras:
    -
       cameraID: 1
-      videoSrc: "test/camFrame-test1-01.png"
+      videoSrc: "test/camFrame-test1-01.jpg"
       configFile: "../Progs-configStore/camConfig-1.yml"
    -
       cameraID: 2
-      videoSrc: "test/camFrame-test2-01.png"
+      videoSrc: "test/camFrame-test2-01.jpg"
       configFile: "../Progs-configStore/camConfig-2.yml"

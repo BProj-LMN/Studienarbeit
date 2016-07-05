@@ -17,6 +17,10 @@ public:
   using cv::VideoCapture::VideoCapture;
 
   ImageSource& operator>>(cv::Mat& image);
+
+private:
+  cv::Mat img;
+  bool imgIsNotSet = true;
 };
 
 #endif /* SRC_IMAGESOURCE_H_ */

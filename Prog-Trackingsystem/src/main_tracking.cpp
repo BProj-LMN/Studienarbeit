@@ -11,7 +11,7 @@
 //#define TESTS // switch unit and other function tests on
 
 #ifndef TESTS
-#define SETTINGS "../Progs-configStore/sysConfig-USB.yml"
+#define SETTINGS "../Progs-configStore/sysConfig-stub.yml"
 #else
 #define SETTINGS "/test/sysConfig-test.yml"
 #endif
@@ -69,7 +69,7 @@ int main(int argc, char* argv[]) {
        * calculations
        */
       imgProcManagement.evaluate();
-      clusterManagement.evaluate();
+      //clusterManagement.evaluate();
 
 #ifndef REMOTE_ONLY
       // evaluate key events from window to terminate the application

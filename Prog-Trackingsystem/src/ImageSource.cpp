@@ -11,12 +11,12 @@
 #include <opencv2/imgproc.hpp>
 
 ImageSource& ImageSource::operator>>(cv::Mat& image) {
-  if (this->get(cv::CAP_PROP_POS_FRAMES) >= this->get(cv::CAP_PROP_FRAME_COUNT)) {
-    this->set(cv::CAP_PROP_POS_FRAMES, 0);
+  if (imgIsNotSet) {
+    static_cast<cv::VideoCapture>(*this).operator>>(img);
+    imgIsNotSet = false;
   }
-  static_cast<cv::VideoCapture>(*this).operator>>(image);
 
-  cv::cvtColor(image, image, CV_BGR2GRAY);
+  cv::cvtColor(img, image, CV_BGR2GRAY);
 
   return *this;
 }
