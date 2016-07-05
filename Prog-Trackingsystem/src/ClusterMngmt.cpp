@@ -94,8 +94,8 @@ void ClusterMngmt::evaluate() {
   /*
    * console output
    */
-//  std::cout << "x " << position.x << "\ty " << position.y << "\tz " << position.z;
-//  std::cout << "\t\t" << "error code: ";
-//  fprintf(stdout, "0x%2x", errorCode);
-//  std::cout << "\n";
+  std::cout << "x " << position.x << "\ty " << position.y << "\tz " << position.z;
+  std::cout << "\t\t" << "error code: ";
+  fprintf(stdout, "0x%2x", errorCode);
+  std::cout << "\n";
 }
