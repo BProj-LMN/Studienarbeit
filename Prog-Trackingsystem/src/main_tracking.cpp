@@ -69,7 +69,7 @@ int main(int argc, char* argv[]) {
        * calculations
        */
       imgProcManagement.evaluate();
-      //clusterManagement.evaluate();
+      clusterManagement.evaluate();
 
 #ifndef REMOTE_ONLY
       // evaluate key events from window to terminate the application
