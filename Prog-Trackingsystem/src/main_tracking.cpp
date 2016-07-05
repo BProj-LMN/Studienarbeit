@@ -7,7 +7,7 @@
  * authors: Jannik Beyerstedt, Daniel Friedrich
  */
 
-//#define REMOTE_ONLY  // switch on to disable possibility to exit application by key press locally
+#define REMOTE_ONLY  // switch on to disable possibility to exit application by key press locally
 //#define TESTS // switch unit and other function tests on
 
 #ifndef TESTS
@@ -30,6 +30,7 @@
 
 #include <iostream>
 #include <iomanip>
+#include <chrono>
 
 #ifdef TESTS
 #include "TestCases.h"
@@ -60,7 +61,10 @@ int main(int argc, char* argv[]) {
     std::cout << "--- setup ok, doing tracking loop ---\n\n" << std::flush;
     LOG_ERROR << "setup done\n";
 
-    while (1) {
+    /* TIME MEASUREMENT START */
+    auto t1 = std::chrono::high_resolution_clock::now();
+
+    for (int i = 1; i < 1000; i++) {
       /*
        * calculations
        */
@@ -76,6 +80,11 @@ int main(int argc, char* argv[]) {
 
       std::cout << std::flush;
     }
+
+    /* TIME MEASUREMENT END */
+    auto t2 = std::chrono::high_resolution_clock::now();
+    std::chrono::duration<double, std::milli> fp_ms = t2 - t1;
+    std::cout << "duration: " << fp_ms.count() << " ms\n";
 
     /*
      * tidy everything up
