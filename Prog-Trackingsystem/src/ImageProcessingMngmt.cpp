@@ -97,9 +97,9 @@ void ImageProcessingMngmt::factoryCamera(CameraProperties camProps, std::string 
 
   //cv::Mat frame(40,20,CV_8UC1);   // 145ms Ausfuehrungszeit 1000 Durchlaeufe
   //cv::Mat frame(400,20,CV_8UC1);  // 768 ms Ausfuehrungszeit 1000 Durchlaeufe
-  cv::Mat frame(400,200,CV_8UC1); // 4257 ms Ausfuehrungszeit 1000 Durchlaeufe
-  cap->img = frame;
-  cap->imgIsNotSet = false;
+  //cv::Mat frame(400,200,CV_8UC1); // 4257 ms Ausfuehrungszeit 1000 Durchlaeufe
+  //cap->img = frame;
+  //cap->imgIsNotSet = false;
 
   ImageProcessing* camera = new ImageProcessing{camProps.cameraID, cap, cam, objDet, messaging};
   cameras.push_back(camera);

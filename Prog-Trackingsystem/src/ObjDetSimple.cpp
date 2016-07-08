@@ -56,7 +56,7 @@ Status ObjDetSimple::detect(cv::Mat frame, PxPosList& positions) {
 
 }
 
-Status ObjDetSimple::getObjectPosition(cv::Mat binaryImg, cv::Point2i& objectPos, cv::Rect* boundingRectange) {
+Status ObjDetSimple::getObjectPosition(cv::Mat& binaryImg, cv::Point2i& objectPos, cv::Rect* boundingRectange) {
 
   std::vector<std::vector<cv::Point> > contours;
   std::vector<cv::Vec4i> hierarchy;

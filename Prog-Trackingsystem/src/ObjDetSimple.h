@@ -21,7 +21,7 @@ public:
   Status detect(cv::Mat frame, PxPosList& positions);
 
 private:
-  Status getObjectPosition(cv::Mat binaryImg, cv::Point2i& objectPos, cv::Rect* boundingRect);
+  Status getObjectPosition(cv::Mat& binaryImg, cv::Point2i& objectPos, cv::Rect* boundingRect);
 };
 
 #endif /* SRC_OBJDETSIMPLE_H_ */

@@ -71,7 +71,7 @@ void ImageProcessing::evaluate() {
    */
   *capture >> frame;
 
-  camParams->addGlobalMaskToFrame(frame);
+  //camParams->addGlobalMaskToFrame(frame);
 
   status = objectDet->detect(frame, pxPositions);
 
@@ -84,19 +84,19 @@ void ImageProcessing::evaluate() {
   imshow("tracking", frame);
 #endif
 
-  for (PxPos pixel : pxPositions) {
-    PxPos undistorted;
-    VectRay objectRay;
-
-    camParams->undistort(pixel, undistorted);
-    camParams->calcObjRay(undistorted, objectRay);
-
-    objectRayList.push_back(objectRay);
-  }
+//  for (PxPos pixel : pxPositions) {
+//    PxPos undistorted;
+//    VectRay objectRay;
+//
+//    camParams->undistort(pixel, undistorted);
+//    camParams->calcObjRay(undistorted, objectRay);
+//
+//    objectRayList.push_back(objectRay);
+//  }
 
   /*
    * send data
    */
-  IntraSysMsg message{cameraID, objectRayList, status};
-  internalCom->send(message);
+//  IntraSysMsg message{cameraID, objectRayList, status};
+//  internalCom->send(message);
 }
