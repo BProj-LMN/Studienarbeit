@@ -18,7 +18,7 @@ public:
 
   ImageSource& operator>>(cv::Mat& image);
 
-private:
+public:
   cv::Mat img;
   bool imgIsNotSet = true;
 };

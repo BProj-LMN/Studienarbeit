@@ -13,7 +13,7 @@ distCoeffs: !!opencv-matrix
    dt: d
    data: [ 1.3392145366499965e-02, -4.1782588839462909e+00, 0., 0.,
        2.1980263488194488e+01 ]
-globalMask: [ 6, 9, 631, 462 ]
+globalMask: [ 0, 0, 0, 0 ]
 positionVector: [ 8950, 3510, 2900 ]
 rotationMatrix: !!opencv-matrix
    rows: 3
