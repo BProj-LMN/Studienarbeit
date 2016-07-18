@@ -1,4 +1,4 @@
-function [ translated ] = translateRay( ray, translation )
+function [ translated ] = BProj_translateRay( ray, translation )
 % translateRay - translate a point pair (ray) by a column vector
 % (translation)
 

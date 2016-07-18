@@ -1,5 +1,6 @@
-%% Trackingsystem - Unit Tests - calculations of correct values
-% *Studienarbeit SS 2016 - HAW Hamburg - Performanceanalyse einer optischen Trackinganlage*
+%% Trackingsystem - Unit Tests - calculation of estimated values
+% Studienarbeit SS 2016 -- HAW Hamburg -- Jannik Beyerstedt
+% Performanceanalyse einer optischen Trackinganlage
 clc;
 clear all;
 close all;
@@ -10,10 +11,10 @@ close all;
 % this vector gets transformed to global coordinates via rotation matrix
 clc;
 
-positionVector1 = [8950, 3510, 2900]'; % position of camera focal point in global coordinates
+positionVector1 = [8950, 3510, 2900]'; % position of camera's focal point in global coordinates
 px_pos = [100; 200]; % detected position on sensor
 principalPoint1 = [319.5; 239.5]; % aka. sensor center
-f1  = 850; % focal lenght (in pixels!)
+f1  = 850; % focal length (in pixels!)
 
 rot_mat1 = rotate1_euler(pi); % Z: 180 deg
 
@@ -28,10 +29,10 @@ vect_dir = rot_mat1 * vect_dir
 % this vector gets transformed to global coordinates via rotation matrix
 clc;
 
-positionVector2 = [8955, 1100, 2900]'; % position of camera focal point in global coordinates
+positionVector2 = [8955, 1100, 2900]'; % position of camera's focal point in global coordinates
 px_pos = [100; 200]; % detected position on sensor
 principalPoint2 = [639.5; 479.5]; % aka. sensor center
-f2  = 1000; % focal lenght (in pixels!)
+f2  = 1000; % focal length (in pixels!)
 
 rot_mat2 = rotate2_euler(pi/4) * rotate1_euler(pi); % Z: 180 deg, Y: 45 deg
 
